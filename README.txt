@@ -4,7 +4,7 @@ for the AxiDraw writing and drawing machine.
 Supported on python 2.7, python 3.6, Mac, Windows, and Linux.
 
 
-Copyright 2018 Evil Mad Scientist Laboratories
+Copyright 2019 Evil Mad Scientist Laboratories
 
 The AxiDraw writing and drawing machine is a product of Evil Mad Scientist
 Laboratories. https://axidraw.com   https://shop.evilmadscientist.com
@@ -20,19 +20,19 @@ Please see Installation.txt for requirements.
 
 This directory contains the following items:
 
-axicli.py               - The command line interface (CLI) program itself
+axicli.py                         - One way to invoke the command line interface (CLI) program
 
-pyaxidraw/              - The AxiDraw python package directory
+axicli/                           - The CLI module directory
 
-Installation.txt        - Installation documentation
+pyaxidraw/                        - The AxiDraw python module directory
 
-python_example_plot.py  - Example files, showing use of this software
-python_example_xy.py	  as a python module, to plot an SVG file or to
-                          execute XY motion commands
+Installation.txt                  - Installation documentation
 
-AxiDraw_trivial.svg     - Sample SVG file that can be plotted
+python_example_plot.py            - Example files, showing use of this software
+python_example_xy.py	            as a python module, to plot an SVG file,
+python_example_toggle.py            execute XY motion commands, or toggle pen up/down
 
-
+test/assets/AxiDraw_trivial.svg   - Sample SVG file that can be plotted
 ----------
 
 COMMAND LINE INTERFACE: USAGE
@@ -47,12 +47,17 @@ Quick start (CLI):
 (1) To plot an SVG document called "AxiDraw_trivial.svg" from the command line,
     use the AxiDraw CLI:
 
-        python axicli.py AxiDraw_trivial.svg
+        axicli test/assets/AxiDraw_trivial.svg
 
 
 (2) The CLI features an extensive set of control options. For quick help, use: 
 
-        python axicli.py --help
+        axicli --help
+
+Some alternative commands (functionally identical):
+
+        python axicli.py <input>
+        python -m axicli <input>
 
 ----------
     
@@ -95,9 +100,10 @@ Licensing:
 
 The AxiDraw CLI and top level example scripts are licensed under the MIT license. 
 Some of the underlying libraries that are included with this distribution
-(including those forked from the Inkscape project) are licensed as GPL, and pyserial is under a BSD license. Please see the individual files and directories included with this distribution for additional license information. 
+are licensed as GPL. Please see the individual files and directories included with
+this distribution for additional license information. 
 
-API Documentation: Copyright 2018, Windell H. Oskay, Evil Mad Scientist Laboratories.
+API Documentation: Copyright 2019, Windell H. Oskay, Evil Mad Scientist Laboratories.
 
 
 

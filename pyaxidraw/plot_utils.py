@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # plot_utils.py
-# Common geometric plotting utilities for EiBotBoard
+# Common plotting utilities for EiBotBoard
 # https://github.com/evil-mad/plotink
 #
 # Intended to provide some common interfaces that can be used by
@@ -11,7 +11,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2018 Windell H. Oskay, Evil Mad Scientist Laboratories
+# Copyright (c) 2019 Windell H. Oskay, Evil Mad Scientist Laboratories
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,12 +33,15 @@
 
 from math import sqrt
 
-import cspsubdiv
-import simplepath
-from bezmisc import beziersplitatt
+from plot_utils_import import from_ink_extensions_import
+
+cspsubdiv = from_ink_extensions_import('cspsubdiv')
+simplepath = from_ink_extensions_import('simplepath')
+bezmisc = from_ink_extensions_import('bezmisc')
+ffgeom = from_ink_extensions_import('ffgeom')
 
 def version():    # Version number for this document
-    return "0.13" # Dated 2018-11-30
+    return "0.15" # Dated 2019-04-02
 
 __version__ = version()
 
@@ -47,6 +50,19 @@ PX_PER_INCH = 96.0
 # Prior versions used 90 PPI, corresponding the value used in Inkscape < 0.92.
 # For use with Inkscape 0.91 (or older), use PX_PER_INCH = 90.0
 
+trivial_svg = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <svg
+       xmlns:dc="http://purl.org/dc/elements/1.1/"
+       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+       xmlns:svg="http://www.w3.org/2000/svg"
+       xmlns="http://www.w3.org/2000/svg"
+       version="1.1"
+       id="svg15158"
+       viewBox="0 0 297 210"
+       height="210mm"
+       width="297mm">
+    </svg>
+    """
 
 def checkLimits(value, lower_bound, upper_bound):
     # Limit a value to within a range.
@@ -355,12 +371,52 @@ def subdivideCubicPath(sp, flat, i=1):
                 break
             i += 1
 
-        one, two = beziersplitatt(b, 0.5)
+        one, two = bezmisc.beziersplitatt(b, 0.5)
         sp[i - 1][2] = one[1]
         sp[i][0] = two[2]
         p = [one[2], one[3], two[1]]
         sp[i:1] = [p]
 
+def max_dist_from_n_points(input):
+    """
+    Like cspsubdiv.maxdist, but it can check for distances of any number of points >= 0.
+
+    `input` is an ordered collection of points, each point specified as an x- and y-coordinate.
+    The first point and the last point define the segment we are finding distances from.
+
+    does not mutate `input`
+    """
+    assert len(input) >= 3, "There must be points (other than begin/end) to check."
+
+    points = [ffgeom.Point(point[0], point[1]) for point in input]
+    segment = ffgeom.Segment(points.pop(0), points.pop())
+
+    distances = [segment.distanceToPoint(point) for point in points]
+    return max(distances)
+
+def supersample(vertices, tolerance):
+    """
+    Given a list of vertices, remove some according to the following algorithm.
+
+    Suppose that the vertex list consists of points A, B, C, D, E, and so forth, which define segments AB, BC, CD, DE, EF, and so on.
+
+    We first test to see if vertex B can be removed, by using perpDistanceToPoint to check whether the distance between B and segment AC is less than tolerance.
+    If B can be removed, then check to see if the next vertex, C, can be removed. Both B and C can be removed if the both the distance between B and AD is less than Tolerance and the distance between C and AD is less than Tolerance. Continue removing additional vertices, so long as the perpendicular distance between every point removed and the resulting segment is less than tolerance (and the end of the vertex list is not reached).
+If B cannot be removed, then move onto vertex C, and perform the same checks, until the end of the vertex list is reached.
+    """
+    if len(vertices) <= 2: # there is nothing to delete
+        return vertices
+
+    start_index = 0 # can't remove first vertex
+    while start_index < len(vertices) - 2:
+        end_index = start_index + 2
+        # test the removal of (start_index, end_index), exclusive until we can't advance end_index
+        while (max_dist_from_n_points(vertices[start_index:end_index + 1]) < tolerance
+               and end_index < len(vertices)):
+            end_index += 1 # try removing the next vertex too
+
+        vertices[start_index + 1:end_index - 1] = [] # delete (start_index, end_index), exclusive
+        start_index += 1
 
 def userUnitToUnits(distance_uu, unit_string):
     """

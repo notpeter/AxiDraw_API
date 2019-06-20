@@ -2,18 +2,15 @@
 # -*- encoding: utf-8 -#-
 
 '''
-python_example_plot.py
+python_example_toggle.py
 
-Demonstrate use of axidraw module in "plot" mode, to plot an SVG file.
+Demonstrate use of axidraw module in "toggle" mode, to toggle the pen up and down.
 
-Run this demo by calling: python python_example_plot.py
+Run this demo by calling: python python_example_toggle.py
 
 
 This is a minimal example to show how one can import the AxiDraw module
-and use it to plot an SVG file with the AxiDraw.
-
-(There is also a separate "interactive" mode, which can be used for moving
-the AxiDraw to various points upon command, rather than plotting an SVG file.)
+and use it to call a utility command for the AxiDraw.
 
 
 '''
@@ -68,40 +65,7 @@ SOFTWARE.
 
 from pyaxidraw import axidraw
 
-ad = axidraw.AxiDraw()             # Create class instance
-ad.plot_setup("test/assets/AxiDraw_trivial.svg")    # Parse the input file
-
-'''
-The following is a list of options that may be set
-ad.options.mode 
-ad.options.speed_pendown
-ad.options.speed_penup
-ad.options.accel
-ad.options.pen_pos_down
-ad.options.pen_pos_up
-ad.options.pen_rate_lower
-ad.options.pen_rate_raise
-ad.options.pen_delay_down
-ad.options.pen_delay_up
-ad.options.auto_rotate
-ad.options.const_speed
-ad.options.report_time
-ad.options.manual_cmd
-ad.options.walk_dist
-ad.options.layer
-ad.options.copies
-ad.options.page_delay
-ad.options.preview
-ad.options.rendering
-ad.options.reordering
-ad.options.model
-ad.options.port
-ad.options.port_config
-
-See documentation for a description of these items and their allowed values.
-
-'''
-
-ad.options.speed_pendown = 50 # Set maximum  pen-down speed to 50%
-
-ad.plot_run()   # plot the document
+ad = axidraw.AxiDraw() # Create class instance
+ad.plot_setup()        # Run setup without input file
+ad.options.mode = "toggle"
+ad.plot_run()          # Execute the command

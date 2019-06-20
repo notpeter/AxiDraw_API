@@ -4,16 +4,16 @@
 # This extension uses a simple TSP algorithm to order the paths so as
 # to reduce plotting time by plotting nearby paths consecutively.
 #
-# Copyright 2018, Windell H. Oskay, Evil Mad Science LLC
+# Copyright 2019, Windell H. Oskay, Evil Mad Science LLC
 # www.evilmadscientist.com
 # 
 # 
-# While rewritten from scratch, this is a derivative in spirit of the work by 
+# While written from scratch, this is a derivative in spirit of the work by 
 # Matthew Beckler and Daniel C. Newman for the EggBot project.
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2018 Windell H. Oskay, Evil Mad Scientist Laboratories
+# Copyright (c) 2019 Windell H. Oskay, Evil Mad Scientist Laboratories
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -36,21 +36,21 @@
 import sys
 sys.path.append('pyaxidraw')
 
+from plot_utils_import import from_ink_extensions_import # plotink
+
+inkex = from_ink_extensions_import('inkex')
+simpletransform = from_ink_extensions_import('simpletransform')
+simplestyle = from_ink_extensions_import('simplestyle')
 
 import gettext
-import inkex
 import math
-import simpletransform
-import plot_utils        # https://github.com/evil-mad/plotink  Requires version 0.10
-import simplestyle
+import plot_utils        # https://github.com/evil-mad/plotink  Requires version 0.15
 from lxml import etree
-
-from simpletransform import composeTransform, parseTransform
 
 """
 TODOs:
 
-* Seemingly large difference in execution time for portrait vs landscape document orientation.
+* Apparent difference in execution time for portrait vs landscape document orientation.
   Seems to be related to the _change_
 
 * Implement path functions
@@ -61,13 +61,15 @@ TODOs:
 <_option value=2>Break apart</_option>
 </param>
 
+self.OptionParser.add_option( "--path_handling",\
+action="store", type="int", dest="path_handling",\
+default=1,help="How compound paths are handled")
 
-* Build CLI version
 
-* Implement basic reordering functionality within axidraw driver code
+* Consider re-introducing GUI method for rendering:
 
-* Rendering pen-up travel does not show  movement within a group, unless
-  optimizing within the group.
+<param indent="1" name="rendering" type="boolean" _gui-text="Preview pen-up travel">false</param> 
+
 
 """
 
@@ -85,30 +87,26 @@ class ReorderEffect(inkex.Effect):
     def __init__( self ):
         inkex.Effect.__init__( self )
     
-        self.OptionParser.add_option( "--group_handling",\
-        action="store", type="int", dest="group_handling",\
+        self.OptionParser.add_option( "--reordering",\
+        action="store", type="int", dest="reordering",\
         default=1,help="How groups are handled")
         
-        self.OptionParser.add_option( "--path_handling",\
-        action="store", type="int", dest="path_handling",\
-        default=1,help="How compound paths are handled")
-        
-        self.OptionParser.add_option( "--rendering", \
-        action="store", type="inkbool", dest="rendering",\
-        default=False, help="Render preview of pen-up travel." )
-
+        self.auto_rotate = True
 
     def effect(self):
         # Main entry point of the program
 
-        self.svgWidth = 0 
-        self.svgHeight = 0
+        self.svg_width = 0 
+        self.svg_height = 0
         self.air_total_default = 0
         self.air_total_sorted = 0
-        self.autoRotate = True
         self.printPortrait = False
         
-        self.preview_rendering = self.options.rendering
+        # Rendering is available for debug purposes. It only previews
+        # pen-up movements that are reordered and typically does not
+        # include all possible movement.
+        
+        self.preview_rendering = False 
         self.layer_index = 0 # index for coloring layers
         
         self.svg = self.document.getroot()
@@ -117,8 +115,8 @@ class ReorderEffect(inkex.Effect):
         self.DocUnits = self.getDocumentUnit()
         
         self.unit_scaling = 1
-        userUnitsWidth = plot_utils.unitsToUserUnits("1in")
-        self.unit_scaling = plot_utils.userUnitToUnits(userUnitsWidth, self.DocUnits)
+
+        self.getDocProps()
 
         """
         Set up the document-wide transforms to handle SVG viewbox 
@@ -128,30 +126,25 @@ class ReorderEffect(inkex.Effect):
 
         viewbox = self.svg.get( 'viewBox' )
 
-        if self.getDocProps():
-            if viewbox:
-                vinfo = viewbox.strip().replace( ',', ' ' ).split( ' ' )
-                Offset0 = -float(vinfo[0])
-                Offset1 = -float(vinfo[1])
-                if ( vinfo[2] != 0 ) and ( vinfo[3] != 0 ):
-                    sx = self.svgWidth / float( vinfo[2] )
-                    sy = self.svgHeight / float( vinfo[3] )
-                    self.unit_scaling = 1.0 / sx # Scale preview to viewbox
-            else:
-                # Handle case of no viewbox provided. 
-                sx = 1.0 / float( plot_utils.PX_PER_INCH)
-                sy = sx    
-                Offset0 = 0.0
-                Offset1 = 0.0        
-            matCurrent= parseTransform('scale({0:f},{1:f}) translate({2:f},{3:f})'.format(sx, sy, Offset0, Offset1))
-
+        vb = self.svg.get('viewBox')
+        if vb:
+            p_a_r = self.svg.get('preserveAspectRatio')
+            sx,sy,ox,oy = plot_utils.vb_scale(vb, p_a_r, self.svg_width, self.svg_height)
+        else: 
+            sx = 1.0 / float(plot_utils.PX_PER_INCH) # Handle case of no viewbox
+            sy = sx
+            ox = 0.0
+            oy = 0.0
+        
+        # Initial transform of document is based on viewbox, if present:
+        matCurrent = simpletransform.parseTransform('scale({0:.6E},{1:.6E}) translate({2:.6E},{3:.6E})'.format(sx, sy, ox, oy))
         # Set up x_last, y_last, which keep track of last known pen position
         # The initial position is given by the expected initial pen position 
 
         self.y_last = 0
         
         if (self.printPortrait):
-            self.x_last = self.svgWidth
+            self.x_last = self.svg_width
         else:
             self.x_last = 0
         
@@ -168,40 +161,45 @@ class ReorderEffect(inkex.Effect):
                         if LayerName == '% Preview':
                             self.svg.remove( node )
 
-            self.preview_layer = etree.Element(inkex.addNS( 'g', 'svg' ))
-
+            preview_transform = simpletransform.parseTransform(
+                'translate({2:.6E},{3:.6E}) scale({0:.6E},{1:.6E})'.format(
+                1.0/sx, 1.0/sy, -ox, -oy))
+            path_attrs = { 'transform': simpletransform.formatTransform(preview_transform)}
+            self.preview_layer = etree.Element(inkex.addNS('g', 'svg'),
+                path_attrs, nsmap=inkex.NSS)
+                    
+                    
             self.preview_layer.set( inkex.addNS('groupmode', 'inkscape' ), 'layer' )
             self.preview_layer.set( inkex.addNS( 'label', 'inkscape' ), '% Preview' )
             self.svg.append( self.preview_layer )
 
-            strokeWidth = "0.2mm"    # Adjust this here, in your preferred units.
-            
-            width_uu = plot_utils.unitsToUserUnits(strokeWidth) # Convert stroke width to user units (typ. px)
-            width_du = plot_utils.userUnitToUnits(width_uu, self.DocUnits) # Convert to document units (typ. mm)
-            
-            line_width_scale_factor = self.unit_scaling / plot_utils.PX_PER_INCH
 
-            width_du = width_du * line_width_scale_factor # Apply scaling
+            # Preview stroke width: 1/1000 of page width or height, whichever is smaller
+            if self.svg_width < self.svg_height:
+                width_du = self.svg_width / 1000.0
+            else:
+                width_du = self.svg_height / 1000.0
 
             """
-            Important note: stroke-width is a css style element, and cannot accept scientific notation.
+            Stroke-width is a css style element, and cannot accept scientific notation.
             
-            In cases with large scaling, i.e., high values of self.unit_scaling
+            Thus, in cases with large scaling (i.e., high values of 1/sx, 1/sy)
             resulting from the viewbox attribute of the SVG document, it may be necessary to use 
             a _very small_ stroke width, so that the stroke width displayed on the screen
             has a reasonable width after being displayed greatly magnified thanks to the viewbox.
             
             Use log10(the number) to determine the scale, and thus the precision needed.
             """
-            
+
             log_ten = math.log10(width_du)
-            if log_ten > 0:    # For width_du > 1
-                width_string = "{:.3f}".format(width_du) + str(self.DocUnits)
+            if log_ten > 0:  # For width_du > 1
+                width_string = "{0:.3f}".format(width_du)
             else:
                 prec = int(math.ceil(-log_ten) + 3)
-                width_string = "{0:.{1}f}".format(width_du, prec) + str(self.DocUnits)
-                                
-            self.pStyle = {'stroke-width':width_string,'fill':'none','stroke-linejoin':'round','stroke-linecap':'round'}
+                width_string = "{0:.{1}f}".format(width_du, prec)
+
+            self.p_style = {'stroke-width': width_string, 'fill': 'none',
+                'stroke-linejoin': 'round', 'stroke-linecap': 'round'}
 
         self.svg = self.parse_svg(self.svg, matCurrent)
 
@@ -238,8 +236,8 @@ class ReorderEffect(inkex.Effect):
         if mat_current is None:
             mat_current = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]
         try:    
-            matNew = composeTransform( mat_current,
-                parseTransform( input_node.get( "transform" )))
+            matNew = simpletransform.composeTransform( mat_current,
+                simpletransform.parseTransform( input_node.get( "transform" )))
         except AttributeError:
             matNew = mat_current
     
@@ -249,10 +247,8 @@ class ReorderEffect(inkex.Effect):
             try:
                 id = node.get( 'id' )
             except AttributeError:
-                id = counter
-                counter = counter + 1
-#                 id = self.uniqueId(1) # TODO: Test this unique ID feature
-            
+                id = self.uniqueId(None,True)
+
             # First check for object visibility:
             skip_object = False
 
@@ -283,13 +279,18 @@ class ReorderEffect(inkex.Effect):
             if node.tag == inkex.addNS( 'g', 'svg' ) or node.tag == 'g':
 
                 # Use the user-given option to decide what to do with subgroups:
-                subgroup_mode = self.options.group_handling 
+                subgroup_mode = self.options.reordering 
+
+#                 Values of the parameter:
+#                 subgroup_mode=="1": Preserve groups
+#                 subgroup_mode=="2": Reorder within groups
+#                 subgroup_mode=="3": Break apart groups
 
                 if node.get(inkex.addNS('groupmode', 'inkscape')) == 'layer':
                     # The node is a layer or sub-layer, not a regular group.
                     # Parse it separately, and re-order its contents. 
 
-                    subgroup_mode = 1 # Always sort per layer.
+                    subgroup_mode = 2 # Always sort within each layer.
                     self.layer_index += 1
 
                     layer_name = node.get( inkex.addNS( 'label', 'inkscape' ) )
@@ -307,9 +308,9 @@ class ReorderEffect(inkex.Effect):
 
                 if skip_object:
                     # Do not re-order hidden groups or layers.
-                    subgroup_mode = 0
+                    subgroup_mode = 1 # Preserve this group
 
-                if subgroup_mode == 2:
+                if subgroup_mode == 3:
                     # Break apart this non-layer subgroup and add it to
                     # the set of things to be re-ordered.
     
@@ -320,8 +321,7 @@ class ReorderEffect(inkex.Effect):
                         try:
                             id = a_node.get( 'id' )
                         except AttributeError:
-                            id = counter 
-                            counter = counter + 1
+                            id = self.uniqueId(None,True)
 
                         # Use getFirstPoint and getLastPoint on each object:
                         start_plottable, first_point = self.getFirstPoint(a_node, matNew)
@@ -332,7 +332,7 @@ class ReorderEffect(inkex.Effect):
                         # Entry in group_dict is this node 
                         group_dict[id] = a_node
                             
-                elif subgroup_mode == 1:
+                elif subgroup_mode == 2:
                     # Reorder a layer or subgroup with a recursive call.
 
                     node = self.parse_svg(node, matNew, visibility)
@@ -347,7 +347,7 @@ class ReorderEffect(inkex.Effect):
                     # Entry in group_dict is this node 
                     group_dict[id] = node
                     
-                else: # (subgroup_mode == 0)
+                else: # (subgroup_mode == 1)
                     # Preserve the group, but find its first and last point so
                     #    that it can be re-ordered with respect to other items
 
@@ -628,7 +628,7 @@ class ReorderEffect(inkex.Effect):
         """
 
         # first apply the current matrix transform to this node's transform
-        matNew = composeTransform( matCurrent, parseTransform( node.get( "transform" ) ) )
+        matNew = simpletransform.composeTransform( matCurrent, simpletransform.parseTransform( node.get( "transform" ) ) )
 
         point = [float(-1), float(-1)]
         try:
@@ -786,7 +786,7 @@ class ReorderEffect(inkex.Effect):
     
                         # Note: the transform has already been applied
                         if x != 0 or y != 0:
-                            mat_new2 = composeTransform(matNew, parseTransform('translate({0:f},{1:f})'.format(x, y)))
+                            mat_new2 = simpletransform.composeTransform(matNew, simpletransform.parseTransform('translate({0:f},{1:f})'.format(x, y)))
                         else:
                             mat_new2 = matNew
                         # Note that the referenced object may be a 'symbol`,
@@ -816,7 +816,7 @@ class ReorderEffect(inkex.Effect):
         """
 
         # first apply the current matrix transform to this node's transform
-        matNew = composeTransform( matCurrent, parseTransform( node.get( "transform" ) ) )
+        matNew = simpletransform.composeTransform( matCurrent, simpletransform.parseTransform( node.get( "transform" ) ) )
 
         # If we return a negative value, we know that this function did not work
         point = [float(-1), float(-1)]
@@ -969,7 +969,7 @@ class ReorderEffect(inkex.Effect):
                         y = float(node.get('y', '0'))
                         # Note: the transform has already been applied
                         if x != 0 or y != 0:
-                            mat_new2 = composeTransform(matNew, parseTransform('translate({0:f},{1:f})'.format(x, y)))
+                            mat_new2 = simpletransform.composeTransform(matNew, simpletransform.parseTransform('translate({0:f},{1:f})'.format(x, y)))
                         else:
                             mat_new2 = matNew
                         if len(refnode) > 0:
@@ -999,7 +999,7 @@ class ReorderEffect(inkex.Effect):
         point = [float(-1), float(-1)]
         
         # first apply the current matrix transform to this node's transform
-        matNew = composeTransform( matCurrent, parseTransform( group.get( "transform" ) ) )
+        matNew = simpletransform.composeTransform( matCurrent, simpletransform.parseTransform( group.get( "transform" ) ) )
 
         # Step through the group, we examine each element until we find a plottable object
         for subnode in group:
@@ -1048,7 +1048,7 @@ class ReorderEffect(inkex.Effect):
         point = [float(-1),float(-1)]
         
         # first apply the current matrix transform to this node's transform
-        matNew = composeTransform( matCurrent, parseTransform( group.get( "transform" ) ) )
+        matNew = simpletransform.composeTransform( matCurrent, simpletransform.parseTransform( group.get( "transform" ) ) )
     
         # Step through the group, we examine each element until we find a plottable object
         for subnode in reversed(group):
@@ -1090,7 +1090,7 @@ class ReorderEffect(inkex.Effect):
             mat_current = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]]
             
         # first apply the current matrix transform to this node's transform
-        matNew = composeTransform( mat_current, parseTransform( group.get( "transform" ) ) )
+        matNew = simpletransform.composeTransform( mat_current, simpletransform.parseTransform( group.get( "transform" ) ) )
     
         nodes_in_group = []
     
@@ -1170,15 +1170,12 @@ class ReorderEffect(inkex.Effect):
                     preview_path = []    # pen-up path data for preview 
 
                     preview_path.append("M{0:.3f} {1:.3f}".format(
-                        self.unit_scaling * self.x_last,
-                        self.unit_scaling * self.y_last))
+                        self.x_last, self.y_last))
                     preview_path.append("{0:.3f} {1:.3f}".format(
-                        self.unit_scaling * nearest_start_x,
-                        self.unit_scaling * nearest_start_y))    
-
-                    self.pStyle.update({'stroke': self.color_index(self.layer_index)})  
+                        nearest_start_x, nearest_start_y))
+                    self.p_style.update({'stroke': self.color_index(self.layer_index)})  
                     path_attrs = {
-                        'style': simplestyle.formatStyle( self.pStyle ),
+                        'style': simplestyle.formatStyle( self.p_style ),
                         'd': " ".join(preview_path)}
                         
                     etree.SubElement( self.preview_layer,
@@ -1193,7 +1190,7 @@ class ReorderEffect(inkex.Effect):
         # Once all elements have been removed from the group_dictionary
         # Return the optimized list of svg elements in the layer
         return ordered_layer_element_list
-    
+
     
     def color_index(self, index):
         index = index % 9
@@ -1224,33 +1221,22 @@ class ReorderEffect(inkex.Effect):
         Use a default value in case the property is not present or is
         expressed in units of percentages.
         """
-        self.svgHeight = plot_utils.getLengthInches( self, 'height' )
-        self.svgWidth = plot_utils.getLengthInches( self, 'width' )
+
+        self.svg_height = plot_utils.getLengthInches(self, 'height')
+        self.svg_width = plot_utils.getLengthInches(self, 'width')
 
         width_string = self.svg.get('width')
         if width_string:
             value, units = plot_utils.parseLengthWithUnits(width_string)
-            self.DocUnits = units
-        else:
-            # No clear width; check to see if we can learn from the viewbox.
-            # A special case for imported data not yet resized properly.
-            # We hardcode the resolution as 96 pixels per inch for this special case
-            
-            viewbox = self.svg.get( 'viewBox' )
-            if viewbox:
-                vinfo = viewbox.strip().replace( ',', ' ' ).split( ' ' )
-                if ( vinfo[2] != 0 ) and ( vinfo[3] != 0 ):
-                    
-                    self.svgWidth = float(vinfo[2]) / 96.0  # Resolution 96 PPI
-                    self.svgHeight = float(vinfo[3]) / 96.0 # Resolution 96 PPI
-                    self.DocUnits = 'px'
+            self.doc_units = units
 
-        if self.autoRotate and self.svgHeight > self.svgWidth :
+        if self.auto_rotate and (self.svg_height > self.svg_width):
             self.printPortrait = True
-        if  self.svgHeight is None  or self.svgWidth is None :
+        if self.svg_height is None or self.svg_width is None:
             return False
         else:
             return True
+
 
     def get_output(self):
         # Return serialized copy of svg document output

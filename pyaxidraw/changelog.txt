@@ -3,7 +3,57 @@ AxiDraw API Change Log
 This document notes changes that affect the various interfaces. It does
 not cover all internal changes nor bug fixes.
 
+Please see https://axidraw.com/doc/cli_api/ for full documentation
 
+=========================================
+
+v 2.5.0 (May 2019)
+
+Added option (-f, --config) for local configuration file.
+
+Renamed "group_sorting" option to "reordering", (-G, --reordering) and
+changed parameter values.  Reordering is now available directly in
+the plotting modes, which allows full previews to be rendered.
+
+Reordering is also now possible within the python library
+when using the plot context.
+
+Removed the (old, limited) preview options from reorder mode.
+
+
+Changed names of some parameters in axidraw_conf.py. 
+
+=========================================
+
+v 2.4.0 (April 2019)
+
+Refactoring of CLI and python interfaces. CLI is now
+accessible system-wide and called as "axicli" directly
+rather than as "python axicli.py".
+
+Inkscape-based dependencies moved out of this project,
+to a separately maintained project (available on pypi):
+https://github.com/evil-mad/ink_extensions
+
+=========================================
+
+v 2.3.2 (January 2019)
+
+CLI no longer requires input files for the "utility" modes 
+align, toggle, sysinfo, or manual.  An input file is still
+required whenever an output file is specified.
+
+Python library now accepts plot_setup() with no arguments, which
+may be helpful for using those same utility modes in some
+circumstances.
+
+=========================================
+
+v 2.3.1 (December 2018)
+
+All types of viewboxes should be handled now.
+
+Significant improvements to clipping.
 
 =========================================
 
@@ -235,7 +285,7 @@ Default value of rendering parameter is now 3 (not 0).
 
 =========================================
 
-v 1.8.0 (AxiDraw Standaline Beta build 32):
+v 1.8.0 (AxiDraw Standalone Beta build 32):
 The version syntax has been revised. Use --mode=manual --manualType=fwversion to
 query the EBB firmware version and other system information.
 aximulti.py removed.
@@ -247,4 +297,4 @@ The --fileOutput option was removed in favor of being able to directly specify
 the output file name on the command line argument.
 
 
-~~~ Copyright 2018 Windell H. Oskay, Evil Mad Scientist Laboratories ~~~
+~~~ Copyright 2019 Windell H. Oskay, Evil Mad Scientist Laboratories ~~~

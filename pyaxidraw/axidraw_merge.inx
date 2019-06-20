@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+<_name>AxiDraw Merge</_name>
+<id>command.evilmadscientist.axidraw_merge</id>
+<dependency type="extension">org.inkscape.output.svg.inkscape</dependency>
+<dependency type="executable" location="extensions">axidraw_merge.py</dependency>
+<dependency type="executable" location="extensions">inkex.py</dependency>
+<param name="mode" type="notebook">
+
+<page name="autoPlot" _gui-text="Auto">
+<_param indent="6" name="AutoHeader" type="description" appearance="header">AxiDraw Merge (beta) :: Auto-Merge and Plot</_param>
+<_param indent="1" name="AutoHelp" type="description" xml:space="preserve">
+Merge and plot a sequence of pages, each after a time delay.
+
+Select the Start and End data table rows below. If the End Row is set to 0, continue plotting until the last row in the data table.
+
+To cancel plotting a sequence in progress, use the physical pause button on the AxiDraw.
+</_param>
+<param indent="6" name="firstRow" type="int" min="1" max="1000"  _gui-text="Merge start row:">1</param>	
+<param indent="6" name="lastRow" type="int" min="0" max="1000"   _gui-text="Merge end row:  ">1</param>	
+<param indent="6" name="page_delay" type="int" min="0" max="3600" _gui-text="Delay between pages (seconds)">10</param>	
+</page>
+
+
+<page name="singlePlot" _gui-text="Once">
+<_param name="SingleHeader" indent="6" type="description" appearance="header">AxiDraw Merge (beta) :: Merge Once and Plot</_param>
+<_param indent="1" name="SingleHelp" type="description" xml:space="preserve">
+Merge and plot a single page, each time that this is run.
+
+You can either specify a data table row to merge (e.g., Row 1), or automatically advance from the last row completed. 
+
+Note that plot status, including the last row number plotted, is stored within the SVG file.
+</_param>
+
+<param name="singleType" indent="2" type="optiongroup" _gui-text="Action on Apply:">
+<_option value="singleFix">Merge and plot a specified row (below)</_option>	
+<_option value="singleAdv">Auto-advance: Merge and plot next row</_option>
+<_option value="queryRow" >Report last row plotted; do not plot</_option>
+</param>
+
+<param name="singleRow" indent="8" type="int" min="1" max="1000"  _gui-text="Specified row to merge:">1</param>	
+</page>
+
+<page name='csv' _gui-text='Data'>
+<_param name="DataHeader" indent="6" type="description" appearance="header"  xml:space="preserve">AxiDraw Merge (beta) :: CSV Data Input
+</_param>
+
+<_param indent="1" name="sourceHelp" type="description" 
+xml:space="preserve">Click Apply to select or view the CSV file that will be used for data merging. 
+
+The first row of your CSV file must be a Header Row, which specifies a unique name for each column. The second row of your table (the first below the Header Row) is called Row 1.
+
+Use the Auto or Once tabs to merge and plot. To represent data in your template, put the column name in double curly braces, for example {{Address1}} to represent the data from a column named Address1.
+</param>
+
+<param name="dataAction" indent="4" type="optiongroup" _gui-text="Action on 'Apply':">
+<_option value="choose">Select a CSV file</_option>	
+<_option value="view"  >View file path</_option>
+</param>
+
+</page>
+
+
+<page name='setup' _gui-text='Setup'>
+
+<_param indent="12" name="instructions_setup" type="description" appearance="header">Basic Setup</_param>
+<param indent="4" name="pen_pos_up" type="int" min="0" max="100" appearance="full" 
+_gui-text="Pen height: UP (%):">60</param>
+<param indent="4" name="pen_pos_down" type="int" min="0" max="100" appearance="full"
+_gui-text="Pen height: DOWN, (%):">30</param>
+
+
+<param indent="4" name="setup_type"  type="optiongroup"  _gui-text="Action on 'Apply':">
+<_option value="align-mode">Raise pen, turn off motors</_option>	
+<_option value="toggle-pen">Toggle pen between UP, DOWN</_option>
+</param>
+<_param indent="2" name="instructions_setup3" type="description" xml:space="preserve">
+- Raise pen and turn off stepper motors to manually
+move carriage to the Home Corner (upper left).
+
+- Raise and lower pen to check the vertical positions
+of the pen for writing and drawing.
+
+</_param>
+</page>
+
+<page name="text" _gui-text="Text">
+
+<_param name="textPageHeader" indent="6" type="description" appearance="header">AxiDraw Merge (beta) :: Font Substitution</_param>
+<param indent="1" name="fontface" type="enum" _gui-text="Font face: ">
+	<_item value="none"					>None; Do not substitute font.</_item>
+	<_item value="EMSAllure"			>EMS Allure</_item>
+	<_item value="EMSBird"				>EMS Bird</_item>
+	<_item value="EMSBirdSwashCaps"		>EMS Bird Swash Caps</_item>
+	<_item value="EMSBrush"				>EMS Brush</_item>
+	<_item value="EMSCapitol"			>EMS Capitol</_item>
+	<_item value="EMSCasualHand"		>EMS Casual Hand</_item>
+	<_item value="EMSDecorousScript"	>EMS Decorous Script</_item>
+	<_item value="EMSDelight"			>EMS Delight</_item>
+	<_item value="EMSDelightSwashCaps"	>EMS Delight Swash Caps</_item>
+	<_item value="EMSElfin"				>EMS Elfin</_item>
+	<_item value="EMSFelix"				>EMS Felix</_item>
+	<_item value="EMSHerculean"			>EMS Herculean</_item>
+	<_item value="EMSInvite"			>EMS Invite</_item>
+	<_item value="EMSLeague"			>EMS League</_item>
+	<_item value="EMSLittlePrincess"	>EMS Little Princess</_item>
+	<_item value="EMSMistyNight"		>EMS Misty Night</_item>
+	<_item value="EMSNeato"				>EMS Neato</_item>
+	<_item value="EMSNixish"			>EMS Nixish</_item>
+	<_item value="EMSNixishItalic"		>EMS Nixish Italic</_item>
+	<_item value="EMSOsmotron"			>EMS Osmotron</_item>
+	<_item value="EMSPancakes"			>EMS Pancakes</_item>
+	<_item value="EMSPepita"			>EMS Pepita</_item>
+	<_item value="EMSQwandry"			>EMS Qwandry</_item>
+	<_item value="EMSReadability"		>EMS Readability</_item>
+	<_item value="EMSReadabilityItalic"	>EMS Readability Italic</_item>
+	<_item value="EMSSociety"			>EMS Society</_item>
+	<_item value="EMSSwiss"				>EMS Swiss</_item>
+	<_item value="EMSTech"				>EMS Tech</_item> 
+	<_item value="futural"				>Sans 1-stroke</_item>
+	<_item value="futuram"				>Sans bold</_item> 
+	<_item value="timesr"				>Serif medium</_item>
+	<_item value="timesrb"				>Serif bold</_item>
+	<_item value="scripts"				>Script 1-stroke</_item>
+	<_item value="gothiceng"			>Gothic English</_item>
+	<_item value="gothicger"			>Gothic German</_item>
+	<_item value="gothicita"			>Gothic Italian</_item>	   
+</param>
+
+<param indent="1" name="letterSpacing" type="int" min="50" max="400"
+_gui-text="Letter spacing adjustment (%):">100</param>
+<param indent="1" name="wordSpacing" type="int" min="50" max="600" 
+_gui-text="Word spacing adjustment (%):">100</param>
+
+<param indent="1" name="enableDefects"  appearance="header" type="boolean" appearance="header" _gui-text="Enable Handwriting-Type Defects">false</param>
+<_param indent="1" name="Defect label" type="description" >Relative percentage variation in...</_param>
+<param indent="5" name="baselineVar" type="int" min="0" max="100" _gui-text="Baseline:">15</param>
+<param indent="5" name="indentVar" type="int" min="0" max="100" _gui-text="Indent:">15</param>
+<param indent="5" name="kernVar" type="int" min="0" max="100" _gui-text="Kerning:">15</param>
+<param indent="5" name="sizeVar" type="int" min="0" max="100" _gui-text="Letter Size:">15</param>
+
+</page>
+
+
+
+
+
+<page  name='timing' _gui-text='Timing'>
+<_param indent="12"  name="instructions_timing0" type="description" appearance="header">Timing Options</_param>
+<_param indent="2" name="instructions_timing1" type="description" appearance="header">Movement speeds:</_param>
+<param indent="4" name="speed_pendown" type="int" min="1" max="110" _gui-text="Writing/Drawing speed (%):">25</param>	
+<param indent="4" name="speed_penup" type="int" min="1" max="110" _gui-text="Pen-up movement speed (%):">75</param>
+
+<param indent="4" name="accel" type="optiongroup" appearance="minimal" _gui-text="Acceleration :">
+<_option value="50">Standard</_option>
+<_option value="100">Maximum</_option>
+<_option value="75">High</_option>
+<_option value="35">Slow</_option>
+<_option value="10">Very slow</_option>
+</param>
+
+<_param name="instructions_timing3" indent="2" type="description" appearance="header">Pen raising and lowering speeds:</_param>
+
+<param indent="1" name="pen_rate_raise" type="optiongroup" appearance="minimal" _gui-text="Pen raising speed :">
+<_option value="100">Maximum</_option>
+<_option value="50">Standard</_option>
+<_option value="25">Slow</_option>
+<_option value="12">Very slow</_option>
+</param>
+
+<param indent="1" name="pen_rate_lower" type="optiongroup" appearance="minimal" _gui-text="Pen lowering speed :">
+<_option value="38">Standard</_option>
+<_option value="100">Maximum</_option>
+<_option value="25">Slow</_option>
+<_option value="12">Very slow</_option>
+</param>
+
+</page>
+
+
+
+
+
+<page name='options' _gui-text='Options'>
+<_param indent="12" name="instructions_options6" type="description" appearance="header">Advanced Options</_param>
+
+<param indent="1" name="auto_rotate" type="boolean" _gui-text="Auto-rotate page when printing">true</param>	
+<param indent="1" name="const_speed" type="boolean" _gui-text="Use constant speed when pen is down">false</param>	
+
+<param indent="1" name="report_time" type="boolean" _gui-text="Report time elapsed after batch">false</param> 
+<param indent="1" name="pen_delay_up" type="int" min="-500" max="500" _gui-text="Optional delay after raising pen (ms):">0</param>
+<param indent="1" name="pen_delay_down" type="int" min="-500" max="500" _gui-text="Optional delay after lowering pen (ms):">0</param>
+
+<param indent="1" name="resolution" type="optiongroup" appearance="minimal" _gui-text="Motor Resolution:">
+<_option value="1">~2870 DPI (Slightly Smoother)</_option>
+<_option value="2">~1435 DPI (Slightly Faster)</_option>
+</param>
+
+<_param indent="12" name="instructions_options7" type="description" appearance="header">Preview mode:</_param>
+
+<param indent="1" name="preview" type="boolean" _gui-text="Enable offline preview mode; Simulate plotting only">false</param> 
+<param indent="1" name="rendering" type="optiongroup" appearance="minimal" _gui-text="Preview mode rendering:">
+<_option value="0">None</_option>
+<_option value="1">Pen-down movement</_option>
+<_option value="2">Pen-up movement</_option>
+<_option value="3">All movement</_option>
+</param>
+
+</page>
+
+
+<page name="resume" _gui-text="Resume">
+
+<_param indent="12" name="instructions_resume1" type="description"  appearance="header">Pause and Resume</_param>
+
+<_param indent="1" name="instructions_resume2" type="description"> 
+To pause a plot in progress, press the pause button on the left side of the AxiDraw. After pausing, you can change settings or perform any manual adjustments that are needed.
+
+To resume plotting a given row, or to simply cancel and return the carriage to the Home Corner, press 'Apply' with this tab selected.
+
+Plot progress is stored in the SVG file itself. If you plan to quit Inkscape and resume later, please save the document first.
+
+You can resume directly where you paused, or after using the Return to Home Corner command.
+</_param>
+
+<param name="resume_type" type="optiongroup" appearance=""  indent="2" _gui-text="Action on 'Apply':">
+<_option indent="1" value="plot" >Resume (From Home or Where Paused)</_option>
+<_option indent="1" value="home">Return to Home Corner (only)</_option>	
+</param>
+
+</page>
+
+
+<page name="model" _gui-text="Model">
+<_param indent="12" name="instructions_general" type="description" appearance="header" 
+>Model and Version</_param>
+<param name="model" type="optiongroup" appearance="minimal" indent="4" _gui-text="AxiDraw Model:">
+<_option value="1">AxiDraw V2 or AxiDraw V3</_option>
+<_option value="2">AxiDraw V3/A3</_option>
+<_option value="3">AxiDraw V3 XLX</_option>
+</param>
+
+<_param name="instructions_general2" type="description" indent="1" xml:space="preserve">
+AxiDraw Merge v 2.2.0  	2018-07-10
+
+Use AxiDraw Control to query the firmware version.
+
+
+Copyright 2018 Evil Mad Science LLC
+
+Documentation is online at: axidraw.com/docs
+Issue tracker is online at: axidraw.com/dev
+
+
+Note: Inkscape's "Cancel" button does not work while plotting;
+Press the physical pause button on the left side of the machine.
+</_param>
+
+<!-- <param name="useGUI" type="boolean" gui-hidden="true">true</param> -->
+
+</page>
+
+
+</param>
+
+<effect needs-live-preview="false">
+<object-type>all</object-type>
+<effects-menu>
+    <submenu _name="AxiDraw Utilities"/>
+</effects-menu>
+</effect>
+
+<script>
+<command reldir="extensions" interpreter="python">axidraw_merge.py</command>
+</script>
+
+</inkscape-extension>
+

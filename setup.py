@@ -16,21 +16,27 @@ with open(path.join(here, 'README.txt'), encoding='utf-8') as f:
 
 setup(
     name='pyaxidraw',
-    version='2.3.0',
+    version='2.5.1',
     long_description=long_description,
     long_description_content_type='text/plain',
     url='https://axidraw.com/doc/cli_api/',
     author='Evil Mad Scientist Laboratories',
     author_email='contact@evilmadscientist.com',
-
-
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     install_requires=[
+        'ink_extensions',
         'lxml',
         'pyserial>=2.7.0' # 3.0 recommended
     ],
     extras_require={
         'dev': [],
-        'test': [],
+        'test': [
+            'mock'
+        ],
     },
+    entry_points={
+        'console_scripts': [
+            'axicli = axicli.__main__:main'
+        ]
+    }
 )
