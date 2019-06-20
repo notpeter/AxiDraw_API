@@ -88,7 +88,7 @@
 
 #
 # Current software version:
-# (v2.1.0, December 6, 2017)
+# (v2.3.0, June 11, 2019)
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -106,15 +106,23 @@
 
 import math
 
-from plot_utils_import import from_ink_extensions_import # plotink
-
-inkex = from_ink_extensions_import('inkex')
-simplepath = from_ink_extensions_import('simplepath')
-simpletransform = from_ink_extensions_import('simpletransform')
-simplestyle = from_ink_extensions_import('simplestyle')
-cubicsuperpath = from_ink_extensions_import('cubicsuperpath')
-cspsubdiv = from_ink_extensions_import('cspsubdiv')
-bezmisc = from_ink_extensions_import('bezmisc')
+try:
+    from plot_utils_import import from_dependency_import # plotink
+    inkex = from_dependency_import('ink_extensions.inkex')
+    simplepath = from_dependency_import('ink_extensions.simplepath')
+    simpletransform = from_dependency_import('ink_extensions.simpletransform')
+    simplestyle = from_dependency_import('ink_extensions.simplestyle')
+    cubicsuperpath = from_dependency_import('ink_extensions.cubicsuperpath')
+    cspsubdiv = from_dependency_import('ink_extensions.cspsubdiv')
+    bezmisc = from_dependency_import('ink_extensions.bezmisc')
+except:
+    import inkex
+    import simplepath
+    import simpletransform
+    import simplestyle
+    import cubicsuperpath
+    import cspsubdiv
+    import bezmisc
 
 import plot_utils  # https://github.com/evil-mad/plotink
 

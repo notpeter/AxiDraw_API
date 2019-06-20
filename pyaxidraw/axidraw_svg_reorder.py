@@ -36,11 +36,16 @@
 import sys
 sys.path.append('pyaxidraw')
 
-from plot_utils_import import from_ink_extensions_import # plotink
+try:
+    from plot_utils_import import from_dependency_import # plotink
+    inkex = from_dependency_import('ink_extensions.inkex')
+    simpletransform = from_dependency_import('ink_extensions.simpletransform')
+    simplestyle = from_dependency_import('ink_extensions.simplestyle')
+except:
+    import inkex
+    import simpletransform
+    import simplestyle
 
-inkex = from_ink_extensions_import('inkex')
-simpletransform = from_ink_extensions_import('simpletransform')
-simplestyle = from_ink_extensions_import('simplestyle')
 
 import gettext
 import math

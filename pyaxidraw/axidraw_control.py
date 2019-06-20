@@ -30,8 +30,11 @@ sys.path.append('pyaxidraw')
 
 import gettext
 
-from plot_utils_import import from_ink_extensions_import # plotink
-inkex = from_ink_extensions_import('inkex')
+try:
+    from plot_utils_import import from_dependency_import # plotink
+    inkex = from_dependency_import('ink_extensions.inkex')
+except:
+    import inkex
 
 import ebb_serial # Requires v 0.13 in plotink:	 https://github.com/evil-mad/plotink
 import axidraw_conf # Some settings can be changed here.

@@ -14,20 +14,10 @@ def get_versions_online():
     returns namedtuple with the versions
     raises RuntimeError if online check fails.
     '''
-    url = "http://evilmadscience.s3.amazonaws.com/sites/axidraw/versions.txt"
-    # TODO: Migrate this to https. 
-    # If you edit the above to https, it works in python 2 and 3
-    # from the CLI on both Mac and Windows, but fails in Inkscape
-    # on Windows only. Something is off about the https config
-    # in Inkscape for Windows.
+    url = "https://evilmadscience.s3.amazonaws.com/sites/axidraw/versions.txt"
     text = None
     try:
-        if sys.version_info < (3,): 
-            import urllib # python 2 version
-            text = urllib.urlopen(url).read()
-        else:
-            import urllib.request # python 3 version
-            text = urllib.request.urlopen(url).read().decode('utf8')
+        text = requests.get(url).text
     except Exception as e:
         raise RuntimeError("Could not contact server to check for updates. " +
                            "Are you connected to the internet? (Error: {})".format(e))

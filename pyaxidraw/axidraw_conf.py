@@ -81,6 +81,10 @@ reordering = 0          # Plot optimization option for how groups are handled
                             # 2: Reorder objects, reordering within each group
                             # 3: Reorder all objects, breaking apart groups
 
+resolution = 1          # Resolution: (1-2):
+                            # 1: High resolution (smoother, slightly slower) (Default)
+                            # 2: Low resolution (coarser, slightly faster)
+
 '''
 Additional user-adjustable control parameters:
 
@@ -99,9 +103,6 @@ smoothness = 10.0     # Curve smoothing (default: 10.0)
 
 cornering = 10.0      # Cornering speed factor (default: 10.0)
 
-resolution = 1          # Resolution: (1-2):
-                            # 1: High resolution (smoother, slightly slower) (Default)
-                            # 2: Low resolution (coarser, slightly faster)
 
 # Effective motor resolution is approx. 1437 or 2874 steps per inch, in the two modes respectively.
 # Note that these resolutions are defined along the native axes of the machine (X+Y) and (X-Y),

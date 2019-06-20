@@ -38,13 +38,19 @@ import plot_utils  # Requires v 0.15 in plotink
 import axidraw_conf  # Some settings can be changed here.
 from axidraw_options import common_options, versions
 
-from plot_utils_import import from_ink_extensions_import # plotink
-
-simplepath = from_ink_extensions_import('simplepath')
-simplestyle = from_ink_extensions_import('simplestyle')
-cubicsuperpath = from_ink_extensions_import('cubicsuperpath')
-simpletransform = from_ink_extensions_import('simpletransform')
-inkex = from_ink_extensions_import('inkex')
+try:
+    from plot_utils_import import from_dependency_import # plotink
+    simplepath = from_dependency_import('ink_extensions.simplepath')
+    simplestyle = from_dependency_import('ink_extensions.simplestyle')
+    cubicsuperpath = from_dependency_import('ink_extensions.cubicsuperpath')
+    simpletransform = from_dependency_import('ink_extensions.simpletransform')
+    inkex = from_dependency_import('ink_extensions.inkex')
+except:
+    import simplepath
+    import simplestyle
+    import cubicsuperpath
+    import simpletransform
+    import inkex
 
 import axidraw_svg_reorder
 
@@ -78,7 +84,7 @@ class AxiDraw(inkex.Effect):
             + "1: Plot to first AxiDraw Found. "\
             + "2: Plot to specified AxiDraw. ")
         
-        self.version_string = "2.5.1" # Dated 2019-06-04
+        self.version_string = "2.5.3" # Dated 2019-06-11
         
         self.spew_debugdata = False
 

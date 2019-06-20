@@ -16,7 +16,7 @@ with open(path.join(here, 'README.txt'), encoding='utf-8') as f:
 
 setup(
     name='pyaxidraw',
-    version='2.5.1',
+    version='2.5.3',
     long_description=long_description,
     long_description_content_type='text/plain',
     url='https://axidraw.com/doc/cli_api/',
