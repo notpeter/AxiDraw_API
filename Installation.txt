@@ -1,0 +1,149 @@
+AxiDraw CLI and Python API — Installation
+
+Supported on python 2.7, python 3.6, 
+Mac, Windows, and Linux.
+
+
+—————————————————————————————————————————
+INSTALLATION
+
+1. Installing python
+
+Macs and linux boxes usually have python pre-installed.
+
+If you are on Windows, you'll probably not already have this on your computer. 
+Go to: https://www.python.org/download/
+
+If you have a choice, we highly recommend installing python 3.6 or newer. :)
+
+2. Installing pip
+
+python versions 2.7.9+ and 3.4+ come with pip pre-installed.
+
+If you do not have pip, see the extended instructions below for instructions on how to install it.
+
+3. Installing pyaxidraw
+
+Unzip the archive and move into the folder:
+
+```
+cd /Users/username/Documents/axidraw-api/  (Your location and path will vary)
+```
+
+Then use pip to install it.
+
+To use all the latest versions of the dependencies:
+
+```
+pip install .
+```
+
+To use a known working set of versions:
+
+```
+pip install -r requirements.txt
+```
+
+4. Test that the software is operational:
+
+A (very simple) sample file is included. You can plot it with the
+following command line:
+
+python axicli.py AxiDraw_trivial.svg
+
+If everything is set up correctly, this should plot the SVG file, which contains a single object.
+
+
+—————————————————————————————————————————
+GETTING STARTED
+
+* Getting started with the command-line interface:
+You can get additional documentation and command-line usage options by using
+    python axicli.py --help
+or refer to the full documentation, at: https://axidraw.com/doc/cli_api/
+
+* Getting started with the python API:
+Two example python scripts are included. See README.txt for instructions.
+For the full python API documentation, please see: https://axidraw.com/doc/py_api/
+
+________________________________________
+TROUBLESHOOTING
+
+(A) If you get the error “The fantastic lxml wrapper for libxml2 is required [...]”,
+then you do not have lxml installed. See the instructions above.
+
+(B) If you get the error "ImportError: No module named pyserial", then you do not have pyserial installed. See the instructions above.
+
+(C) If you get the error "Failed to connect to AxiDraw", then your computer cannot locate the AxiDraw via USB. Check that it's plugged in.
+
+If you do not have an AxiDraw in front of you, you can still use various offline functions. The following will render a preview of how the file will plot, and report the time that it will take to plot, even with no AxiDraw machine present:
+
+python axicli.py AxiDraw_trivial.svg -Tvg3 -o outputfile.svg
+
+
+—————————————————————————————————————————
+DETAILED/OLD INSTRUCTIONS
+
+If you don't already have pip installed or want to install dependencies manually, you may find the following helpful.
+
+Recommended procedures for installing pyserial and lxml:
+
+(A) Mac Users:
+
+From the terminal, enter these three lines, providing password when requested:
+sudo easy_install pip
+xcode-select --install
+sudo -H pip install pyserial
+sudo -H pip install lxml
+
+
+Additional help for lxml installation is available here:
+http://lxml.de/installation.html
+
+
+(B) Windows Users:
+
+Install PIP on your computer, following the instructors here:
+https://pip.pypa.io/en/stable/installing/
+
+You may need to open your command prompt with a right-click and "Run as administrator" in order to avoid permissions errors.
+
+Then, 
+python -m pip install pyserial
+python -m pip install lxml
+
+
+
+If you run into difficulties with installing lxml, you may prefer to start with precompiled binaries for your particular version of Windows and Python.
+
+Download the appropriate "WHL" file for your version of
+http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml
+
+* For a typical modern Windows 10 computer running python 2.7, the download might be something similar to: lxml‑3.7.3‑cp27‑cp27m‑win_amd64.whl
+
+* For a typical modern Windows 10 computer running python 3.6, the download might be something similar to: lxml‑3.7.3‑cp36‑cp36m‑win_amd64.whl
+
+
+Once you have this "whl" package downloaded, you can install it with:
+python -m pip install some-package.whl
+
+(As before, you may need to run your command prompt as administrator.)
+
+Additional help for lxml installation is available here:
+http://lxml.de/installation.html
+
+(C) Linux Users
+
+ Install PIP on your computer, following the instructors here:
+https://pip.pypa.io/en/stable/installing/
+
+Then, use:
+  pip install pyserial
+  pip install lxml
+
+Additional help for lxml installation is available here:
+http://lxml.de/installation.html
+
+
+—————————————————————————————————————————
+Copyright 2018 Windell H Oskay, Evil Mad Scientist Laboratories
