@@ -38,7 +38,7 @@ pip install virtualenv
 Create a virtual python environment:
 
 ```
-virtualenv -p $(where python3) venv
+virtualenv -p $(which python3) venv
 ```
 
 This creates a directory called `venv` which contains the files for the new environment.
