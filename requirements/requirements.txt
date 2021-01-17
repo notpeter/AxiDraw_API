@@ -1,0 +1,11 @@
+plotink==1.0.0
+axidrawinternal @ git+https://${AXIDRAWINTERNAL_DEPLOY_USER}:${AXIDRAWINTERNAL_DEPLOY_PASS}@gitlab.com/evil-mad/AxiDraw-Internal@master
+certifi==2019.11.28
+chardet==3.0.4
+future==0.18.2
+idna==2.8
+ink-extensions==1.1.0
+lxml==4.4.2
+pyserial==3.4
+requests==2.22.0
+urllib3==1.25.7

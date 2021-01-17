@@ -1,16 +1,15 @@
 from __future__ import print_function
-
 '''
 axicli - Command Line Interface (CLI) for AxiDraw.
 
 For quick help:
     axicli --help
 
-Full user guide:  
+Full user guide:
     https://axidraw.com/doc/cli_api/
 
 
-This script is a stand-alone version of AxiDraw Control, accepting 
+This script is a stand-alone version of AxiDraw Control, accepting
 various options and providing a facility for setting default values.
 
 '''
@@ -31,13 +30,13 @@ AxiDraw software development is hosted at https://github.com/evil-mad/axidraw
 
 Additional AxiDraw documentation is available at http://axidraw.com/docs
 
-AxiDraw owners may request technical support for this software through our 
+AxiDraw owners may request technical support for this software through our
 github issues page, support forums, or by contacting us directly at:
 https://shop.evilmadscientist.com/contact
 
 
 
-Copyright 2019 Windell H. Oskay, Evil Mad Scientist Laboratories
+Copyright 2020 Windell H. Oskay, Evil Mad Scientist Laboratories
 
 The MIT License (MIT)
 
@@ -61,43 +60,42 @@ SOFTWARE.
 
 '''
 
+import argparse
 import copy
 import sys
-import os
-import argparse
+
 from lxml import etree
 
 from pyaxidraw.axidraw_options import common_options
 
-cli_version = "AxiDraw Command Line Interface v2.5.0"
+from axicli import utils
 
+from plotink.plot_utils_import import from_dependency_import # plotink
+exit_status = from_dependency_import("ink_extensions_utils.exit_status")
 
-def quickhelp():
-    
-    main_text = '''
-    (c) 2019 Evil Mad Scientist Laboratories
+cli_version = "AxiDraw Command Line Interface v2.6.3"
 
-    Basic syntax to plot a file: 
+quick_help = '''
+    (c) 2020 Evil Mad Scientist Laboratories
+
+    Basic syntax to plot a file:
         axicli [options] filename.svg
-    
+
     For a quick list of options, use:
         axicli --help
 
     To read the full manual, please see:
         https://axidraw.com/doc/cli_api/'''
 
-    return cli_version + main_text
+def axidraw_CLI(dev = False):
 
-
-def axidraw_CLI():
-    
     desc = 'AxiDraw Command Line Interface.'
 
-    parser = argparse.ArgumentParser(description=desc, usage=quickhelp())
+    parser = argparse.ArgumentParser(description=desc, usage=quick_help)
 
     parser.add_argument("inputfile", nargs='?', \
             help="The SVG file to be plotted")
-    
+
     parser.add_argument("-f", "--config", type=str, dest="config",
                         help="Filename for the custom configuration file.")
 
@@ -109,11 +107,11 @@ def axidraw_CLI():
     parser.add_argument("-s","--speed_pendown", \
             metavar='SPEED',  type=int, \
             help="Maximum plotting speed, when pen is down (1-100)")
-            
+
     parser.add_argument("-S","--speed_penup", \
             metavar='SPEED', type=int, \
             help="Maximum transit speed, when pen is up (1-100)")
-            
+
     parser.add_argument("-a","--accel", \
             metavar='RATE', type=int, \
             help="Acceleration rate factor (1-100)")
@@ -121,23 +119,23 @@ def axidraw_CLI():
     parser.add_argument("-d","--pen_pos_down", \
             metavar='HEIGHT', type=int, \
             help="Height of pen when lowered (0-100)")
-            
+
     parser.add_argument("-u","--pen_pos_up", \
             metavar='HEIGHT', type=int,  \
             help="Height of pen when raised (0-100)")
-            
+
     parser.add_argument("-r","--pen_rate_lower", \
             metavar='RATE', type=int, \
             help="Rate of lowering pen (1-100)")
-    
+
     parser.add_argument("-R","--pen_rate_raise", \
             metavar='RATE', type=int, \
             help="Rate of raising pen (1-100)")
-            
+
     parser.add_argument("-z","--pen_delay_down", \
             metavar='DELAY',type=int, \
             help="Optional delay after pen is lowered (ms)")
-            
+
     parser.add_argument("-Z","--pen_delay_up", \
             metavar='DELAY',type=int, \
             help="Optional delay after pen is raised (ms)")
@@ -145,11 +143,11 @@ def axidraw_CLI():
     parser.add_argument("-N","--no_rotate", \
             action="store_const", const='True', \
             help="Disable auto-rotate; preserve plot orientation")
-            
+
     parser.add_argument("-C","--const_speed",\
             action="store_const", const='True', \
             help="Use constant velocity when pen is down")
-            
+
     parser.add_argument("-T","--report_time", \
             action="store_const", const='True', \
             help="Report time elapsed")
@@ -159,15 +157,15 @@ def axidraw_CLI():
             help="Manual command. One of: [ebb_version, lower_pen, raise_pen, "\
             + "walk_x, walk_y, enable_xy, disable_xy, bootload, strip_data, " \
             + "read_name, list_names,  write_name]. Default: ebb_version")
-            
+
     parser.add_argument("-w","--walk_dist", \
             metavar='DISTANCE', type=float, \
             help="Distance for manual walk (inches)")
-    
+
     parser.add_argument("-l","--layer", \
             type=int, \
             help="Layer(s) selected for layers mode (1-1000). Default: 1")
-            
+
     parser.add_argument("-c","--copies", \
             metavar='COUNT', type=int, \
             help="Copies to plot, or 0 for continuous plotting. Default: 1")
@@ -199,7 +197,7 @@ def axidraw_CLI():
     parser.add_argument("-p","--port",\
             metavar='PORTNAME', type=str,\
             help="Serial port or named AxiDraw to use")
- 
+
     parser.add_argument("-P","--port_config",\
             metavar='PORTCODE', type=int,\
             help="Port use code (0-3)."\
@@ -211,27 +209,23 @@ def axidraw_CLI():
     parser.add_argument("-o","--output_file",\
             metavar='FILE', \
             help="Optional SVG output file name")
-
     args = parser.parse_args()
 
-    # Handle trivial cases:
-    
-    if args.inputfile == "help":
-        print(quickhelp())
-        quit()
+    if len(sys.argv) < 2:
+        print("axicli requires an input file.")
+        print(quick_help)
+        exit(1)
 
-    if args.inputfile == "version":
-        from axicli import axidraw
-        ad = axidraw.AxiDraw()
-        print (cli_version)
-        print (ad.version_string)
-        quit()
+    # Handle trivial cases
+    from pyaxidraw import axidraw
+    ad = axidraw.AxiDraw()
+    utils.handle_info_cases(sys.argv[1], quick_help, cli_version, ad.version_string)
 
     if args.mode == "options":
         quit()
-        
+
     if args.mode == "timing":
-        quit()    
+        quit()
 
     # Detect certain "trivial" cases that do not require an input file
     use_trivial_file = False
@@ -242,30 +236,10 @@ def axidraw_CLI():
         use_trivial_file = True
 
     if use_trivial_file and args.output_file:
-        file_error = False
-        # An input file is required whenever an output file is specified.
-        if args.inputfile is None:
-            file_error = True
-        elif not os.path.isfile(args.inputfile):
-            file_error = True
-        if file_error:
-            print("Input file required but not found. This command requires")
-            print("an input file whenever an output file is specified.")
-            print("For help, try:  axicli --help")
-            quit()
+        utils.check_for_input(args.inputfile, 'axicli --help')
 
     if not use_trivial_file:
-        file_error = False
-        # An input file is required in most nontrivial cases:
-        if args.inputfile is None:
-            file_error = True
-        elif not os.path.isfile(args.inputfile):
-            file_error = True
-        if file_error:
-            # If the input file does not exist, return an error.
-            print("Input file required but not found. For help, try:")
-            print("    axicli --help")
-            quit()
+        utils.check_for_input(args.inputfile, 'axicli --help')
 
     if args.mode == "reorder":
         from pyaxidraw import axidraw_svg_reorder
@@ -281,7 +255,7 @@ def axidraw_CLI():
         print("Re-ordering SVG File.")
         print("This can take a while for large files.")
         
-        adc.effect()    # Sort the document
+        exit_status.run(adc.effect)    # Sort the document
 
         if args.output_file:
             writeFile = open(args.output_file,'w')         # Open output file for writing.
@@ -292,13 +266,15 @@ def axidraw_CLI():
         quit()
 
     # For nontrivial cases, import the axidraw module and go from there:
+    config_dict = utils.load_configs([args.config, 'axidrawinternal.axidraw_conf'])
+    combined_config = FakeConfigModule(config_dict)
 
     from pyaxidraw import axidraw_control
 
-    adc = axidraw_control.AxiDrawWrapperClass()
+    adc = axidraw_control.AxiDrawWrapperClass(params = combined_config)
 
     adc.getoptions([])
-    
+
     if use_trivial_file:
         trivial_svg = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
             <svg
@@ -320,13 +296,13 @@ def axidraw_CLI():
     else:
         adc.parseFile(args.inputfile)
 
-    # if command line specified a config file, import it as a namespace
-    config_file = common_options.load_config(args.config)
+    # assign command line options to adc's options.
+    # additionally, look inside the config to see if any command line options were set there
     option_names = ["mode", "speed_pendown", "speed_penup", "accel", "pen_pos_down", "pen_pos_up",
                     "pen_rate_lower", "pen_rate_raise", "pen_delay_down", "pen_delay_up", "reordering",
                     "no_rotate", "const_speed", "report_time", "manual_cmd", "walk_dist", "layer",
                     "copies", "page_delay", "preview", "rendering", "model", "port", "port_config"]
-    common_options.assign_option_values(adc.options, args, [config_file], option_names)
+    utils.assign_option_values(adc.options, args, [config_dict], option_names)
 
 #     The following options are deprecated and should not be used.
 #     adc.options.setup_type          = args.setup_type  # Legacy input; not needed
@@ -336,9 +312,15 @@ def axidraw_CLI():
 #     adc.options.resume_type         = args.resume_type # Legacy input; not needed
 #     adc.options.auto_rotate         = args.auto_rotate # Legacy input; not needed
 
-    adc.effect()    # Plot the document
+    exit_status.run(adc.effect)    # Plot the document
+    if utils.has_output(adc) and not use_trivial_file:
+        utils.output_result(args.output_file, adc.outdoc)
 
-    if args.output_file:
-        writeFile = open(args.output_file,'w')         # Open output file for writing.
-        writeFile.write(adc.outdoc)
-        writeFile.close()
+    if dev:
+        return adc # useful for tests
+
+class FakeConfigModule():
+    ''' just turns a dict into an object
+    so attributes can be set/retrieved object-style '''
+    def __init__(self, a_dict):
+        self.__dict__ = a_dict
