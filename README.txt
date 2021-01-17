@@ -1,7 +1,7 @@
 Stand-alone command line interface and python API
 for the AxiDraw writing and drawing machine.
 
-Supported on python 2.7+, python 3.6+, Mac, Windows, and Linux.
+Supported on python 3.6+, Mac, Windows, and Linux.
 
 
 Copyright 2020 Evil Mad Scientist Laboratories

@@ -73,8 +73,8 @@ class UtilsTestCase(unittest.TestCase):
         result = load_config(self.config_filename)
 
         self.assertIsInstance(result, dict)
-        self.assertIn("fontface", result.keys())
-        self.assertEqual(result["fontface"], "EMSAllure")
+        self.assertIn("font_option", result.keys())
+        self.assertEqual(result["font_option"], "EMSAllure")
 
     def test_load_config_bad_filename(self):
         with self.assertRaises(SystemExit) as se:

@@ -1,8 +1,7 @@
 from mock import patch
-import pdb
 import sys
-import unittest
 
+from pyfakefs.fake_filesystem import PatchMode
 from pyfakefs.fake_filesystem_unittest import TestCase
 
 from axidrawinternal import axidraw
@@ -14,7 +13,7 @@ from axicli import axidraw_cli
 class AxiDrawCliTestCase(TestCase):
 
     def setUp(self):
-        self.setUpPyfakefs()
+        self.setUpPyfakefs(patch_open_code=PatchMode.AUTO)
         self.fs.add_real_file('./test/assets/AxiDraw_trivial.svg', target_path='AxiDraw_trivial.svg')
 
         sys.argv = ['axicli', 'AxiDraw_trivial.svg', '--preview']
