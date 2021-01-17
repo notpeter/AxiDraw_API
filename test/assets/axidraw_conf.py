@@ -1,3 +1,7 @@
+#
+# ***** THIS IS FOR TESTING ONLY AND MAY NOT BE UP-TO-DATE *****
+# Use pyaxidraw/axidraw_conf.py or axidrawinternal/axidraw_conf instead.
+#
 # axidraw_conf.py
 # Part of the AxiDraw driver software
 # 
