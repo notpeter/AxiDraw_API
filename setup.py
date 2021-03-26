@@ -41,7 +41,7 @@ def replacement_setup(*args, **kwargs):
                 try:
                     subprocess.check_call(
                         [sys.executable, '-m', 'pip', 'uninstall', '--yes', pkg_name])
-                except CalledProcessError: # Will be raised if there is no version to uninstall
+                except subprocess.CalledProcessError: # Will be raised if there is no version to uninstall
                     pass
                 subprocess.check_call([sys.executable, '-m', 'pip', 'install', wheel_file])
     except (AttributeError, subprocess.CalledProcessError) as err:
