@@ -23,6 +23,7 @@ extras_require = {
         'mock',
         'pyfakefs>=4.2.1',
     ],
+    'hershey': ['hersheyadvanced'], # see Installation instructions in README.md
 }
 
 extras_require['dev'].extend(extras_require['test']) # if you're developing, you're testing
@@ -54,8 +55,8 @@ setuptools.setup = replacement_setup
 
 replacement_setup(
     name='pyaxidraw',
-    version='2.7.0',
-    python_requires='>=3.5.0',
+    version='2.7.4',
+    python_requires='>=3.6.0',
     long_description=long_description,
     long_description_content_type='text/plain',
     url='https://axidraw.com/doc/cli_api/',
@@ -66,7 +67,7 @@ replacement_setup(
         # this only includes publicly available dependencies
         'ink_extensions>=1.1.0',
         'lxml',
-        'plotink>=1.2.2',
+        'plotink>=1.2.3',
         'requests', # just for the certificates for now
     ],
     extras_require=extras_require,

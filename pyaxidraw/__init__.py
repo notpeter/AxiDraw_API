@@ -1,3 +1,6 @@
+""" The contents of this file preserve backward compatibility, so constructions such as
+`from pyaxidraw.axidraw_options import common_options` still work. """
+
 from importlib import import_module
 import sys
 
@@ -48,3 +51,14 @@ def alias_submodule(supermodule_name, submodule_name):
     return sys.modules[full_name]
 
 main()
+
+# why not construct __all__ dynamically, above in function `main`, which would be more DRY?
+# Because in that case, pycharm does not introspect __all__
+# why use `extend` instead of a simple assignment (`__all__ = ["axidraw", ...]`) ?
+# Because in that case, pycharm complains about not being able to resolve "axidraw", etc.
+__all__ = []
+__all__.extend([
+    "axidraw", "axidraw_conf", "axidraw_control", "axidraw_options", "axidraw_svg_reorder", # from axidrawinternal
+    "ebb_motion", "ebb_serial", "plot_utils", "plot_utils_import", # from plotink
+    "axidraw_merge", "axidraw_merge_conf", "hershey_advanced", "hershey_conf", "hershey_options" # hershey-related
+    ])
