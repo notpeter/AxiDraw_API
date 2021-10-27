@@ -46,7 +46,10 @@ def replacement_setup(*args, **kwargs):
                     pass
                 subprocess.check_call([sys.executable, '-m', 'pip', 'install', wheel_file])
     except (AttributeError, subprocess.CalledProcessError) as err:
-        raise RuntimeError("Could not install one or more prebuilt dependencies.") from err
+        if sys.version_info < (3, 6):
+            pass # pip has a standard message for this situation (see `python_requires` arg below)
+        else: # python3
+            raise RuntimeError("Could not install one or more prebuilt dependencies.", err.with_traceback(err.__traceback__))
 
     original_setup(*args, **kwargs)
 
@@ -54,8 +57,8 @@ original_setup = setuptools.setup
 setuptools.setup = replacement_setup
 
 replacement_setup(
-    name='pyaxidraw',
-    version='2.7.5',
+    name='axicli',
+    version='3.0.2',
     python_requires='>=3.6.0',
     long_description=long_description,
     long_description_content_type='text/plain',
@@ -67,7 +70,7 @@ replacement_setup(
         # this only includes publicly available dependencies
         'ink_extensions>=1.1.0',
         'lxml',
-        'plotink>=1.2.4',
+        'plotink>=1.3.1',
         'requests', # just for the certificates for now
     ],
     extras_require=extras_require,

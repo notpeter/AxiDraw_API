@@ -7,6 +7,70 @@ Please see https://axidraw.com/doc/cli_api/ for full documentation
 
 =========================================
 
+v 3.0 (October 2021)
+
+Significant changes to plot optimization: 
+* Improved plot automatic path joining.
+* New sub-path optimization: All sub-paths on a layer will now be re-ordered for
+    speed (if enabled), rather than whole paths.
+* Dropped reordering options for preserving groups and optimizing within groups.
+* New optional path reversal during optimization.
+* New option to randomize start position of closed paths
+
+These new features are only available as part of a plot, not in "reorder" mode.
+Reorder mode is now deprecated, and will be removed in a future version.
+
+Breaking changes:
+
+* The ebb_version option, previously deprecated, has been removed.
+
+* The values and behavior of the reordering option have changed.
+  Previous values:
+    0: No reordering (Default)
+    1: Reorder but preserve groups
+    2: Reorder within groups
+    3: Break apart groups
+
+  New values:
+    0: Preserve order of objects given in SVG file (Default).
+    1: Reorder objects, preserving path orientation
+    2: Reorder objects, allow path reversal
+    3: Use value of 2 (deprecated) 
+    
+  A value of 3 will behave identically to 2 for compatibility, however this
+  option value is now deprecated.
+
+=========================================
+
+v 2.7.5 (August 2021)
+
+Add support for Python 3.10; Python 3.6-3.10 are now supported.
+
+
+Improved handling of Interactive-context movements beyond travel bounds.
+
+By default, whenever the "turtle" (theoretical XY) position is outside
+of the travel limits, (1) the physical XY position is clipped to remain within
+those limits, and (2) the pen is in kept in the pen-up state.
+While both have always been the case in in the Plot context,
+both are now true in the Interactive context as well. 
+
+(Previously, Interactive context motion was clipped, but the pen state was not
+automatically raised when the motion was clipped.)
+
+As part of this change:
+
+* Interactive-context pen-down moves that begin and/or end outside of the bounds
+are now linked by automatic pen-up moves, giving more consistent and predictable
+behavior.
+* The pendown() function, by default, no longer lowers the pen when
+the turtle position is outside of the plotting bounds.
+* New current_pen() and turtle_pen() query functions.
+* New parameter in the axidraw_conf.py configuration file: auto_clip_lift, which
+can disable automatic pen lifts at plotting bounds and the new behavior of pendown.
+
+=========================================
+
 v 2.7.0 (November 2020)
 
 Add support for macOS 11 Big Sur.
