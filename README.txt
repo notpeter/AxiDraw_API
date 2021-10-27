@@ -4,7 +4,7 @@ for the AxiDraw writing and drawing machine.
 Supported on python 3.6+, Mac, Windows, and Linux.
 
 
-Copyright 2020 Evil Mad Scientist Laboratories
+Copyright 2021 Evil Mad Scientist Laboratories
 
 The AxiDraw writing and drawing machine is a product of Evil Mad Scientist
 Laboratories. https://axidraw.com   https://shop.evilmadscientist.com
@@ -103,7 +103,7 @@ Some of the underlying libraries that are included with this distribution
 are licensed as GPL. Please see the individual files and directories included with
 this distribution for additional license information. 
 
-API Documentation: Copyright 2020, Windell H. Oskay, Evil Mad Scientist Laboratories.
+API Documentation: Copyright 2021, Windell H. Oskay, Evil Mad Scientist Laboratories.
 
 
 
