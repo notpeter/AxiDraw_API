@@ -2,9 +2,9 @@
 # Part of the AxiDraw driver software
 #
 # https://github.com/evil-mad/axidraw
-# Version 3.7.0, dated 2022-10-20.
+# Version 3.8.0, dated 2023-01-06.
 #
-# Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories
+# Copyright 2023 Windell H. Oskay, Evil Mad Scientist Laboratories
 #
 # https://github.com/evil-mad/AxiDraw
 #
@@ -57,8 +57,8 @@ default_layer = 1       # Layer(s) selected for layers mode (1-1000). Default 1
 manual_cmd = 'fw_version'   # Manual command to execute when in manual mode.
                             # Default 'fw_version'
 
-walk_dist = 1.0         # Distance to walk in "walking" manual commands. Units may be
-                            # selected with the value of manual_cmd. Default 1.0
+dist = 1.0              # Distance to walk in "walking" manual commands or changing
+                            # resume position in the APIs. Variable units. Default 1.0
 
 copies = 1              # Copies to plot, or 0 for continuous plotting. Default: 1
 page_delay = 15         # Optional delay between copies (s). Default 15
@@ -70,10 +70,15 @@ rendering = 3           # Preview mode rendering option (0-3):
                             # 2: Render only pen-up movement
                             # 3: Render all movement (Default)
 
-model = 1               # AxiDraw Model (1-6). 
+model = 1               # AxiDraw Model (1-6).
                             # 1: AxiDraw V2 or V3 (Default). 2: AxiDraw V3/A3 or SE/A3.
                             # 3: AxiDraw V3 XLX. 4: AxiDraw MiniKit.
                             # 5: AxiDraw SE/A1.  6: AxiDraw SE/A2.
+
+penlift = 1             # pen lift servo configuration (1-3).
+                            # 1: Default for AxiDraw model
+                            # 2: Standard servo (lowest connector position)
+                            # 3: Narrow-band brushless servo (3rd position up)
 
 port = None             # Serial port or named AxiDraw to use
                             # None (Default) will plot to first unit located
@@ -117,8 +122,7 @@ resolution = 1          # Resolution: (1-2):
 # not along the XY axes of the machine. This parameter chooses 8X or 16X motor microstepping.
 
 '''
-Additional user-adjustable control parameters:
-
+Additional user-adjustable control parameters.
 Values below this point are configured only in this file, not through the user interface(s).
 '''
 
@@ -126,10 +130,6 @@ servo_timeout = 60000   # Time, ms, for servo motor to power down after last mov
                         #   (default: 60000). This feature requires EBB v 2.5 hardware (with USB
                         #   micro not USB mini connector), firmware version 2.6.0, and
                         #   servo_pin set to 1 (only).
-
-servo_pin = 1           # EBB I/O pin number (port B) to control the pen-lift servo motor.
-                        #   Default: 1 (pin RB1). Suggested alternate: 2 (pin RB2, located
-                        #   two positions above the standard servo output pins).
 
 check_updates = True    # If True, allow AxiDraw Control to check online to see
                         #    what the current software version is, when you
@@ -164,7 +164,7 @@ skip_voltage_check = False  # Set to True to disable EBB input power voltage che
 
 clip_to_page = True  # Clip plotting area to SVG document size. Default: True
 
-min_gap = 0.008     # Automatic path joining threshold, inches. Default: 0.008
+min_gap = 0.006     # Automatic path joining threshold, inches. Default: 0.006
                     # If greater than zero, pen-up moves shorter than this distance
                     #   will be replaced by pen-down moves. Set negative to disable.
                     # Setting reordering to 4 (strict) will also disable path joining.
@@ -173,9 +173,9 @@ min_gap = 0.008     # Automatic path joining threshold, inches. Default: 0.008
 Secondary control parameters:
 
 Values below this point are configured only in this file, not through the user interface(s).
-These values have been carefully chosen, and generally do not need to be adjusted in everyday use.
-And, you can easily change these values such that things will not work as you expect them to.
-That said, proceed with caution, and keep a backup copy.
+These values are carefully chosen, and generally do not need to be adjusted in everyday use.
+Be aware that one can easily change these values such that things will not work properly,
+or at least not how you expect them to. Edit with caution, and keep a backup copy.
 '''
 
 # Travel area limits typically do not need to be changed.
@@ -202,6 +202,39 @@ y_travel_SEA2 = 17.01    # AxiDraw SE/A2: Y             Default: 17.01 in (432 m
 x_travel_V3B6 = 7.48     # AxiDraw V3/B6: X             Default: 7.48 in (190 mm)
 y_travel_V3B6 = 5.51     # AxiDraw V3/B6: Y             Default: 5.51 in (140 mm)
 
+
+''' Configuration for standard pen-lift servo motor '''
+servo_pin = 1           # EBB I/O pin number (port B) to control the pen-lift servo motor.
+                        #   Default: 1 (pin RB1).
+
+# Servo motion limits, in units of (1/12 MHz), about 83.3 ns:
+servo_max = 27831       # Up at "100%" position. Default: 27831 83.3 ns units, or 2.32 ms.
+servo_min = 9855        # Down at "0%" position. Default: 9855 83.3 ns units,  or 0.82 ms.
+
+# Time for servo control signal to sweep over full 0-100% range, at 100% pen lift/lower rates:
+servo_sweep_time = 200 # Duration, ms, to sweep control signal over 100% range. Default: 200
+
+# Time (for pen lift servo to physically move) = slope * distance + min, with a full speed sweep.
+servo_move_min = 45      # Minimum time, ms, for pen lift/lower of non-zero distance. Default: 45
+servo_move_slope = 2.69  # Additional time, ms, per % of vertical travel.    Default: 2.69
+
+''' Configuration for narrow-band brushless pen-lift servo motor '''
+nb_servo_pin = 2        # EBB I/O pin number (port B) to control the pen-lift servo motor.
+                        #   Default:2 (pin RB2, two positions above the standard servo output pins).
+
+# Servo motion limits, in units of (1/12 MHz), about 83.3 ns:
+nb_servo_max = 12600    # Up at "100%" position. Default: 12600 83.3 ns units, or 1.05 ms.
+nb_servo_min = 5400     # Down at "0%" position. Default: 5400 83.3 ns units,  or 0.45 ms.
+
+# Time for servo control signal to sweep over full 0-100% range, at 100% pen lift/lower rates:
+nb_servo_sweep_time = 70 # Duration, ms, to sweep control signal over 100% range. Default: 70
+
+# Time (for pen lift servo to physically move) = slope * distance + min, with a full speed sweep.
+nb_servo_move_min = 20      # Minimum time, ms, for pen lift/lower of non-zero distance. Default: 20
+nb_servo_move_slope = 1.28  # Additional time, ms, per % of vertical travel.    Default: 1.28
+
+
+''' Additional Secondary control parameters: '''
 
 native_res_factor = 1016.0  # Motor resolution factor, steps per inch. Default: 1016.0
 # Note that resolution is defined along native (not X or Y) axes.
@@ -232,20 +265,11 @@ start_pos_y = 0  # Parking position, inches. Default: 0
 accel_rate = 40.0    # Standard acceleration rate, inches per second squared
 accel_rate_pu = 60.0  # Pen-up acceleration rate, inches per second squared
 
-time_slice = 0.025  # Interval, in seconds, of when to update the motors. Default: time_slice = 0.025 (25 ms)
+time_slice = 0.025  # Interval, in seconds, of when to update the motors. Default: 0.025 (25 ms)
+
+button_interval = 0.05  # Minimum interval (s), for polling pause button. Default: 0.05 (50 ms)
 
 bounds_tolerance = 0.003  # Suppress warnings if bounds are exceeded by less than this distance (inches).
-
-# Servo motion limits, in units of (1/12 MHz), about 83.3 ns:
-servo_max = 27831  # Highest allowed position; "100%" on scale. Default: 27831 units, or 2.32 ms.
-servo_min = 9855   # Lowest allowed position; "0%" on scale.    Default: 9855 units,  or 0.82 ms.
-
-# Time for servo control signal to sweep over full 0-100% range, at 100% pen lift/lower rates:
-servo_sweep_time = 200 # Duration, ms, to sweep servo control signal over 100% range. Default: 200
-
-# Time (for pen lift servo to physically move) = slope * distance + min, with a full speed sweep.
-servo_move_min = 45      # Minimum time, ms, for pen lift/lower of non-zero distance. Default: 45
-servo_move_slope = 2.69  # Additional time, ms, per percentage of vertical travel.    Default: 2.69
 
 cornering = 10.0        # Cornering speed factor (default: 10.0)
 
@@ -255,4 +279,4 @@ curve_tolerance = 0.002 # Curve representation tolerance, inches. Default: 0.002
 # Tolerance for merging nearby vertices:
 #  Larger values of segment_supersample_tolerance give smoother plotting along paths that
 #  were created with too many vertices. A value of 0 will disable supersampling.
-segment_supersample_tolerance = curve_tolerance / 16
+segment_supersample_tolerance = curve_tolerance / 10 # default: curve_tolerance / 10

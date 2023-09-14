@@ -468,9 +468,6 @@
                             <a href="#enable_xy-disable_xy" class="toc-h3 toc-link" data-title="enable_xy, disable_xy">enable_xy, disable_xy</a>
                           </li>
                           <li>
-                            <a href="#bootload" class="toc-h3 toc-link" data-title="bootload">bootload</a>
-                          </li>
-                          <li>
                             <a href="#strip_data" class="toc-h3 toc-link" data-title="strip_data">strip_data</a>
                           </li>
                           <li>
@@ -482,16 +479,14 @@
                           <li>
                             <a href="#write_name" class="toc-h3 toc-link" data-title="write_name">write_name</a>
                           </li>
+                          <li>
+                            <a href="#bootload" class="toc-h3 toc-link" data-title="bootload">bootload</a>
+                          </li>
                       </ul>
                     
                   </li>
                   <li>
-                    <a href="#walk_dist" class="toc-h2 toc-link" data-title="walk_dist">walk_dist</a>
-                    
-                    
-                  </li>
-                  <li>
-                    <a href="#layer" class="toc-h2 toc-link" data-title="layer">layer</a>
+                    <a href="#dist" class="toc-h2 toc-link" data-title="dist">dist</a>
                     
                     
                   </li>
@@ -527,6 +522,11 @@
                   </li>
                   <li>
                     <a href="#model" class="toc-h2 toc-link" data-title="model">model</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#penlift" class="toc-h2 toc-link" data-title="penlift">penlift</a>
                     
                     
                   </li>
@@ -633,7 +633,7 @@ conventionally, since the download includes example python scripts, an example c
 <p><strong>Standard install</strong></p>
 
 <p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>
-The current release version is 3.7.2.</p>
+The current release version is 3.8.1.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -870,8 +870,8 @@ arguments will be described individually, after the list.</p>
 <td>Specify which &quot;manual&quot; mode command to use.</td>
 </tr>
 <tr>
-<td><code>--walk_dist</code>, <code>-w</code></td>
-<td>Distance to move for manual walk commands.</td>
+<td><code>--dist</code>, <code>-w</code></td>
+<td>Distance input for certain manual commands.</td>
 </tr>
 <tr>
 <td><code>--layer</code>, <code>-l</code></td>
@@ -973,7 +973,7 @@ Each of these modes will be described in detail, after the list.</p>
 </tr>
 <tr>
 <td><code>layers</code></td>
-<td>Plot a single layer (or set of layers), selected by <code>layer</code> parameter</td>
+<td>Plot a single layer (or set of layers), selected by <code>layer</code> option</td>
 </tr>
 <tr>
 <td><code>cycle</code></td>
@@ -989,7 +989,7 @@ Each of these modes will be described in detail, after the list.</p>
 </tr>
 <tr>
 <td><code>manual</code></td>
-<td>Execute a utility command, specified by <a href="#manual_cmd"><code>manual_cmd</code></a> parameter</td>
+<td>Execute a utility command, specified by <a href="#manual_cmd"><code>manual_cmd</code></a> option</td>
 </tr>
 <tr>
 <td><code>sysinfo</code></td>
@@ -1025,7 +1025,7 @@ do not require a file input <em>unless</em> an output file is specified with the
 <div class="codetitle">mode: plot</div>
 
 <p>Example 1: 
-Plot a file using default mode and parameters:</p>
+Plot a file using default mode and options:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg 
 </code></pre></div>
@@ -1080,7 +1080,7 @@ plotted in one color of ink.</p>
 
 <p>If you plot in layers mode, only visible layers that have layer
 names beginning with the selected number will plot. The selected number
-is given by the value of the <code>--layer</code> parameter, and may be in the range
+is given by the value of the <code>--layer</code> option, and may be in the range
 of 0 - 1000.</p>
 
 <p>Plotting in this mode, with layer specified will plot only layers
@@ -1110,7 +1110,7 @@ documentation.</p>
 <p>Example 1: 
 Cycle the pen down and then up, using &quot;cycle&quot; mode:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode toggle 
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode cycle 
 </code></pre></div>
 <blockquote>
 <p>Example 2: 
@@ -1606,25 +1606,33 @@ also display some additional information such as the estimated print time and
 
 <p>A typical display might be as follows (with a line break added for readability):</p>
 
-<p><code>Plot Progress:  53%|##########4         | 130/244</code><br />
-<code>[00:04&lt;00:02, 38.23 Nodes/s]</code></p>
+<p><code>Plot Progress:  28%|##############2     | 2693/9460</code><br />
+<code>[01:08&lt;02:15, 49.79 mm/s]</code></p>
 
 <p>The left part (first line) gives the percentage through the plot.
-The graph portion represents completed progress by <code>#</code> and partial progress on the leading glyph
-(not quite a full <code>#</code>) by numbers 1-9. The fraction after that (<code>130/244</code> here) is the count of
-plot &quot;nodes&quot;; an internal index that the software uses.
-The right part (second line, here) gives the elapsed and remaining time,
-formatted as: [(elapsed time) &lt; (remaining time)].
-It also shows a count of plot &quot;nodes&quot; per second.</p>
+The graph portion represents completed progress by <code>#</code> and partial progress
+on the leading glyph (not quite a full <code>#</code>) by numbers 1-9. The fraction after that shows
+the progress through the file in terms of <em>total travel in millimeters</em>. Here, we are
+at 2693 mm through a plot that has a total of 9460 mm of pen-up + pen-down travel.</p>
 
-<p>When plotting multiple copies, the progress bar will indicate which copy number
-is being plotted, and a new progress bar will be displayed during the delay
-between pages.</p>
+<p>The right part (second line, here) gives the elapsed and extrapolated 
+remaining time, formatted as: [(elapsed time) &lt; (remaining time)].
+It also shows the average rate of pen movement in millimeters per second
+(somewhat skewed by the fact that the pen lifts and lowers at 0 mm/s horizontally).
+In practice, the estimated print time generated before printing tends to be
+more accurate than the extrapolated time remaining.</p>
 
-<p>Enabling the progress bar does lead to an increase in the time between initiating the plot
-and when the AxiDraw actually begins to plot, since it requires that a plot preview is run
-to calculate the plot length. In typical cases, this added time increases the total time
-duration for a plot by well under 1%.</p>
+<p>When plotting multiple copies, the progress bar shows progress through an
+individual copy, but is labeled to indicate which copy number
+is being plotted. A new, simplified progress bar will be displayed during the delay
+between pages. Delays at the beginning of layers, added by 
+<a href="https://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>,
+are indicated with a second, similar progress bar.</p>
+
+<p>Enabling the progress bar slightly increase the time between initiating the plot
+and when the AxiDraw actually begins to plot, since it quietly runs a plot preview
+to calculate the plot length and duration. In typical cases, this 
+added time increases the total (computation + plotting) duration of a plot by under 1%.</p>
 
 <p>The progress bar feature is only available from the AxiDraw CLI, when the option is enabled,
 and in modes that actually plot to the AxiDraw (&quot;plot&quot;, &quot;layers&quot;, &quot;res_plot&quot;). It is not
@@ -1891,7 +1899,7 @@ distance to be traveled. </p>
 milliseconds, given by <code>pen_delay_down</code>, to the calculated delay, for example
 to intentionally begin moving before the pen is fully down, or to ensure
 that the pen is making solid contact before moving. The value of this
-parameter may be positive or negative, but if the total delay (calculated
+option may be positive or negative, but if the total delay (calculated
 travel time + <code>pen_delay_down</code>) is less than zero, then a total delay time
 of zero will be used.</p>
 
@@ -1929,7 +1937,7 @@ distance to be traveled. </p>
 milliseconds, given by <code>pen_delay_up</code>, to the calculated delay, for example
 to intentionally begin moving before the pen is fully up, or to ensure
 that the pen is fully above the paper before moving. The value of this
-parameter may be positive or negative, but if the total delay (calculated
+option may be positive or negative, but if the total delay (calculated
 travel time + <code>pen_delay_up</code>) is less than zero, then a total delay time
 of zero will be used.</p>
 
@@ -2018,7 +2026,7 @@ with constant-speed mode selected:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -vTC
 </code></pre></div>
-<p><em>Report time elapsed</em></p>
+<p><em>Report time and distance</em></p>
 
 <p><strong>Syntax: [<code>-T</code>, <code>--report_time</code>]</strong></p>
 
@@ -2030,9 +2038,15 @@ combination with Plot Preview (<a href="#preview"><code>preview</code></a>) can 
 you with a time estimate of each
 plot, without requiring the use of the AxiDraw.</p>
 
-<p>Note also that this option is only
-applicable to the three modes which parse and plot the SVG document: 
-plot (default), layers, and res_plot. </p>
+<p>Note also that this option is only applicable to the three modes which
+parse and plot the SVG document: 
+plot (<code>default</code>), <code>layers</code>, and <code>res_plot</code>. </p>
+
+<p>When resuming a plot with <code>res_plot</code> mode, please be aware that the distances reported
+will reflect the pen-down distance <em>since the beginning of the document</em>, rather than
+since the plot resumed. (Distances are calculated this way, using the total pen-down distance
+through the document, to ensure that a plot can
+be paused and resumed, even if started in <code>res_plot</code> mode.)</p>
 
 <p>Time reporting may be enabled by using the <code>--report_time</code> option (<code>-T</code>). It is
 a simple &quot;flag&quot; type argument, and takes no value argument.</p>
@@ -2041,9 +2055,9 @@ a simple &quot;flag&quot; type argument, and takes no value argument.</p>
 specified <a href="#config"><code>config</code></a> file and change the value of
 <code>report_time</code> from <code>False</code> to <code>True</code>.</p>
 <h2 id='manual_cmd'>manual_cmd</h2>
-<p>This parameter allows you to specify exactly which particular &quot;manual&quot; command 
+<p>This option allows you to specify exactly which particular &quot;manual&quot; command 
 will be executed if the <code>mode</code> is set to <code>manual</code>.
-This parameter is ignored if any mode other than manual is active. </p>
+This option is ignored if any mode other than manual is active. </p>
 
 <p>Please note that while some
 of these commands do perform movements, these
@@ -2051,12 +2065,13 @@ commands should not be considered &quot;real time&quot; control commands. They a
 as utility commands, for test, setup, and calibration. (If you need real-time
 movement commands, consider using the Interactive context within the Python API.)</p>
 
-<p>An input SVG file is not required unless an output file is specified. For the
-strip_data manual command, there is no effect unless both an input and output
-file are specified. For the other manual commands, execution
-is typically faster without an input file.</p>
+<p>An input SVG file is not required unless an output file is specified. However,
+one command,  <code>strip_data</code>, is <em>not useful</em> unless
+input and input and output files are specified. 
+For manual commands such as <code>raise_pen</code> that do not interact with the SVG
+document, execution is typically faster without SVG input file.</p>
 
-<p>The following is a list of allowed values of the <code>manual_cmd</code> parameter.
+<p>The following is a list of allowed values of the <code>manual_cmd</code> option.
 Each of these commands will be described in detail, after the list.</p>
 
 <table><thead>
@@ -2106,10 +2121,6 @@ Each of these commands will be described in detail, after the list.</p>
 <td>Disable (de-energize) XY stepper motors</td>
 </tr>
 <tr>
-<td><code>bootload</code></td>
-<td>Enter EBB bootloader mode</td>
-</tr>
-<tr>
 <td><code>strip_data</code></td>
 <td>Strip plotter data from file</td>
 </tr>
@@ -2124,6 +2135,10 @@ Each of these commands will be described in detail, after the list.</p>
 <tr>
 <td><code>write_name</code></td>
 <td>Write the USB &quot;nickname&quot; of the AxiDraw</td>
+</tr>
+<tr>
+<td><code>bootload</code></td>
+<td>Enter EBB bootloader mode</td>
 </tr>
 </tbody></table>
 
@@ -2202,8 +2217,8 @@ Move the carriage 1 inch in the y direction
 <p>Example 2:
 Move the carriage 1.5 inches in the +x direction, and then back:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_x --walk_dist 1.5
-axicli -m manual -M walk_x --walk_dist -1.5
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_x --dist 1.5
+axicli -m manual -M walk_x --dist -1.5
 </code></pre></div>
 <blockquote>
 <p>Example 3:
@@ -2222,10 +2237,10 @@ axicli -m manual -M walk_y -w -3.937 -s 40
 <p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] walk_y</strong></p>
 
 <p>These two &quot;walk&quot; commands will move the AxiDraw carriage by a distance
-in inches given by the value of the <code>walk_dist</code> parameter,
+in inches given by the value of the <code>dist</code> option,
 along one axis or the other.</p>
 
-<p>The <code>walk_dist</code> parameter has a default value of 1.0.
+<p>The <code>dist</code> option has a default value of 1.0.
 This distance is given in inches, when using the <code>walk_x</code> or 
 <code>walk_y</code> manual commands. 
 If you would prefer to use millimeter units, see the 
@@ -2264,8 +2279,8 @@ Move the carriage 1 mm in the y direction
 <p>Example 2:
 Move the carriage 2.0 inches (50.8 mm) in the +x direction, and then back:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx --walk_dist 50.8
-axicli -m manual -M walk_mmx --walk_dist -50.8
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx --dist 50.8
+axicli -m manual -M walk_mmx --dist -50.8
 </code></pre></div>
 <blockquote>
 <p>Example 3:
@@ -2284,10 +2299,10 @@ axicli -m manual -M walk_mmy -w -100 -s 40
 <p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] walk_mmy</strong></p>
 
 <p>These two &quot;walk&quot; commands will move the AxiDraw carriage by a distance
-in millimeters given by the value of the <code>walk_dist</code> parameter,
+in millimeters given by the value of the <code>dist</code> option,
 along one axis or the other.</p>
 
-<p>The <code>walk_dist</code> parameter has a default value of 1.0.
+<p>The <code>dist</code> option has a default value of 1.0.
 This distance is given in millimeters, when using the <code>walk_mmx</code> or 
 <code>walk_mmy</code> manual commands. 
 If you would prefer to use inch units, 
@@ -2326,7 +2341,7 @@ for example after a plot was stopped.</p>
 <p>Example 2:
 Move the carriage 2.0 inches (50.8 mm) in the +x direction, and then back:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx --walk_dist 50.8
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx --dist 50.8
 axicli -m manual -M walk_home
 </code></pre></div>
 <p><em>Manual command: Walk the carriage back to its initial position</em></p>
@@ -2380,35 +2395,6 @@ of stepper motors that controls the XY position of the AxiDraw carriage.</p>
 <p>Stepper motor power is off by default at power up. It is often useful
 to turn off power to the XY motors so that the carriage can be manually
 moved to the home corner, prior to plotting.</p>
-<h3 id='bootload'>bootload</h3>
-<blockquote>
-<div class="codetitle">manual_cmd: bootload</div>
-
-<p>Example:
-Put the AxiDraw into bootloader mode:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd bootload
-</code></pre></div>
-<blockquote>
-<p>(Note that you will need to either update the firmware OR disconnect
-both power and USB after executing this command.)</p>
-</blockquote>
-
-<p><em>Manual command: Enter EBB Bootloader Mode</em></p>
-
-<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] bootload</strong></p>
-
-<p>This command will put the AxiDraw&#39;s EBB control board into bootloader
-mode. This is a special mode that is sometimes used as part of the
-process of updating the EBB firmware. This command is not used in any
-part of normal AxiDraw operation.</p>
-
-<p>Bootloader mode may be identified by a particular rhythmic blinking of
-LEDs on the control board. If you should accidentally enter bootloader
-mode, disconnect the AxiDraw from both USB and power and then connect
-them again.</p>
-
-<p>See fw_version for more about firmware versions and updating.</p>
 <h3 id='strip_data'>strip_data</h3>
 <blockquote>
 <div class="codetitle">manual_cmd: strip_data</div>
@@ -2487,7 +2473,7 @@ Read the USB Nickname from a single connected AxiDraw:</p>
 &quot;nickname.&quot; A nickname may be assigned to a given AxiDraw if it has 
 firmware version 2.5.5 or newer. Nicknames are not required, but may be
 helpful when operating more than one AxiDraw: You can specify the given
-machine by name. (See the <a href="#port"><code>--port</code></a> parameter for additional information.)</p>
+machine by name. (See the <a href="#port"><code>--port</code></a> option for additional information.)</p>
 
 <p>When reading the name, it may be helpful to disconnect all AxiDraw
 units other than that one, so that you can be sure of which AxiDraw you
@@ -2523,7 +2509,7 @@ Clear the USB Nickname from the Axidraw nicknamed &quot;AxiDraw 17&quot;:</p>
 may be assigned to a given AxiDraw if it has 
 firmware version 2.5.5 or newer. Nicknames are not required, but may be
 helpful when operating more than one AxiDraw: You can specify the given
-machine by name. (See the --port parameter for additional information.)</p>
+machine by name. (See the --port option for additional information.)</p>
 
 <p>When writing the name, it may be helpful to disconnect all AxiDraw
 units other than that one, so that you can be sure of which AxiDraw you
@@ -2532,7 +2518,7 @@ are communicating with. Alternately, you can use an identifying action
 with, or specify a <code>--port</code> option.</p>
 
 <p>When using <code>write_name</code>, the name itself is specified by concatenating the
-name with the <code>write_name</code> parameter. For example as <code>write_nameNorth</code> to
+name with the <code>write_name</code> option. For example as <code>write_nameNorth</code> to
 assign the nickname &quot;North&quot;. The name may be up to 16 characters long.
 Using a nickname of at least 3 characters is recommended. Writing an
 empty string (with nothing following <code>write_name</code>) will clear the
@@ -2543,71 +2529,91 @@ is cycled, but can be overwritten by this command, (or other utilities
 that assign a nickname), and will be erased (reset to default) if you
 should run a firmware update at some point in the future.</p>
 
-<p>Since the nickname parameter is stored in a certain flash memory cell
+<p>Since the nickname itself is stored in a certain flash memory cell
 that can only be written a finite number of times, avoid applications
 that involve automated, repeated changes to the nickname tag.</p>
-<h2 id='walk_dist'>walk_dist</h2>
+<h3 id='bootload'>bootload</h3>
 <blockquote>
-<div class="codetitle">walk_dist</div>
+<div class="codetitle">manual_cmd: bootload</div>
 
-<p>Example 1: 
+<p>Example:
+Put the AxiDraw into bootloader mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd bootload
+</code></pre></div>
+<blockquote>
+<p>(Note that you will need to either update the firmware OR disconnect
+both power and USB after executing this command.)</p>
+</blockquote>
+
+<p><em>Manual command: Enter EBB Bootloader Mode</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] bootload</strong></p>
+
+<p>This command will put the AxiDraw&#39;s EBB control board into bootloader
+mode. This is a special mode that is sometimes used as part of the
+process of updating the EBB firmware. This command is not used in any
+part of normal AxiDraw operation.</p>
+
+<p>Bootloader mode may be identified by a particular rhythmic blinking of
+LEDs on the control board. If you should accidentally enter bootloader
+mode, disconnect the AxiDraw from both USB and power and then connect
+them again.</p>
+
+<p>See fw_version for more about firmware versions and updating.</p>
+<h2 id='dist'>dist</h2>
+<blockquote>
+<div class="codetitle">dist</div>
+
+<p>Example: 
 Move the carriage 2.5 inches in the +x direction, and then back.</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd walk_x --walk_dist 2.5
-axicli --mode manual --manual_cmd walk_x --walk_dist -2.5
-</code></pre></div>
-<blockquote>
-<p>Example 2: 
-The same, with short codes:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_x -w 2.5
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd walk_x --dist 2.5
 axicli -m manual -M walk_x -w -2.5
+
+*Distance for Walk manual commands*
+
+**Syntax: [`-w`, `--dist`] value**
+
+The `dist` option provides the amount of distance for
+[`manual`](#manual) mode commands, when the manual command specified by
+[`manual_cmd`](#manual_cmd) requires a distance input. 
+The value of `dist` is a floating point number that may be positive or
+negative. Its default value is 1.0.
+
+The units of the distance given by `dist` are selected by choosing
+a specific manual command. The distance is in millimeters
+for manual walk commands [`walk_mmx`](#walk_mmx-walk_mmy) or [`walk_mmy`](#walk_mmx-walk_mmy).
+The distance is in inches for manual walk commands
+[`walk_x`](#walk_x-walk_y) or [`walk_y`](#walk_x-walk_y).
+
+Values of `dist` should be chosen with care, since no limit checking is performed.
+This is especially true with the manual walk commands, which are relative to the
+current position (not absolute), and are
+**NOT** checked for safe range of motion. These are fully manual commands, and
+can easily run the AxiDraw past its safe range of motion.
+
+Allowed values: Floating point numbers (not limit checked).
+
+**Default:** 1.0, set in axidraw_conf.py or your specified [`config`](#config) file.
+
+**Compatibility note**: This option was previously named `walk_dist`,
+and renamed to `dist` as of software version 3.8. The old name `walk_dist` is
+deprecated but still functional for CLI use, shell
+scripts, and configuration files that do use it (and do not set `dist`).
+The `walk_dist` syntax will be removed in a future version.
+
+
+## layer
+&gt; &lt;div class="codetitle"&gt;layer&lt;/div&gt;
+&gt;
+&gt; Example 1: 
+&gt; Plot only layers with layer name beginning with "3":
+
 </code></pre></div>
-<blockquote>
-<p>Example 3: 
-The same, in millimeter units (noting 2.5 inches is 63.5 mm):</p>
-</blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx -w 63.5
-axicli -m manual -M walk_mmx -w -63.5
-</code></pre></div>
-<p><em>Walk Distance</em></p>
+<p>axicli file.svg --mode layers --layer 3
+```</p>
 
-<p><strong>Syntax: [<code>-w</code>, <code>--walk_dist</code>] value</strong></p>
-
-<p>The distance to move the XY carriage of the AxiDraw, when in <code>manual</code> mode,
-and the <code>manual_cmd</code> parameter specifies either 
-<code>walk_x</code>, <code>walk_y</code>, <code>walk_mmx</code>, or <code>walk_mmy</code>.</p>
-
-<p>The units of <code>walk_dist</code> are context dependent. When used with
-<a href="#walk_x-walk_y"><code>walk_x</code> or <code>walk_y</code></a>, <code>walk_dist</code> gives the distance in inches.
-When used with
-<a href="#walk_mmx-walk_mmy"><code>walk_mmx</code> or <code>walk_mmy</code></a>, <code>walk_dist</code> 
-gives the distance in millimeters.</p>
-
-<p><code>walk_dist</code> is a floating point value, with a default value of 1.0.
-Values should be chosen with care, so as to not to move the carriage past
-the available range of unobstructed motion.
-Larger distances can be achieved on larger AxiDraw models.</p>
-
-<p>Walk movements are relative to the current position (not absolute), and are
-<strong>NOT</strong> checked for sane range of motion. These are fully manual commands, and
-can easily run the AxiDraw past its safe range of motion.</p>
-
-<p>The &quot;walk&quot; commands are not meant as a substitute for full motion control, but
-are occasionally helpful for (e.g.,) calibration routines.</p>
-
-<p>Allowed values: Floating point numbers (not limit checked).</p>
-
-<p><strong>Default:</strong> 1.0, set in axidraw_conf.py or your specified <a href="#config"><code>config</code></a> file.</p>
-<h2 id='layer'>layer</h2>
-<blockquote>
-<div class="codetitle">layer</div>
-
-<p>Example 1: 
-Plot only layers with layer name beginning with &quot;3&quot;:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --mode layers --layer 3
-</code></pre></div>
 <blockquote>
 <p>Example 2: 
 The same, with short codes:</p>
@@ -2625,7 +2631,7 @@ when plotting in <a href="#layers"><code>layers</code></a> mode.</p>
 also choose to plot a single layer or group of layers, for example to plot
 only a single color of ink. </p>
 
-<p>Plotting in <a href="#layers"><code>layers</code></a> mode, with a given layer specified by this parameter
+<p>Plotting in <a href="#layers"><code>layers</code></a> mode, with a given layer specified by this option
 will plot only layers whose names begin with the selected number.
 While only a single integer value may be given for <code>layer</code>, 
 that value may match with multiple layer names, so that any number of
@@ -2641,7 +2647,7 @@ layers may be selected for plotting.</p>
 <li>&quot;5 Outlines&quot;</li>
 </ul>
 
-<p>Then, if a <code>layer</code> parameter of 5 is given in <a href="#layers"><code>layers</code></a> mode, 
+<p>Then, if a <code>layer</code> option of 5 is given in <a href="#layers"><code>layers</code></a> mode, 
 the two layers named
 &quot;5-red&quot; and &quot;5 Outlines&quot; will be plotted, while the layers named 
 &quot;guide lines&quot;, &quot;55&quot;, and &quot;2 black&quot; will be skipped.</p>
@@ -2655,7 +2661,7 @@ specified <a href="#config"><code>config</code></a> file.</p>
 <div class="codetitle">copies</div>
 
 <p>Example 1: 
-Plot a file two times, using default parameters:</p>
+Plot a file two times, using default options:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --copies 2  
 </code></pre></div>
@@ -2676,11 +2682,11 @@ Plot a file 25 times, with a 5 s delay between each plot:</p>
 <p><strong>Syntax: [<code>-c</code>, <code>--copies</code>] value</strong></p>
 
 <p>If <code>copies</code> has a value other than 0, then a plot that is started in plot or 
-layers mode will be plotted that number of times. This parameter has no
+layers mode will be plotted that number of times. This option has no
 effect in modes other than plot or layers.</p>
 
 <p>An optional delay may be chosen between subsequent plots (e.g., for changing
-paper) with the <code>page_delay</code> parameter.</p>
+paper) with the <code>page_delay</code> option.</p>
 
 <p>A value of 0 copies is a special value that will begin plotting a continuous
 sequence of copies, without a scheduled end. The sequence will continue
@@ -2769,7 +2775,7 @@ enabled, no serial communication will be attempted, so certain operations
 (e.g., raise pen) will neither function nor produce an error. </p>
 
 <p>If Plot Preview is enabled, then it can also produce graphical output if
-both an appropriate value of the <a href="#rendering"><code>rendering</code></a> parameter is
+both an appropriate value of the <a href="#rendering"><code>rendering</code></a> option is
 chosen and an output file is generated.</p>
 
 <p>Preview mode may be enabled by using the <code>--preview</code> (<code>-v</code>) option. It is a
@@ -2815,7 +2821,7 @@ documentation.)</p>
 
 <p>The preview layer has sub-layers for showing the pen-up and/or pen-down
 movement of the carriage, depending which are generated. The rendering
-style parameter selects which of these (if any) are rendered.</p>
+style option selects which of these (if any) are rendered.</p>
 
 <p>Allowed values: Integers from 0 to 3:</p>
 
@@ -2859,7 +2865,7 @@ pen-up travel required during the plot.</p>
 <a href="#plot"><code>plot</code></a> (default), <a href="#layers"><code>layers</code></a>, and <a href="#res_plot-res_home"><code>res_plot</code></a>.</p>
 
 <p>(There is also a separate legacy <a href="#reorder"><code>reorder</code></a> mode, which
-uses different values of the <code>reordering</code> parameter.)</p>
+uses different values of the <code>reordering</code> option.)</p>
 
 <p><strong>Normal order of plotting</strong></p>
 
@@ -2958,7 +2964,7 @@ the <code>reordering</code> of 2, but if you save the output SVG, it will retain
 </ul>
 
 <p>The <code>reordering</code> values of 0 and 4 are identical except that the &quot;strict&quot; value of 4 also disables
-path joining. Path joining may be disabled separately via the <code>min_gap</code> parameter.</p>
+path joining. Path joining may be disabled separately via the <code>min_gap</code> parameter value.</p>
 
 <p><strong>Default:</strong> 0 (Plot in original order, connecting adjoining paths to reduce unnecessary pen lifts), set in axidraw_conf.py or your specified <a href="#config"><code>config</code></a> file.</p>
 
@@ -3051,6 +3057,49 @@ specified <a href="#config"><code>config</code></a> file.</p>
 
 <p>The physical size definitions for each model type are also configured in
 in the configuration file.</p>
+<h2 id='penlift'>penlift</h2>
+<blockquote>
+<div class="codetitle">model</div>
+
+<p>Example 1: 
+Plot a file, using default pen-lift configuration.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --penlift 1
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot a file, using narrow-band brushless pen-lift servo motor.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -q3
+</code></pre></div>
+<p><em>Pen lift servo configuration</em></p>
+
+<p><strong>Syntax: [<code>-q</code>, <code>--penlift</code>] value</strong></p>
+
+<p>Select the hardware configuration for the AxiDraw&#39;s pen-lift servo mechanism.
+Unless changed, this option leaves your AxiDraw configured to use its factory-standard
+pen-lift servo.</p>
+
+<p>The default value, <code>1</code>, specifies to use the default configuration for the AxiDraw
+model.  A value of <code>2</code> explicitly selects to use a &quot;standard&quot; PWM-controlled hobby servo,
+controlled at output &quot;B1&quot;, the lowest set of three pins on an AxiDraw&#39;s EBB control board.
+(Since <em>all AxiDraw models thus far do use this as their default</em>, the value <code>2</code> currently
+produces the same results as a value of <code>1</code>, regardless of AxiDraw model.)</p>
+
+<p>A value of <code>3</code> configures the servo output to instead (A) be directed to output pin &quot;B2&quot;, the
+third set up on the AxiDraw&#39;s EBB control board (two positions higher than normal) and (B)
+produce a control signal appropriate for a narrow-band brushless pen-lift servo motor.</p>
+
+<p>Allowed values: Integers from 1 to 3:</p>
+
+<ul>
+<li><code>1</code> - Default for AxiDraw model.</li>
+<li><code>2</code> - Standard servo (lowest connector position)</li>
+<li><code>3</code> - Narrow-band brushless servo (3rd position up)</li>
+</ul>
+
+<p><strong>Default:</strong> 1 (Default for AxiDraw model), set in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='port'>port</h2>
 <blockquote>
 <div class="codetitle">port</div>
@@ -3077,7 +3126,7 @@ Plot a file to an AxiDraw with USB Nickname &quot;UV LED Array&quot;:</p>
 <p><strong>Syntax: [<code>-p</code>, <code>--port</code>] value</strong></p>
 
 <p>By default, the AxiDraw software works with the first available AxiDraw
-located on USB. Alternately, you can use the port parameter to specify a
+located on USB. Alternately, you can use the port option to specify a
 particular machine. You can specify the machine using the USB port
 enumeration (e.g., <code>COM6</code> on Windows or <code>/dev/cu.usbmodem1441</code> on a Mac) or by
 using an assigned USB nickname.</p>
@@ -3085,7 +3134,7 @@ using an assigned USB nickname.</p>
 <p>If any port is specified, then the software will attempt to open the
 connection to that (and only that) AxiDraw or USB port. It will return an
 error if the port or AxiDraw cannot be found. This behavior may be
-overridden by use of the <code>port_config</code> parameter.</p>
+overridden by use of the <code>port_config</code> option.</p>
 
 <p>USB port enumerations are typically not permanent; they may change with
 events as simple as unplugging a device and plugging it back in.</p>
@@ -3099,7 +3148,7 @@ may not be trivial to identify which physical machine is currently
 identified as which USB device. You may wish to try an identifying action,
 for example raising the pen, to indicate which machine is which.</p>
 
-<p>Allowed values of the port parameter are strings, which specify either
+<p>Allowed values of the port option are strings, which specify either
 the USB port or AxiDraw USB nickname to use.</p>
 
 <p><strong>Default:</strong> None, set in axidraw_conf.py or your
@@ -3140,11 +3189,11 @@ will be used.</p></li>
 to communicate only with that specified AxiDraw.</p></li>
 </ul>
 
-<p>The <code>port_config</code> parameter can override this behavior. Allowed values of the
- parameter are integers 0, 1, and 3:</p>
+<p>The <code>port_config</code> option can override this behavior. Allowed values of the
+ option are integers 0, 1, and 3:</p>
 
 <ul>
-<li><code>0</code> - Do not override; use standard &quot;port&quot; parameter behavior.</li>
+<li><code>0</code> - Do not override; use standard &quot;port&quot; option behavior.</li>
 <li><code>1</code> - Address only the first AxiDraw located via USB</li>
 <li><code>3</code> - Address all AxiDraw units located via USB</li>
 </ul>
@@ -3153,7 +3202,7 @@ to communicate only with that specified AxiDraw.</p></li>
 behavior described above.</p>
 
 <p>If <code>port_config</code> is 1, then the software will communicate only with
-the first AxiDraw located, even if even if a --port parameter is specified.</p>
+the first AxiDraw located, even if even if a --port option is specified.</p>
 
 <p>If <code>port_config</code> is 3, the software will simultaneously communicate with
 all AxiDraw units located via USB. While most features (including plotting)
@@ -3205,7 +3254,7 @@ for more about how rendered previews are generated.</p>
 specified, an input file is required in <em>all</em> cases when an output file is
 specified.</p>
 
-<p>Allowed values of the parameter are strings, which specify the output
+<p>Allowed values of the option are strings, which specify the output
 file name, or a relative or absolute path ending in a file name.</p>
 
 <p><strong>Default:</strong> None</p>
@@ -3258,9 +3307,16 @@ Keep a copy of your original SVG document.</p>
 
 <p>A Plob file may be used as the input to the AxiDraw software, just like any other SVG input.
 Plotting a Plob prepared for the same AxiDraw model allows the AxiDraw software to
-skip all of the steps above and immediately begin plotting the document. If a plot underway is
+skip all of the steps above and immediately begin plotting the document. Note however,
+that once generated, the Plob file cannot be modified at all, or it will no longer be recognized as
+a valid Plob file. (Two exceptions: Pause/resume data and plot preview updates are permitted 
+modifications.)</p>
+
+<p>If a plot underway is 
 paused while the <code>digest</code> option is enabled, the output Plob will include plot progress data for
-resuming the plot, just as a regular SVG would.</p>
+resuming the plot, just as a regular SVG would. Partial plots -- those paused while plotting
+or that resume plotting in the middle of the document -- still contain the entire Plob 
+including the parts that are not printed in those situations.</p>
 
 <p>The <code>digest</code> option may be helpful in a variety of situations, including but not limited to:</p>
 
@@ -3426,6 +3482,20 @@ avoid duplicate warning messages during the plot. Thus, if you need to request
 <p>Please note that the changelog.txt file included with the download is more comprehensive
 and includes details about older releases that are no longer listed below.</p>
 
+<p><strong>v 3.8 (2023-01)</strong></p>
+
+<p>Added new <a href="#penlift"><code>penlift</code></a> option, to enable brushless servo option.</p>
+
+<p>Renamed the <code>walk_dist</code> option to <a href="#dist"><code>dist</code></a>.  The old option name <code>walk_dist</code> is
+now deprecated (and temporarily still functional on the command line and in scripts that use it).</p>
+
+<p>New parameters in the axidraw_conf.py include file: <code>button_interval</code> controlling interval
+of polling the physical pause button and 6 others that support the new servo option.</p>
+
+<p>Progress bar now shows progress as <em>mm travel</em> (rather than an overall &quot;node&quot; count).</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_381.zip">here</a>.</p>
+
 <p><strong>v 3.7.2 (2022-11-09)</strong></p>
 
 <p>Removed &quot;bezier_segmentation_tolerance&quot; and &quot;smoothness&quot; parameters from configuration
@@ -3437,7 +3507,7 @@ file; replaced with a single &quot;curve_tolerance&quot; parameter.</p>
 
 <p><strong>v 3.6 (2022-10-01)</strong></p>
 
-<p>Defaults for <a href="#mode"><code>mode</code></a>, <a href="#manual_cmd"><code>manual_cmd</code></a>, and <a href="#walk_dist"><code>walk_dist</code></a>
+<p>Defaults for <a href="#mode"><code>mode</code></a>, <a href="#manual_cmd"><code>manual_cmd</code></a>, and <code>walk_dist</code>
 can now be set inside the configuration file.</p>
 
 <p>AxiCLI now returns a non-zero exit code on keyboard or pause button 

@@ -385,6 +385,11 @@
                     
                   </li>
                   <li>
+                    <a href="#penlift" class="toc-h2 toc-link" data-title="penlift">penlift</a>
+                    
+                    
+                  </li>
+                  <li>
                     <a href="#port" class="toc-h2 toc-link" data-title="port">port</a>
                     
                     
@@ -456,9 +461,6 @@
                             <a href="#enable_xy-disable_xy" class="toc-h3 toc-link" data-title="enable_xy, disable_xy">enable_xy, disable_xy</a>
                           </li>
                           <li>
-                            <a href="#bootload" class="toc-h3 toc-link" data-title="bootload">bootload</a>
-                          </li>
-                          <li>
                             <a href="#strip_data" class="toc-h3 toc-link" data-title="strip_data">strip_data</a>
                           </li>
                           <li>
@@ -470,11 +472,14 @@
                           <li>
                             <a href="#write_name" class="toc-h3 toc-link" data-title="write_name">write_name</a>
                           </li>
+                          <li>
+                            <a href="#bootload" class="toc-h3 toc-link" data-title="bootload">bootload</a>
+                          </li>
                       </ul>
                     
                   </li>
                   <li>
-                    <a href="#walk_dist" class="toc-h2 toc-link" data-title="walk_dist">walk_dist</a>
+                    <a href="#dist" class="toc-h2 toc-link" data-title="dist">dist</a>
                     
                     
                   </li>
@@ -748,7 +753,7 @@ conventionally, since the download includes example python scripts, an example c
 
 <p><strong>Standard install</strong></p>
 
-<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.7.2.</p>
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.8.1.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -795,7 +800,7 @@ with full reordering enabled, and collect the output SVG as a string:</p>
 output_svg is a string equivalent to the contents of an SVG file.</p>
 </blockquote>
 
-<p>The examples shown here will load and plot a file, using default parameters.
+<p>The examples shown here will load and plot a file, using default option values.
 Four lines of code are needed: to import the module, create a class instance,
 load a file and select the <strong>Plot</strong> context, and begin plotting. </p>
 
@@ -858,7 +863,7 @@ call. The options will be applied when you call
 the changes to the options before calling additional motion commands.</p>
 
 <p>In addition to the plot options specified in <a href="#options-general">Options: General</a>,
-there is one additional parameter available in <strong>Interactive</strong> context,
+there is one additional option available in <strong>Interactive</strong> context,
 <a href="#units"><code>units</code></a>, which can be used to switch between inch and millimeter units.</p>
 
 <p>The options
@@ -936,6 +941,10 @@ making use of the Interactive context:</p>
 <p>Most plotting options can be set directly like variables within Python.
 The particular options and their values are detailed in the sections below.
 For options that you do not directly specify, the default value will be used.</p>
+
+<p>Options should be set after initialization into either the
+<strong>Plot</strong> context or the <strong>Interactive</strong> context, with <a href="#plot_setup"><code>plot_setup</code></a>
+or <a href="#interactive"><code>interactive()</code></a> respectively.</p>
 
 <p>The default value of most options are set within the axidraw_conf.py
 configuration file, within the files installed by the API.
@@ -1122,7 +1131,7 @@ time, especially on documents that have many large pen-up movements.</p>
 <div class="codetitle">accel</div>
 
 <p>Example 1: 
-Set up to plot with an acceleration parameter of 80% selected,
+Set up to plot with an acceleration value of 80% selected,
 making use of the Plot context:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
@@ -1133,7 +1142,7 @@ making use of the Plot context:</p>
 </code></pre></div>
 <blockquote>
 <p>Example 2: 
-Set up to plot with an acceleration parameter of 80% selected,
+Set up to plot with an acceleration value of 80% selected,
 making use of the Interactive context:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
@@ -1335,7 +1344,7 @@ distance to be traveled. </p>
 milliseconds, given by <code>pen_delay_down</code>, to the calculated delay, for example
 to intentionally begin moving before the pen is fully down, or to ensure
 that the pen is making solid contact before moving. The value of this
-parameter may be positive or negative, but if the total delay (calculated
+option may be positive or negative, but if the total delay (calculated
 travel time + <code>pen_delay_down</code>) is less than zero, then a total delay time
 of zero will be used.</p>
 
@@ -1380,7 +1389,7 @@ distance to be traveled. </p>
 milliseconds, given by <code>pen_delay_up</code>, to the calculated delay, for example
 to intentionally begin moving before the pen is fully up, or to ensure
 that the pen is fully above the paper before moving. The value of this
-parameter may be positive or negative, but if the total delay (calculated
+option may be positive or negative, but if the total delay (calculated
 travel time + <code>pen_delay_up</code>) is less than zero, then a total delay time
 of zero will be used.</p>
 
@@ -1478,6 +1487,56 @@ are clipped to occur within these limits.</p>
 
 <p>The physical size definitions for each model type are also configured in
 axidraw_conf.py.</p>
+<h2 id='penlift'>penlift</h2>
+<blockquote>
+<div class="codetitle">model</div>
+
+<p>Example 1: 
+Plot a file, using default pen-lift configuration.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">penlift</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot a file, using narrow-band brushless pen-lift servo motor.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">penlift</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+</code></pre></div>
+<p><em>Pen lift servo configuration</em></p>
+
+<p><strong>Syntax: <code>options.penlift = value</code></strong></p>
+
+<p>Select the hardware configuration for the AxiDraw&#39;s pen-lift servo mechanism.
+Unless changed, this option leaves your AxiDraw configured to use its factory-standard
+pen-lift servo.</p>
+
+<p>The default value, <code>1</code>, specifies to use the default configuration for the AxiDraw
+model.  A value of <code>2</code> explicitly selects to use a &quot;standard&quot; PWM-controlled hobby servo,
+controlled at output &quot;B1&quot;, the lowest set of three pins on an AxiDraw&#39;s EBB control board.
+(Since <em>all AxiDraw models thus far do use this as their default</em>, the value <code>2</code> currently
+produces the same results as a value of <code>1</code>, regardless of AxiDraw model.)</p>
+
+<p>A value of <code>3</code> configures the servo output to instead (A) be directed to output pin &quot;B2&quot;, the
+third set up on the AxiDraw&#39;s EBB control board (two positions higher than normal) and (B)
+produce a control signal appropriate for a narrow-band brushless pen-lift servo motor.</p>
+
+<p>Allowed values: Integers from 1 to 3:</p>
+
+<ul>
+<li><code>1</code> - Default for AxiDraw model.</li>
+<li><code>2</code> - Standard servo (lowest connector position)</li>
+<li><code>3</code> - Narrow-band brushless servo (3rd position up)</li>
+</ul>
+
+<p><strong>Default:</strong> 1 (Default for AxiDraw model), set in axidraw_conf.py</p>
 <h2 id='port'>port</h2>
 <blockquote>
 <div class="codetitle">port</div>
@@ -1532,7 +1591,7 @@ making use of the Interactive context:</p>
 <p><strong>Syntax: <code>options.port = value</code></strong></p>
 
 <p>By default, the AxiDraw software works with the first available AxiDraw
-located on USB. Alternately, you can use the port parameter to specify a
+located on USB. Alternately, you can use the port option to specify a
 particular machine. You can specify the machine using the USB port
 enumeration (e.g., <code>COM6</code> on Windows or <code>/dev/cu.usbmodem1441</code> on a Mac) or by
 using an assigned USB nickname.</p>
@@ -1540,7 +1599,7 @@ using an assigned USB nickname.</p>
 <p>If any port is specified, then the software will attempt to open the
 connection to that (and only that) AxiDraw or USB port. It will return an
 error if the port or AxiDraw cannot be found. This behavior may be
-overridden by use of the <code>port_config</code> parameter.</p>
+overridden by use of the <code>port_config</code> option.</p>
 
 <p>USB port enumerations are typically not permanent; they may change with
 events as simple as unplugging a device and plugging it back in.</p>
@@ -1554,7 +1613,7 @@ may not be trivial to identify which physical machine is currently
 identified as which USB device. You may wish to try an identifying action,
 for example raising the pen, to indicate which machine is which.</p>
 
-<p>Allowed values of the port parameter are strings, which specify either
+<p>Allowed values of the port option are strings, which specify either
 the USB port or AxiDraw USB nickname to use.</p>
 
 <p><strong>Default:</strong> <code>None</code>, set in axidraw_conf.py</p>
@@ -1620,11 +1679,11 @@ will be used.</p></li>
 to communicate only with that specified AxiDraw.</p></li>
 </ul>
 
-<p>The <code>port_config</code> parameter can override this behavior. Allowed values of this
-parameter are integers 0 and 1:</p>
+<p>The <code>port_config</code> option can override this behavior. Allowed values of this
+option are integers 0 and 1:</p>
 
 <ul>
-<li><code>0</code> - Do not override; use standard &quot;port&quot; parameter behavior.</li>
+<li><code>0</code> - Do not override; use standard &quot;port&quot; option behavior.</li>
 <li><code>1</code> - Address only the first AxiDraw located via USB</li>
 </ul>
 
@@ -1657,8 +1716,8 @@ arguments will be described individually, after the list.</p>
 <td>Specify which &quot;manual&quot; mode command to use.</td>
 </tr>
 <tr>
-<td><code>walk_dist</code></td>
-<td>Distance to move for manual walk commands.</td>
+<td><code>dist</code></td>
+<td>Distance input for certain manual commands.</td>
 </tr>
 <tr>
 <td><code>layer</code></td>
@@ -1750,7 +1809,7 @@ Disable the XY stepper motors, using &quot;manual&quot; mode:</p>
 This is equivalent to selecting a
 function &quot;tab&quot; in the Inkscape-based GUI for AxiDraw Control. </p>
 
-<p>The following is a list of allowed values of the mode parameter.
+<p>The following is a list of allowed values of the mode option.
 Each of these modes will be described in detail, after the list.</p>
 
 <table><thead>
@@ -1765,7 +1824,7 @@ Each of these modes will be described in detail, after the list.</p>
 </tr>
 <tr>
 <td><code>layers</code></td>
-<td>Plot a single layer (or set of layers), selected by <code>layer</code> parameter</td>
+<td>Plot a single layer (or set of layers), selected by <code>layer</code> option</td>
 </tr>
 <tr>
 <td><code>cycle</code></td>
@@ -1781,7 +1840,7 @@ Each of these modes will be described in detail, after the list.</p>
 </tr>
 <tr>
 <td><code>manual</code></td>
-<td>Execute a utility command, specified by <a href="#manual_cmd"><code>manual_cmd</code></a> parameter</td>
+<td>Execute a utility command, specified by <a href="#manual_cmd"><code>manual_cmd</code></a> option</td>
 </tr>
 <tr>
 <td><code>sysinfo</code></td>
@@ -1894,7 +1953,7 @@ plotted in one color of ink.</p>
 
 <p>If you plot in layers mode, only visible layers that have layer
 names beginning with the selected number will plot. The selected number
-is given by the value of the <code>layer</code> parameter, and may be in the range
+is given by the value of the <code>layer</code> option, and may be in the range
 of 0 - 1000.</p>
 
 <p>For example, a layer named &quot;5-red&quot; will be plotted if the number 5 is
@@ -1908,7 +1967,7 @@ Control within Inkscape.</p>
 other software features that operate by layers; only &quot;top-level&quot; layers can be
 addressed in <code>layers</code> mode.</p>
 
-<p>See the description of the &quot;layer&quot; parameter below for additional
+<p>See the description of the &quot;layer&quot; option below for additional
 information. For more information about options available based on layer
 name, and how to create layers when generating SVG outside of Inkscape,
 please see the 
@@ -2124,14 +2183,25 @@ Query software version:</p>
 <blockquote>
 <p>Typical response:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>3.6.0
+<div class="highlight"><pre class="highlight plaintext"><code>3.8.0
 </code></pre></div>
 <blockquote>
-<p>Alternative: read the version_string variable instead:</p>
+<p>Alternative: read the version_string variable or <strong>version</strong> instead:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">axidraw_version_string1</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">__version__</span>
+
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
-<span class="n">axidraw_software_version</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">version_string</span>
+<span class="n">axidraw_version_string2</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">version_string</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">axidraw_version_string1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">axidraw_version_string2</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Typical response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>3.8.0
+3.8.0
 </code></pre></div>
 <p><em>AxiDraw Software Version</em></p>
 
@@ -2145,7 +2215,7 @@ this software. </p>
 
 <p>Rather than running <code>plot_run()</code> in <code>version</code> mode, 
 it is generally easier and more useful to instead
-read the <code>version_string</code> variable provided
+read the <code>version_string</code> variable or <code>axidraw.__version__</code> provided
 by the Python module, as shown in the example.</p>
 
 <aside class="notice">
@@ -2233,9 +2303,9 @@ Plot modes are only applicable for use within the <b>Plot</b> context.
 
 <p><strong>Syntax: <code>options.manual_cmd = &quot;command_name&quot;</code></strong></p>
 
-<p>This parameter allows you to specify exactly which particular &quot;manual&quot; command 
+<p>This option allows you to specify exactly which particular &quot;manual&quot; command 
 will be executed if the <code>mode</code> is set to <code>manual</code>.
-This parameter is ignored if any mode other than manual is active. </p>
+This option is ignored if any mode other than manual is active. </p>
 
 <p>Please note that while some
 of these commands do perform movements, these
@@ -2243,9 +2313,13 @@ commands should not be considered &quot;real time&quot; control commands. They a
 as utility commands, for test, setup, and calibration. (If you need real-time
 movement commands, consider using the <strong>Interactive</strong> context instead.)</p>
 
-<p>An SVG file input to <code>plot_setup()</code> is allowed but not required in manual mode.</p>
+<p>An SVG document input to <code>plot_setup()</code> is allowed but not required in manual mode.
+However, one command, <code>strip_data</code>,
+is <em>not useful</em> unless input and input and output SVG are specified.
+For manual commands such as <code>raise_pen</code> that do not interact with the SVG
+document, execution is typically faster without SVG input file.</p>
 
-<p>The following is a list of allowed values of the <code>manual_cmd</code> parameter.
+<p>The following is a list of allowed values of the <code>manual_cmd</code> option.
 Each of these commands will be described in detail, after the list.</p>
 
 <table><thead>
@@ -2295,10 +2369,6 @@ Each of these commands will be described in detail, after the list.</p>
 <td>Disable (de-energize) XY stepper motors</td>
 </tr>
 <tr>
-<td><code>bootload</code></td>
-<td>Enter EBB bootloader mode</td>
-</tr>
-<tr>
 <td><code>strip_data</code></td>
 <td>Strip plotter data from file</td>
 </tr>
@@ -2313,6 +2383,10 @@ Each of these commands will be described in detail, after the list.</p>
 <tr>
 <td><code>write_name</code></td>
 <td>Write the USB &quot;nickname&quot; of the AxiDraw</td>
+</tr>
+<tr>
+<td><code>bootload</code></td>
+<td>Enter EBB bootloader mode</td>
 </tr>
 </tbody></table>
 
@@ -2349,8 +2423,8 @@ They cannot be used within an <b>Interactive</b> context session.
 board. This is the default option in manual mode.</p>
 
 <p>In addition to printing firmware version this way, calling <a href="#plot_run"><code>plot_run()</code></a>
-<em>in any mode</em> creates a Python string variable, <code>fw_version_string</code> that you can
-access and use within a script.</p>
+<em>in any mode</em> that connects to the AxiDraw over USB creates a Python string variable,
+<code>fw_version_string</code> that you can access and use within a script.</p>
 
 <p>As of this writing, the current firmware version is 2.8.1. To update the
 firmware on your AxiDraw, please see
@@ -2413,7 +2487,7 @@ Move the carriage 1 inch in the y direction
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_y"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -2425,9 +2499,9 @@ Move the carriage 1.5 inches in the +x direction, and then back:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_x"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mf">1.5</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">1.5</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.5</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.5</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -2440,16 +2514,16 @@ speeds for each segment of movement:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_x"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mf">3.937</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">3.937</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_y"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mf">3.937</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">3.937</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_x"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.937</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.937</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_y"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.937</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.937</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
 <p><em>Manual commands: Walk the carriage in the X or Y direction, inch units</em></p>
@@ -2459,10 +2533,10 @@ speeds for each segment of movement:</p>
 <p><strong>Syntax: <code>options.manual_cmd = &quot;walk_y&quot;</code></strong></p>
 
 <p>These two &quot;walk&quot; commands will move the AxiDraw carriage by a distance
-in inches given by the value of the <code>walk_dist</code> parameter,
+in inches given by the value of the <code>dist</code> option,
 along one axis or the other.</p>
 
-<p>The <code>walk_dist</code> parameter has a default value of 1.0.
+<p>The <code>dist</code> option has a default value of 1.0.
 This distance is given in inches, when using the <code>walk_x</code> or 
 <code>walk_y</code> manual commands. 
 If you would prefer to use millimeter units, see the 
@@ -2476,8 +2550,8 @@ motion. Use caution: They can easily run the AxiDraw past its safe range of moti
 the XY position of the AxiDraw carriage before starting a plot or an interactive session.
 (The position where a plot starts will be the origin for that plot, and the position
 where an interactive session starts will be the origin for that session.)
-This ability to offset the origin may occasionally
-provide utility in test, setup, and calibration routines.</p>
+This ability to offset the origin may occasionally provide utility in test,
+setup, and calibration routines.</p>
 
 <p>After making manual movements,
 and before plotting, you may wish to manually return the AxiDraw carriage to the Home corner.
@@ -2505,7 +2579,7 @@ Move the carriage 1 mm in the y direction
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmy"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -2517,9 +2591,9 @@ Move the carriage 2.0 inches (5.08 mm) in the +x direction, and then back:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmx"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mf">50.8</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">50.8</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="o">-</span><span class="mf">50.8</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="o">-</span><span class="mf">50.8</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -2532,16 +2606,16 @@ speeds for each side of movement:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmx"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmy"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmx"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmy"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
 <p><em>Manual commands: Walk the carriage in the X or Y direction, mm units</em></p>
@@ -2551,10 +2625,10 @@ speeds for each side of movement:</p>
 <p><strong>Syntax: <code>options.manual_cmd = &quot;walk_mmy&quot;</code></strong></p>
 
 <p>These two &quot;walk&quot; commands will move the AxiDraw carriage by a distance
-in millimeters given by the value of the <code>walk_dist</code> parameter,
+in millimeters given by the value of the <code>dist</code> option,
 along one axis or the other.</p>
 
-<p>The <code>walk_dist</code> parameter has a default value of 1.0.
+<p>The <code>dist</code> option has a default value of 1.0.
 This distance is given in millimeters, when using the <code>walk_mmx</code> or 
 <code>walk_mmy</code> manual commands.  If you would prefer to use inch units, 
 see the <a href="#walk_x-walk_y"><code>walk_x</code>, <code>walk_y</code></a> commands instead.</p>
@@ -2600,10 +2674,10 @@ even though we&#39;re not directly keeping track of the position.</p>
 
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
     <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmx"</span>
-    <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span>
     <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
     <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmy"</span>
-    <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span>
     <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_home"</span>
@@ -2687,40 +2761,6 @@ of stepper motors that controls the XY position of the AxiDraw carriage.</p>
 <p>Stepper motor power is off by default at power up. It is often useful
 to turn off power to the XY motors so that the carriage can be manually
 moved to the home corner, prior to plotting.</p>
-
-<aside class="notice">
-The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
-They cannot be used within an <b>Interactive</b> context session.
-</aside>
-<h3 id='bootload'>bootload</h3>
-<blockquote>
-<div class="codetitle">manual_cmd: bootload</div>
-
-<p>Example:
-Put the AxiDraw into bootloader mode:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
-<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"bootload"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
-</code></pre></div>
-<p><em>Manual command: Enter EBB Bootloader Mode</em></p>
-
-<p><strong>Syntax: <code>options.manual_cmd = &quot;bootload&quot;</code></strong></p>
-
-<p>This command will put the AxiDraw&#39;s EBB control board into bootloader
-mode. This is a special mode that is sometimes used as part of the
-process of updating the EBB firmware. This command is not used in any
-part of normal AxiDraw operation.</p>
-
-<p>Bootloader mode may be identified by a particular rhythmic blinking of
-LEDs on the control board. If you should accidentally enter bootloader
-mode, disconnect the AxiDraw from both USB and power and then connect
-them again.</p>
-
-<p>See fw_version for more about firmware versions and updating.</p>
 
 <aside class="notice">
 The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
@@ -2885,7 +2925,7 @@ Clear the USB Nickname from the Axidraw nicknamed &quot;AxiDraw 17&quot;:</p>
 may be assigned to a given AxiDraw if it has 
 firmware version 2.5.5 or newer. Nicknames are not required, but may be
 helpful when operating more than one AxiDraw: You can specify the given
-machine by name. (See the --port parameter for additional information.)</p>
+machine by name. (See the <a href="#port"><code>port</code></a> option for additional information.)</p>
 
 <p>When writing the name, it may be helpful to disconnect all AxiDraw
 units other than that one, so that you can be sure of which AxiDraw you
@@ -2894,7 +2934,7 @@ are communicating with. Alternately, you can use an identifying action
 with, or specify a <a href="#port"><code>port</code></a> option.</p>
 
 <p>When using <code>write_name</code>, the name itself is specified by concatenating the
-name with the <code>write_name</code> parameter. For example as <code>write_nameNorth</code> to
+name with the <code>write_name</code> option. For example as <code>write_nameNorth</code> to
 assign the nickname &quot;North&quot;. The name may be up to 16 characters long.
 Using a nickname of at least 3 characters is recommended. Writing an
 empty string (with nothing following <code>write_name</code>) will clear the
@@ -2905,18 +2945,52 @@ is cycled, but can be overwritten by this command, (or other utilities
 that assign a nickname), and will be erased (reset to default) if you
 should run a firmware update at some point in the future.</p>
 
-<p>Since the nickname parameter is stored in a certain flash memory cell
+<p>Since the nickname is stored in a certain flash memory cell
 that can only be written a finite number of times, avoid applications
 that involve automated, repeated changes to the nickname tag.</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
 </aside>
-<h2 id='walk_dist'>walk_dist</h2>
+<h3 id='bootload'>bootload</h3>
 <blockquote>
-<div class="codetitle">walk_dist</div>
+<div class="codetitle">manual_cmd: bootload</div>
 
-<p>Example 1: 
+<p>Example:
+Put the AxiDraw into bootloader mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"bootload"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+</code></pre></div>
+<p><em>Manual command: Enter EBB Bootloader Mode</em></p>
+
+<p><strong>Syntax: <code>options.manual_cmd = &quot;bootload&quot;</code></strong></p>
+
+<p>This command will put the AxiDraw&#39;s EBB control board into bootloader
+mode. This is a special mode that is sometimes used as part of the
+process of updating the EBB firmware. This command is not used in any
+part of normal AxiDraw operation.</p>
+
+<p>Bootloader mode may be identified by a particular rhythmic blinking of
+LEDs on the control board. If you should accidentally enter bootloader
+mode, disconnect the AxiDraw from both USB and power and then connect
+them again.</p>
+
+<p>See fw_version for more about firmware versions and updating.</p>
+
+<aside class="notice">
+The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
+They cannot be used within an <b>Interactive</b> context session.
+</aside>
+<h2 id='dist'>dist</h2>
+<blockquote>
+<div class="codetitle">dist</div>
+
+<p>Example: 
 Move the carriage 1.5 inches in the +x direction:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
@@ -2924,50 +2998,39 @@ Move the carriage 1.5 inches in the +x direction:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_x"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mf">1.5</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">1.5</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
-<blockquote>
-<p>Example 2:
-Move the carriage 25 mm in the +x direction:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
-<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmx"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
-</code></pre></div>
-<p><em>Walk Distance</em></p>
+<p><em>Distance for Walk manual commands</em></p>
 
-<p><strong>Syntax: <code>options.walk_dist = value</code></strong></p>
+<p><strong>Syntax: <code>options.dist = value</code></strong></p>
 
-<p>The distance to move the XY carriage of the AxiDraw, when in <a href="#manual"><code>manual</code></a> mode,
-and the <a href="#manual_cmd"><code>manual_cmd</code></a> parameter specifies either 
-<a href="#walk_x-walk_y"><code>walk_x</code></a>, <a href="#walk_x-walk_y"><code>walk_y</code></a>, <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code></a>, or <a href="#walk_mmx-walk_mmy"><code>walk_mmy</code></a>.</p>
+<p>The <code>dist</code> option provides the amount of distance for
+<a href="#manual"><code>manual</code></a> mode commands, when the manual command specified by
+<a href="#manual_cmd"><code>manual_cmd</code></a> requires a distance input. 
+The value of <code>dist</code> is a floating point number that may be positive or
+negative. Its default value is 1.0.</p>
 
-<p>The units of <code>walk_dist</code> are context dependent. When used with
-<a href="#walk_x-walk_y"><code>walk_x</code> or <code>walk_y</code></a>, <code>walk_dist</code> gives the distance in inches.
-When used with
-<a href="#walk_mmx-walk_mmy"><code>walk_mmx</code> or <code>walk_mmy</code></a>, <code>walk_dist</code> 
-gives the distance in millimeters.</p>
+<p>The units of the distance given by <code>dist</code> are selected by choosing
+a specific manual command. The distance is in millimeters
+for manual walk commands <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code></a> or <a href="#walk_mmx-walk_mmy"><code>walk_mmy</code></a>.
+The distance is in inches for manual walk commands
+<a href="#walk_x-walk_y"><code>walk_x</code></a> or <a href="#walk_x-walk_y"><code>walk_y</code></a>.</p>
 
-<p><code>walk_dist</code> is a floating point value, with a default value of 1.0.
-Values should be chosen with care, so as to not to move the carriage past
-the available range of unobstructed motion.
-Larger distances can be achieved on larger AxiDraw models.</p>
-
-<p>Walk movements are relative to the current position (not absolute), and are
-<strong>NOT</strong> checked for sane range of motion. These are fully manual commands, and
+<p>Values of <code>dist</code> should be chosen with care, since no limit checking is performed.
+This is especially true with the manual walk commands, which are relative to the
+current position (not absolute), and are
+<strong>NOT</strong> checked for safe range of motion. These are fully manual commands, and
 can easily run the AxiDraw past its safe range of motion.</p>
-
-<p>The &quot;walk&quot; commands are not meant as a substitute for full motion control, but
-are occasionally helpful for (e.g.,) calibration routines.</p>
 
 <p>Allowed values: Floating point numbers (not limit checked).</p>
 
 <p><strong>Default:</strong> 1.0, set in axidraw_conf.py</p>
+
+<p><strong>Compatibility note</strong>: This option was previously named <code>walk_dist</code>, and renamed
+to <code>dist</code> as of software version 3.8. The old name <code>walk_dist</code> is deprecated but still
+functional in python scripts that set it (and do not set <code>dist</code>).
+The <code>walk_dist</code> syntax will be removed in a future release.</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -2997,7 +3060,7 @@ when plotting in <a href="#layers"><code>layers</code></a> mode.</p>
 also choose to plot a single layer or group of layers, for example to plot
 only a single color of ink. </p>
 
-<p>Plotting in <a href="#layers"><code>layers</code></a> mode, with a given layer specified by this parameter
+<p>Plotting in <a href="#layers"><code>layers</code></a> mode, with a given layer specified by this option
 will plot only layers whose names begin with the selected number.
 While only a single integer value may be given for <code>layer</code>, 
 that value may match with multiple layer names, so that any number of
@@ -3013,7 +3076,7 @@ layers may be selected for plotting.</p>
 <li>&quot;5 Outlines&quot;</li>
 </ul>
 
-<p>Then, if a <code>layer</code> parameter of 5 is given in <a href="#layers"><code>layers</code></a> mode, 
+<p>Then, if a <code>layer</code> value of 5 is given in <a href="#layers"><code>layers</code></a> mode, 
 the two layers named
 &quot;5-red&quot; and &quot;5 Outlines&quot; will be plotted, while the layers named 
 &quot;guide lines&quot;, &quot;55&quot;, and &quot;2 black&quot; will be skipped.</p>
@@ -3030,7 +3093,7 @@ This option is only applicable for use within the <b>Plot</b> context.
 <div class="codetitle">copies</div>
 
 <p>Example 1: 
-Plot a file two times, using default parameters:</p>
+Plot a file two times, using default options:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
@@ -3065,11 +3128,11 @@ Plot a file 25 times, with a 5 s delay between each plot:</p>
 
 <p>If <code>copies</code> has a value other than 0, then a plot that is started in
 <a href="#plot"><code>plot</code></a> mode or 
-<a href="#layers"><code>layers</code></a> mode will be plotted that number of times. This parameter has no
+<a href="#layers"><code>layers</code></a> mode will be plotted that number of times. This option has no
 effect in modes other than plot or layers.</p>
 
 <p>An optional delay may be chosen between subsequent plots (e.g., for changing
-paper) with the <a href="#page_delay"><code>page_delay</code></a> parameter.</p>
+paper) with the <a href="#page_delay"><code>page_delay</code></a> option.</p>
 
 <p>A value of 0 copies is a special value that will begin plotting a continuous
 sequence of copies, without a scheduled end. The sequence will continue
@@ -3220,8 +3283,7 @@ enabled, no serial communication will be attempted, so certain operations
 
 <p>If Plot Preview is enabled, then it can also produce graphical output if
 both an appropriate value of the <a href="#rendering"><code>rendering</code></a>
-parameter is chosen and an
-output file is generated.</p>
+option is chosen and an output file is generated.</p>
 
 <p>Allowed values: <code>True</code>, <code>False</code>.</p>
 
@@ -3265,7 +3327,7 @@ documentation.)</p>
 
 <p>The preview layer has sub-layers for showing the pen-up and/or pen-down
 movement of the carriage, depending which are generated. The rendering
-style parameter selects which of these (if any) are rendered.</p>
+style option selects which of these (if any) are rendered.</p>
 
 <p>Allowed values: Integers from 0 to 3:</p>
 
@@ -3491,12 +3553,13 @@ Preview a file and read out variables giving time and distance:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">report_time</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">preview</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+<span class="n">time_elapsed</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">time_elapsed</span>
 <span class="n">time_estimate</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">time_estimate</span> 
 <span class="n">dist_pen_down</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">distance_pendown</span>
 <span class="n">dist_pen_total</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">distance_total</span>
 <span class="n">pen_lifts</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">pen_lifts</span>
 </code></pre></div>
-<p><em>Report time elapsed</em></p>
+<p><em>Report time and distance</em></p>
 
 <p><strong>Syntax: <code>options.report_time = value</code></strong></p>
 
@@ -3512,8 +3575,14 @@ plot, without requiring the use of the AxiDraw.</p>
 applicable to the three modes which parse and plot the SVG document: 
 <code>plot</code> (default), <code>layers</code>, and <code>res_plot</code>.</p>
 
+<p>When resuming a plot with <code>res_plot</code> mode, please be aware that the distances reported
+will reflect the pen-down distance <em>since the beginning of the document</em>, rather than
+since the plot resumed. (Distances are calculated this way, using the total pen-down distance
+through the document, to ensure that a plot can
+be paused and resumed, even if started in <code>res_plot</code> mode.)</p>
+
 <p>If <code>report_time</code> is enabled and one of the applicable modes is selected,
-then calling <a href="#plot_run"><code>plot_run()</code></a> will also populate four numeric Python
+then calling <a href="#plot_run"><code>plot_run()</code></a> will also populate five numeric Python
 variables that can be accessed from within a script:</p>
 
 <table><thead>
@@ -3531,12 +3600,12 @@ variables that can be accessed from within a script:</p>
 <td>Estimated time (s)</td>
 </tr>
 <tr>
-<td><code>distance_total</code></td>
-<td>Distance traveled, total, m.</td>
-</tr>
-<tr>
 <td><code>distance_pendown</code></td>
 <td>Distance traveled with the pen down, m</td>
+</tr>
+<tr>
+<td><code>distance_total</code></td>
+<td>Distance traveled, total, m.</td>
 </tr>
 <tr>
 <td><code>pen_lifts</code></td>
@@ -3621,10 +3690,16 @@ Keep a copy of your original SVG document.</p>
 
 <p>A Plob file may be used as the input to the AxiDraw software, just like any other SVG input.
 Plotting a Plob prepared for the same AxiDraw model allows the AxiDraw software to
-skip all of the steps above and immediately begin plotting the document.
-If a plot underway is 
+skip all of the steps above and immediately begin plotting the document. Note however,
+that once generated, the Plob file cannot be modified at all, or it will no longer be recognized as
+a valid Plob file. (Two exceptions: Pause/resume data and plot preview updates are permitted 
+modifications.)</p>
+
+<p>If a plot underway is 
 paused while the <code>digest</code> option is enabled, the output Plob will include plot progress data for
-resuming the plot, just as a regular SVG would.</p>
+resuming the plot, just as a regular SVG would. Partial plots -- those paused while plotting
+or that resume plotting in the middle of the document -- still contain the entire Plob 
+including the parts that are not printed in those situations.</p>
 
 <p>The <code>digest</code> option may be helpful in a variety of situations, including but not limited to:</p>
 
@@ -3886,7 +3961,7 @@ code after plot_run returns:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
 <span class="n">output_svg</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">ad</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">102</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"plot paused by button press."</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"plot paused by button press."</span><span class="p">)</span>
 </code></pre></div>
 <p>This API allows you to configure whether or not certain error conditions will
 raise a Python error. Some actions &mdash; such as calling an interactive movement
@@ -3919,7 +3994,7 @@ a <code>RuntimeError</code> when the given condition is met. If you do set them,
 </tr>
 <tr>
 <td><code>errors.disconnect</code></td>
-<td>On failure to connect (default: False)</td>
+<td>On loss of USB connection (default: False)</td>
 </tr>
 </tbody></table>
 
@@ -5131,6 +5206,18 @@ These functions can only be used within the <b>Interactive</b> context.
 <p>Please note that the changelog.txt file included with the download is more comprehensive
 and includes details about older releases that are no longer listed below.</p>
 
+<p><strong>v 3.8 (2023-01)</strong></p>
+
+<p>Added new <a href="#penlift"><code>penlift</code></a> option, to enable brushless servo option.</p>
+
+<p>Renamed the <code>walk_dist</code> option to <a href="#dist"><code>dist</code></a>. The old name <code>walk_dist</code> is
+deprecated (and temporarily still functional in python scripts that use it).</p>
+
+<p>New parameters in the axidraw_conf.py include file: <code>button_interval</code> controlling interval
+of polling the physical pause button and 6 others that support the new servo option.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_381.zip">here</a>.</p>
+
 <p><strong>v 3.7.2 (2022-11-09)</strong></p>
 
 <p>Add <a href="#error-handling">four new variables</a> to configure which types of error
@@ -5141,7 +5228,8 @@ easier to detect error conditions when not raising an error.</p>
 <code>keyboard_pause</code> variable is enabled, as detailed in the new 
 <a href="#error-handling">error handling</a> section.</p>
 
-<p>The <code>fw_version_string</code> variable is now always populated by <a href="#plot_run"><code>plot_run()</code></a>.</p>
+<p>The <code>fw_version_string</code> variable is now always populated by <a href="#plot_run"><code>plot_run()</code></a>
+when connected to the AxiDraw.</p>
 
 <p>Removed &quot;bezier_segmentation_tolerance&quot; and &quot;smoothness&quot; parameters from configuration
 file; replaced with a single &quot;curve_tolerance&quot; parameter.</p>
@@ -5157,7 +5245,7 @@ file; replaced with a single &quot;curve_tolerance&quot; parameter.</p>
 <p>New function in interactive context, <a href="#delay"><code>delay</code></a>, 
 which adds a hardware-timed delay.</p>
 
-<p>Defaults for <a href="#mode"><code>mode</code></a>, <a href="#manual_cmd"><code>manual_cmd</code></a>, and <a href="#walk_dist"><code>walk_dist</code></a>
+<p>Defaults for <a href="#mode"><code>mode</code></a>, <a href="#manual_cmd"><code>manual_cmd</code></a>, and <code>walk_dist</code>
 can now be set inside the configuration file.</p>
 
 <p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_360.zip">here</a>.</p>
