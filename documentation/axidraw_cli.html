@@ -624,7 +624,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw CLI and the <a href="https://axidraw.com/doc/py_api/">AxiDraw Python Module</a>.
-The link is permanent and will be kept up to date. The current release version is 3.6.</p>
+The link is permanent and will be kept up to date. The current release version is 3.7.2.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -633,7 +633,7 @@ conventionally, since the download includes example python scripts, an example c
 <p><strong>Standard install</strong></p>
 
 <p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>
-The current release version is 3.6.</p>
+The current release version is 3.7.2.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -1395,7 +1395,7 @@ progress saved.</p>
 following workflow is used to pause and resume plots that are underway:</p>
 
 <ol>
-<li>The plot is paused by pressing the physical pause button on the AxiDraw, using Control+C on the keyboard, or at a predefined point in the SVG document.</li>
+<li>The plot is paused by pressing the physical pause button on the AxiDraw, or using Control+C on the keyboard. (Plots can also be paused at predefined points with <a href="http://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>.)</li>
 <li>The plot pauses after finishing the current line segment.</li>
 <li>The SVG file is updated, saving an index of progress through the file and last-known XY carriage location.</li>
 <li>The user may then use the Resume tab to return the carriage home or to resume the plot, using the stored plot progress data from the file as a reference.</li>
@@ -2538,6 +2538,11 @@ Using a nickname of at least 3 characters is recommended. Writing an
 empty string (with nothing following <code>write_name</code>) will clear the
 nickname. </p>
 
+<p>Assigned Nicknames are semi-permanent; they will persist when power
+is cycled, but can be overwritten by this command, (or other utilities
+that assign a nickname), and will be erased (reset to default) if you
+should run a firmware update at some point in the future.</p>
+
 <p>Since the nickname parameter is stored in a certain flash memory cell
 that can only be written a finite number of times, avoid applications
 that involve automated, repeated changes to the nickname tag.</p>
@@ -3416,10 +3421,19 @@ AxiDraw located.</p>
 avoid duplicate warning messages during the plot. Thus, if you need to request
 (e.g.) the firmware version from each AxiDraw, do so individually.</p>
 <h1 id='api-changelog'>API Changelog</h1>
-<p>Revision Notes: Changes affecting API.</p>
+<p>Revision Notes: Summary of changes affecting API.</p>
 
-<p>Please note that the changelog.txt file included with the download includes
-some details about older releases that are no longer listed below.</p>
+<p>Please note that the changelog.txt file included with the download is more comprehensive
+and includes details about older releases that are no longer listed below.</p>
+
+<p><strong>v 3.7.2 (2022-11-09)</strong></p>
+
+<p>Removed &quot;bezier_segmentation_tolerance&quot; and &quot;smoothness&quot; parameters from configuration
+file; replaced with a single &quot;curve_tolerance&quot; parameter.</p>
+
+<p>Add support for Python 3.11. Python 3.7 - 3.11 are now supported.</p>
+
+<p>3.7.2 Archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_372.zip">here</a>.</p>
 
 <p><strong>v 3.6 (2022-10-01)</strong></p>
 
@@ -3554,69 +3568,6 @@ to use Python 2, the previous release version (2.6.3) is archived below.</p>
 archived for download <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip">here</a>.
 You can also install it via:
 <code>pip install https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip</code></p>
-
-<p><strong>v 2.6.0 (2020-07-04)</strong></p>
-
-<ul>
-<li>This is the <em>last</em> major release of this API to support both python 2 and python 3.
-Future releases will require python 3.</li>
-<li>Add <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code></a> and 
-<a href="#walk_mmx-walk_mmy"><code>walk_mmy</code></a> <a href="#manual_cmd">manual commands</a>, for manual walk 
-in millimeter units.</li>
-<li>Renamed <code>ebb_version</code> to <a href="#fw_version"><code>fw_version</code></a>. The deprecated
-manual command <code>ebb_version</code> is functional but will be removed
-in a future version.</li>
-<li>New parameters are available in the axidraw_conf.py configuration file:
-<code>servo_timeout</code> and <code>use_b3_out</code></li>
-</ul>
-
-<p><strong>v  2.5.x  --  2020-01-02</strong></p>
-
-<p>Deprecated a value for <code>port_config</code>.</p>
-
-<p><strong>v  2.5.6  --  2019-12-13</strong></p>
-
-<p>Add support for new AxiDraw MiniKit model</p>
-
-<p><strong>v  2.5.0  --  2019-05-13</strong></p>
-
-<p>Added option (<code>-f</code>, <code>--config</code>) for local configuration file.</p>
-
-<p>Renamed <code>group_sorting</code> option to <code>reordering</code>, (<code>-G</code>, <code>--reordering</code>) and
-changed parameter values.  Reordering is now available directly in
-the plotting modes, which allows full previews to be rendered.</p>
-
-<p>Removed the (old, limited) preview options from reorder mode.</p>
-
-<p>Changed names of some parameters in axidraw_conf.py. </p>
-
-<p><strong>v  2.4.0  --  2019-04-02</strong></p>
-
-<p>CLI scripts now installed such that one can now call <code>axicli &lt;input&gt;</code> or 
-<code>python -m axicli &lt;input&gt;</code> directly, instead of <code>python axicli.py &lt;input&gt;</code>.</p>
-
-<p><strong>v  2.3.2  --  2019-01-22</strong></p>
-
-<p>Input file no longer required for operations in align, toggle,
-manual, sysinfo, or version modes, unless an output file is specified.</p>
-
-<p><strong>v  2.2.0  --  2018-10-01</strong></p>
-
-<p>Automatic checking for updates now performed with the <code>sysinfo</code> mode.
-Reorder mode and <code>group_sorting</code> option added.</p>
-
-<p><strong>v  2.1.1  --  2018-08-31</strong></p>
-
-<p>Plots now clipped at edges of SVG document.</p>
-
-<p><strong>v. 2.1.0  --  2018-08-24</strong></p>
-
-<p>Plots now clipped with pen-up at extents of machine travel</p>
-
-<p><strong>v. 2.0.0  --  2018-08-22</strong></p>
-
-<p>Significant, breaking changes to option names and syntax, for clarity and
-compatibility. Please see changelog.txt included with the download for details.</p>
 <h1 id='copyright'>Copyright</h1>
 <p>Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories</p>
 

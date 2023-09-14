@@ -554,6 +554,16 @@
             <a href="#additional-parameters" class="toc-h1 toc-link" data-title="Additional parameters">Additional parameters</a>
           </li>
           <li>
+            <a href="#error-handling" class="toc-h1 toc-link" data-title="Error handling">Error handling</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#keyboard-interrupts" class="toc-h2 toc-link" data-title="Keyboard interrupts">Keyboard interrupts</a>
+                    
+                    
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#functions-plot" class="toc-h1 toc-link" data-title="Functions: Plot">Functions: Plot</a>
               <ul class="toc-list-h2">
                   <li>
@@ -730,7 +740,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>.
-The link is permanent and will be kept up to date. The current release version is 3.6.</p>
+The link is permanent and will be kept up to date. The current release version is 3.7.2.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -738,7 +748,7 @@ conventionally, since the download includes example python scripts, an example c
 
 <p><strong>Standard install</strong></p>
 
-<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.6.</p>
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.7.2.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -2180,7 +2190,7 @@ progress saved.</p>
 following workflow is used to pause and resume plots that are underway:</p>
 
 <ol>
-<li>The physical pause button on the AxiDraw is pressed. (Plots can also be paused at predefined points with <a href="http://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>.)</li>
+<li>The plot is paused by pressing the physical pause button on the AxiDraw, or using Control+C on the keyboard, if keyboard pausing is enabled with <a href="#error-handling"><code>keyboard_pause</code></a>. (Plots can also be paused at predefined points with <a href="http://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>.)</li>
 <li>The plot pauses after finishing the current line segment.</li>
 <li>The SVG file is updated, saving an index of progress through the file and last-known XY carriage location.</li>
 <li>The user may then use the Resume tab to return the carriage home or to resume the plot, using the stored plot progress data from the file as a reference.</li>
@@ -2338,9 +2348,9 @@ They cannot be used within an <b>Interactive</b> context session.
 <p>Query and report the firmware version of the AxiDraw&#39;s EBB control
 board. This is the default option in manual mode.</p>
 
-<p>In addition to printing firmware version, running this
-manual command with <code>plot_run()</code> also creates a Python string variable,
-<code>fw_version_string</code> that you can access and use within a script.</p>
+<p>In addition to printing firmware version this way, calling <a href="#plot_run"><code>plot_run()</code></a>
+<em>in any mode</em> creates a Python string variable, <code>fw_version_string</code> that you can
+access and use within a script.</p>
 
 <p>As of this writing, the current firmware version is 2.8.1. To update the
 firmware on your AxiDraw, please see
@@ -2889,6 +2899,11 @@ assign the nickname &quot;North&quot;. The name may be up to 16 characters long.
 Using a nickname of at least 3 characters is recommended. Writing an
 empty string (with nothing following <code>write_name</code>) will clear the
 nickname. </p>
+
+<p>Assigned Nicknames are semi-permanent; they will persist when power
+is cycled, but can be overwritten by this command, (or other utilities
+that assign a nickname), and will be erased (reset to default) if you
+should run a firmware update at some point in the future.</p>
 
 <p>Since the nickname parameter is stored in a certain flash memory cell
 that can only be written a finite number of times, avoid applications
@@ -3838,6 +3853,124 @@ technical support for situation-specific advice.</p>
 <aside class="warning">
 Advanced feature; use with great care.
 </aside>
+<h1 id='error-handling'>Error handling</h1>
+<blockquote>
+<div class="codetitle">Error handling</div>
+
+<p>Example 1:
+Plot a file, raising RunTime error on failure to connect,
+pause button press, loss of connection, or keyboard interrupt</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>              <span class="c1"># create class instance "ad"
+</span><span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+
+<span class="n">ad</span><span class="p">.</span><span class="n">keyboard_pause</span> <span class="o">=</span> <span class="bp">True</span>            <span class="c1"># Enable keyboard interrupt to pause plot
+</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">connect</span> <span class="o">=</span> <span class="bp">True</span>        <span class="c1"># Raise error on failure to connect
+</span><span class="n">ad</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">button</span> <span class="o">=</span> <span class="bp">True</span>         <span class="c1"># Raise error on pause button press
+</span><span class="n">ad</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">keyboard</span> <span class="o">=</span> <span class="bp">True</span>       <span class="c1"># Raise error on keyboard interrupt
+</span><span class="n">ad</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">disconnect</span> <span class="o">=</span> <span class="bp">True</span>     <span class="c1"># Raise error on loss of connection
+</span><span class="k">try</span><span class="p">:</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+<span class="k">except</span> <span class="nb">RuntimeError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"plot failed with error </span><span class="si">{</span><span class="n">ad</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">code</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Plot a file without raising extra runtime errors, but checking for an error
+code after plot_run returns:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+<span class="n">output_svg</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">ad</span><span class="p">.</span><span class="n">errors</span><span class="p">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">102</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"plot paused by button press."</span><span class="p">)</span>
+</code></pre></div>
+<p>This API allows you to configure whether or not certain error conditions will
+raise a Python error. Some actions &mdash; such as calling an interactive movement
+function before connecting to the AxiDraw  &mdash; will <strong>always</strong> raise a <code>RuntimeError</code>.
+However, one may prefer to raise an error or <em>not raise an error</em> when (e.g.,) the pause
+button is pressed in the middle of a plot.</p>
+
+<p>The following four variables are available, and can be set <code>True</code> to cause the API to raise
+a <code>RuntimeError</code> when the given condition is met. If you do set them, do so before 
+<a href="#plot_run"><code>plot_run()</code></a> in the <strong>Plot</strong> context or 
+<a href="#connect"><code>connect()</code></a> in the <strong>Interactive</strong> context.</p>
+
+<table><thead>
+<tr>
+<th>Variable</th>
+<th>Raise error:</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>errors.connect</code></td>
+<td>On failure to connect (default: False)</td>
+</tr>
+<tr>
+<td><code>errors.button</code></td>
+<td>When pause button is pressed (default: False)</td>
+</tr>
+<tr>
+<td><code>errors.keyboard</code></td>
+<td>On keyboard interrupt (if enabled) (default: False)</td>
+</tr>
+<tr>
+<td><code>errors.disconnect</code></td>
+<td>On failure to connect (default: False)</td>
+</tr>
+</tbody></table>
+
+<p>It is important to note that raising one of these errors will halt execution of the current function,
+which will prevent functions including <a href="#plot_run"><code>plot_run(True)</code></a> from returning 
+data and thus hindering the ability to resume a plot.</p>
+
+<p>It may be preferable to allow the function to terminate normally, 
+collecting its return data, and then to query the variable <code>errors.code</code>
+which can indicate these same error conditions:</p>
+
+<table><thead>
+<tr>
+<th><code>errors.code</code> value</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>0</td>
+<td>No error; operation nominal</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Failed to connect</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Stopped by pause button press</td>
+</tr>
+<tr>
+<td>103</td>
+<td>Stopped by keyboard interrupt (if enabled)</td>
+</tr>
+<tr>
+<td>104</td>
+<td>Lost USB connectivity</td>
+</tr>
+</tbody></table>
+<h2 id='keyboard-interrupts'>Keyboard interrupts</h2>
+<p>While Python scripts can <em>typically</em> be stopped by a Control+C keyboard operation, resulting in a
+<code>KeyboardInterrupt</code> error, a more graceful interrupt can be enabled by setting the
+<code>keyboard_pause</code> variable to <code>True</code>.
+If <code>keyboard_pause</code> is set to <code>True</code> in your script, then a Control+C keyboard interrupt will
+stop a plot much in the same way that pressing the pause button will,
+potentially allowing the plot to be resumed later. Alternately, it can be caused to raise
+a <code>RuntimeError</code> 
+if <code>errors.keyboard</code> is set also set to <code>True</code>. </p>
+
+<p><code>keyboard_pause</code> is <code>False</code> by default. If you wish to set it <code>True</code>, do so prior to 
+<a href="#plot_run"><code>plot_run()</code></a> in the <strong>Plot</strong> context or 
+<a href="#connect"><code>connect()</code></a> in the <strong>Interactive</strong> context.</p>
 <h1 id='functions-plot'>Functions: Plot</h1>
 <p>This is the Python function reference for the functions available within the <strong>Plot</strong> context.
 These functions do not apply in the <strong>Interactive</strong> context.</p>
@@ -4993,10 +5126,31 @@ Advanced feature; use with great care.</aside>
 These functions can only be used within the <b>Interactive</b> context.
 </aside>
 <h1 id='api-changelog'>API Changelog</h1>
-<p>Revision Notes: Changes affecting API.</p>
+<p>Revision Notes: Summary of changes affecting API.</p>
 
-<p>Please note that the changelog.txt file included with the download includes
-some details about older releases that are no longer listed below.</p>
+<p>Please note that the changelog.txt file included with the download is more comprehensive
+and includes details about older releases that are no longer listed below.</p>
+
+<p><strong>v 3.7.2 (2022-11-09)</strong></p>
+
+<p>Add <a href="#error-handling">four new variables</a> to configure which types of error
+conditions raise a RuntimeError, and add a new variable <code>errors.code</code> making it
+easier to detect error conditions when not raising an error.</p>
+
+<p>Plots run via the Python API can now be paused by a keyboard interrupt if the
+<code>keyboard_pause</code> variable is enabled, as detailed in the new 
+<a href="#error-handling">error handling</a> section.</p>
+
+<p>The <code>fw_version_string</code> variable is now always populated by <a href="#plot_run"><code>plot_run()</code></a>.</p>
+
+<p>Removed &quot;bezier_segmentation_tolerance&quot; and &quot;smoothness&quot; parameters from configuration
+file; replaced with a single &quot;curve_tolerance&quot; parameter.</p>
+
+<p>Raise RuntimeError on failure to load SVG files.</p>
+
+<p>Add support for Python 3.11. Python 3.7 - 3.11 are now supported.</p>
+
+<p>3.7.2 Archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_372.zip">here</a>.</p>
 
 <p><strong>v 3.6 (2022-10-01)</strong></p>
 
@@ -5163,75 +5317,6 @@ in this documentation listing what the different example scripts do.</p>
 archived for download <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip">here</a>.
 You can also install it via:
 <code>pip install https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip</code></p>
-
-<p><strong>v 2.6.0 (2020-07-04)</strong></p>
-
-<ul>
-<li>This is the <em>last</em> major release of this API to support both Python 2 and Python 3.
-Future releases starting with 2.7.0 will require Python 3.5+.</li>
-<li>Add <a href="#usb_command-usb_query"><code>usb_command</code></a> and 
-<a href="#usb_command-usb_query"><code>usb_query</code></a> functions
-in interactive context.</li>
-<li>Add <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code></a> and 
-<a href="#walk_mmx-walk_mmy"><code>walk_mmy</code></a> <a href="#manual_cmd">manual commands</a>, for manual walk 
-in millimeter units.</li>
-<li>Add <a href="#units">mm units</a> for interactive moves, in addition to cm, inch units.</li>
-<li>Add direct access to additional parameters, using new <a href="#additional-parameters"><code>params</code></a> syntax.</li>
-<li>Renamed <code>ebb_version</code> to <a href="#fw_version"><code>fw_version</code></a>. The deprecated
-manual command <code>ebb_version</code> is functional but will be removed
-in a future version.</li>
-<li>Certain operations that print output now also populate Python variables:
-
-<ul>
-<li><a href="#version"><code>version</code> mode</a></li>
-<li><a href="#fw_version"><code>fw_version</code></a> manual command</li>
-<li><a href="#report_time"><code>report_time</code> option</a></li>
-</ul></li>
-<li>New parameters are available in the axidraw_conf.py configuration file:
-<code>servo_timeout</code> and <code>use_b3_out</code></li>
-</ul>
-
-<p><strong>v  2.5.x  --  2020-01-02</strong></p>
-
-<p>Deprecated a value for <code>port_config</code>.</p>
-
-<p><code>list_names</code> populates an accessible Python variable</p>
-
-<p><strong>v  2.5.6  --  2019-12-13</strong></p>
-
-<p>Add support for new AxiDraw MiniKit model</p>
-
-<p><strong>v  2.5.0  --  2019-05-02</strong></p>
-
-<p>Add reordering parameter, available in plot context.</p>
-
-<p><strong>v  2.4.0  --  2019-04-02</strong></p>
-
-<p>No changes affecting Python API; Changed names of some
-parameters in axidraw_conf.py. </p>
-
-<p><strong>v  2.3.2  --  2019-01-22</strong></p>
-
-<p>Input file no longer required for plot_setup().</p>
-
-<p><strong>v  2.2.0  --  2018-10-01</strong></p>
-
-<p>Automatic checking for updates now performed with the sysinfo mode.
-Add note about &quot;reorder&quot; mode (CLI only).</p>
-
-<p><strong>v  2.1.1  --  2018-08-31</strong></p>
-
-<p>Paths now clipped at edges of SVG document, when using Plot context.</p>
-
-<p><strong>v. 2.1.0  --  2018-08-24</strong></p>
-
-<p>Paths and interactive XY movements now clipped with pen-up at extents of
-machine travel.</p>
-
-<p><strong>v. 2.0.0  --  2018-08-22</strong></p>
-
-<p>Significant, breaking changes to option names and syntax, for clarity and
-compatibility. Please see changelog.txt included with the download for details.</p>
 <h1 id='copyright'>Copyright</h1>
 <p>Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories</p>
 

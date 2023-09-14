@@ -25,10 +25,13 @@ https://github.com/evil-mad/AxiDraw
 Requires Python 3.7 or newer and Pyserial 3.5 or newer.
 """
 
+import sys
 import math
 import gettext
 import copy
 import logging
+import threading
+import signal
 
 from lxml import etree
 
@@ -44,6 +47,17 @@ path_objects = from_dependency_import('axidrawinternal.path_objects')
 
 logger = logging.getLogger(__name__)
 
+
+class ErrConfig:
+    '''Configure error reporting options for AxiDraw Python API'''
+    def __init__(self):
+        self.connect = False # Raise error on failure to connect to AxiDraw
+        self.button = False # Raise error on pause by button press
+        self.keyboard = False # Raise error on pause by keyboard interrupt
+        self.disconnect = False # Raise error on loss of USB connectivity
+        self.code = 0 # Error code. 0 (default) indicates no error.
+
+
 class AxiDraw(axidraw.AxiDraw):
     """ Extend AxiDraw class with Python API functions """
 
@@ -57,13 +71,45 @@ class AxiDraw(axidraw.AxiDraw):
         self.document = None
         self.original_document = None
 
+        self.time_estimate = 0
+        self.distance_pendown = 0
+        self.distance_total = 0
+        self.pen_lifts = 0
+        self.software_initiated_pause_event = None
+        self.fw_version_string = None
+        self.keyboard_pause = False
+        self.errors = ErrConfig()
+        self._interrupted = False # Duplicate flag for keyboard interrupt for special cases.
+
+    def set_up_pause_transmitter(self):
+        """ intercept ctrl-C (keyboard interrupt) and redefine as "pause" command """
+        if self.keyboard_pause: # only enable when explicitly directed to
+            signal.signal(signal.SIGINT, self.transmit_pause_request)
+        self.software_initiated_pause_event = threading.Event()
+        self._interrupted = False
+
+    def transmit_pause_request(self, *args):
+        """ Transmit a software-requested pause event """
+        self.software_initiated_pause_event.set()
+        self._interrupted = True
+
+    def clear_pause_request(self):
+        """ Clear a software-requested pause event """
+        if self.keyboard_pause: # only when enabled
+            self.software_initiated_pause_event.clear()
+        self._interrupted = False
+
     def connect(self):
         '''Python Interactive context: Open connection to AxiDraw'''
         if not self._verify_interactive():
             return None
 
+        self.set_up_pause_transmitter()
+
         self.serial_connect() # Open USB serial session
         if self.plot_status.port is None:
+            if self.errors.connect:
+                raise RuntimeError("Failed to connected to AxiDraw")
             return False
 
         self.query_ebb_voltage()
@@ -99,36 +145,45 @@ class AxiDraw(axidraw.AxiDraw):
         if svg_input is None:
             svg_input = plot_utils.trivial_svg
         try: # Parse input file or SVG string
-            stream = open(svg_input, 'r')
-            p = etree.XMLParser(huge_tree=True)
-            self.document = etree.parse(stream, parser=p)
+            file_ref = open(svg_input, encoding='utf8')
+            parse_ref = etree.XMLParser(huge_tree=True)
+            self.document = etree.parse(file_ref, parser=parse_ref)
             self.original_document = copy.deepcopy(self.document)
-            stream.close()
+            file_ref.close()
             file_ok = True
         except IOError:
-            pass # It wasn't a file...
+            pass # It wasn't a file; was it a string?
         if not file_ok:
             try:
-                svg_string = svg_input.encode('utf-8') # Need consistent encoding.
-                p = etree.XMLParser(huge_tree=True, encoding='utf-8')
-                self.document = etree.ElementTree(etree.fromstring(svg_string, parser=p))
+                svg_string = svg_input.encode('utf8') # Need consistent encoding.
+                parse_ref = etree.XMLParser(huge_tree=True, encoding='utf8')
+                self.document = etree.ElementTree(etree.fromstring(svg_string, parser=parse_ref))
                 self.original_document = copy.deepcopy(self.document)
                 file_ok = True
             except:
                 logger.error("Unable to open SVG input file.")
-                quit(1)
+                raise RuntimeError("Unable to open SVG input file.")
         if file_ok:
             self.getdocids()
         # self.suppress_standard_output_stream()
 
     def plot_run(self, output=False):
         '''Python module plot context: Plot document'''
+
+        self.set_up_pause_transmitter()
+
         if self.document is None:
             logger.error("No SVG input provided.")
             logger.error("Use plot_setup(svg_input) before plot_run().")
-            quit(1)
+            raise RuntimeError("No SVG input provided.")
         self.set_defaults() # Re-initialize some items normally set at __init__
+        self.set_up_pause_receiver(self.software_initiated_pause_event)
         self.effect()
+        self.clear_pause_request()
+        #self.fw_version_string is a public string made available to Python API:
+        self.fw_version_string = self.plot_status.fw_version
+
+        self.handle_errors()
 
         self.time_estimate = self.plot_status.stats.pt_estimate / 1000.0
         self.distance_pendown = 0.0254 * self.plot_status.stats.down_travel_inch
@@ -171,6 +226,7 @@ class AxiDraw(axidraw.AxiDraw):
                     return True
             except AttributeError:
                 pass
+            self.handle_errors() # Raise specific error if thus configured
             raise RuntimeError("Not connected to AxiDraw")
         return True
 
@@ -233,23 +289,24 @@ class AxiDraw(axidraw.AxiDraw):
         accept, seg = plot_utils.clip_segment(segment, self.bounds)
 
         if accept and self.plot_status.port: # Segment is at least partially within bounds
-            if self.plot_status.port:
-                if not plot_utils.points_near(seg[0], turtle, 1e-9): # if intial point clipped
-                    if self.params.auto_clip_lift and not self.turtle_pen_up:
-                        self.pen.pen_raise(self.options, self.params, self.plot_status)
-                        # Pen-up move to initial position
-                        self.turtle_pen_up = False # Keep track of intended state
-                    self.plot_seg_with_v(seg[0][0], seg[0][1], 0, 0) # move to start
-                if not self.turtle_pen_up:
-                    self.pen.pen_lower(self.options, self.params, self.plot_status)
-                self.plot_seg_with_v(seg[1][0], seg[1][1], 0, 0) # Draw clipped segment
-                if not plot_utils.points_near(seg[1], target, 1e-9) and\
-                        self.params.auto_clip_lift and not self.turtle_pen_up:
+            if not plot_utils.points_near(seg[0], turtle, 1e-9): # if initial point clipped
+                if self.params.auto_clip_lift and not self.turtle_pen_up:
                     self.pen.pen_raise(self.options, self.params, self.plot_status)
-                    # Segment end was clipped; this end is out of bounds.
+                    # Pen-up move to initial position
                     self.turtle_pen_up = False # Keep track of intended state
+                self.plot_seg_with_v(seg[0][0], seg[0][1], 0, 0) # move to start
+            if not self.turtle_pen_up:
+                self.pen.pen_lower(self.options, self.params, self.plot_status)
+            self.plot_seg_with_v(seg[1][0], seg[1][1], 0, 0) # Draw clipped segment
+            if not plot_utils.points_near(seg[1], target, 1e-9) and\
+                    self.params.auto_clip_lift and not self.turtle_pen_up:
+                self.pen.pen_raise(self.options, self.params, self.plot_status)
+                # Segment end was clipped; this end is out of bounds.
+                self.turtle_pen_up = False # Keep track of intended state
         self.turtle_x = x_value
         self.turtle_y = y_value
+
+        self.handle_errors()
 
     def draw_path(self, vertex_list):
         '''
@@ -296,12 +353,36 @@ class AxiDraw(axidraw.AxiDraw):
             if self.plot_status.stopped:
                 break
             self.plot_polyline(path_item.subpaths[0])
+            self.handle_errors()
             self.penup()
 
         if self.plot_status.stopped:
             new_turtle = self.f_curr_x, self.f_curr_y
         self.turtle_x, self.turtle_y = new_turtle
         self.turtle_pen_up = True
+
+    def handle_errors(self):
+        '''Raise keyboard interrupts and runtime errors if thus configured'''
+
+        self.errors.code = self.plot_status.stopped
+        if self.errors.code == 101:
+            if self.errors.connect:
+                raise RuntimeError("Failed to connected to AxiDraw")
+        if self.errors.code == 102:
+            if self.errors.button:
+                self.disconnect()
+                raise RuntimeError("Stopped by pause button press")
+        if self.errors.code == 103:
+            if self.errors.keyboard:
+                self.disconnect()
+                raise RuntimeError("Stopped by keyboard interrupt")
+        if self.errors.code == 104:
+            if self.errors.disconnect:
+                raise RuntimeError("Lost USB connectivity")
+
+        if self._interrupted: # Fallback; catch interrupts not flagged in main axidraw module.
+            if self.errors.code == 0:
+                self.plot_status.stopped = -103 # Assert keyboard interrupt
 
     def goto(self,x_target,y_target):
         '''Interactive context: absolute position move'''
@@ -312,6 +393,7 @@ class AxiDraw(axidraw.AxiDraw):
         if not self._verify_interactive(True):
             return
         self.pen.pen_raise(self.options, self.params, self.plot_status)
+        self.turtle_pen_up = True
         self._xy_plot_segment(False,x_target, y_target)
 
     def lineto(self,x_target,y_target):
@@ -328,6 +410,7 @@ class AxiDraw(axidraw.AxiDraw):
         if not self._verify_interactive(True):
             return
         self.pen.pen_raise(self.options, self.params, self.plot_status)
+        self.turtle_pen_up = True
         self._xy_plot_segment(True,x_delta, y_delta)
 
     def line(self,x_delta,y_delta):

@@ -69,7 +69,7 @@ setuptools.setup = replacement_setup
 
 replacement_setup(
     name='axicli',
-    version='3.6.0',
+    version='3.7.2',
     python_requires='>=3.7.0',
     long_description=long_description,
     long_description_content_type='text/plain',
@@ -89,7 +89,6 @@ replacement_setup(
     entry_points={
         'console_scripts': [
             'axicli = axicli.__main__:axidraw_CLI',
-            'htacli = axicli.__main__:hta_CLI',
         ]
     },
 )

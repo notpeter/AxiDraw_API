@@ -1,6 +1,6 @@
 AxiDraw CLI and Python API — Installation
 
-Supported on python 3.6 and newer
+Supported on python 3.7 and newer
 Mac, Windows, and Linux.
 
 
