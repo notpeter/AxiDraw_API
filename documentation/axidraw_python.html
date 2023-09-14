@@ -716,7 +716,7 @@ through our github
 <p>If you already have Python 3.6 or newer installed, use the following in a terminal:<br>
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
-<p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>. The link is permanent and will be kept up to date. The current release version is 3.2.</p>
+<p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>. The link is permanent and will be kept up to date. The current release version is 3.3.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -1433,18 +1433,19 @@ are clipped to occur within these limits.</p>
 
 <p>Limits are not checked when using manual walk commands.</p>
 
-<p>Allowed values: Integers from 1 to 3:</p>
+<p>Allowed values: Integers from 1 to 7:</p>
 
 <ul>
-<li><code>1</code> - AxiDraw V2 or AxiDraw V3</li>
-<li><code>2</code> - AxiDraw V3/A3 or AxiDraw SE/A3</li>
+<li><code>1</code> - AxiDraw V2, V3, or SE/A4</li>
+<li><code>2</code> - AxiDraw V3/A3 or SE/A3</li>
 <li><code>3</code> - AxiDraw V3 XLX</li>
 <li><code>4</code> - AxiDraw MiniKit</li>
 <li><code>5</code> - AxiDraw SE/A1</li>
 <li><code>6</code> - AxiDraw SE/A2</li>
+<li><code>7</code> - AxiDraw V3/B6</li>
 </ul>
 
-<p><strong>Default:</strong> 1 (AxiDraw V2 or AxiDraw V3), given by <code>model</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 1 (AxiDraw V2, V3, or SE/A4), given by <code>model</code> in axidraw_conf.py</p>
 
 <p>The physical size definitions for each model type are also configured in
 axidraw_conf.py.</p>
@@ -2146,6 +2147,13 @@ output SVG as the <em>input</em> to the next plotting cycle, by using <a href="#
 to the home position (if and only if performed via <code>res_home</code> and
 saving the progress of having done so) and then using <code>res_plot</code> to
 resume plotting. </p>
+
+<aside class="notice">
+If you are setting other options in your plot, be sure and leave those options set
+(or set them again if necessary) when using
+<code>res_home</code> or <code>res_plot</code>. Resuming without setting (e.g.) the right pen height
+or AxiDraw model can result in unexpected output.
+</aside>
 
 <aside class="notice">
 Plot modes are only applicable for use within the <b>Plot</b> context.
@@ -3506,6 +3514,7 @@ A Plob is a restricted-format subset of SVG that the AxiDraw software &quot;dige
 
 <ul>
 <li>Removing hidden and non-printable layers and objects</li>
+<li>Removing ignored layers, if working in <a href="#layers"><code>layers</code></a> mode.</li>
 <li>Reducing all plottable shapes and paths to vertex lists</li>
 <li>Applying, then removing any transformations</li>
 <li>Removing all style information</li>
@@ -4761,6 +4770,12 @@ These functions can only be used within the <b>Interactive</b> context.
 </aside>
 <h1 id='api-changelog'>API Changelog</h1>
 <p>Revision Notes: Changes affecting API</p>
+
+<p><strong>v 3.3 (2022-06-11)</strong></p>
+
+<p>Expand <a href="#model"><code>model</code></a> option values with AxiDraw V3/B6.</p>
+
+<p>3.3.0 archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_330.zip">here</a>;</p>
 
 <p><strong>v 3.2 (2022-02-24)</strong></p>
 

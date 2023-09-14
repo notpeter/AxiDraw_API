@@ -616,7 +616,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw CLI and the <a href="https://axidraw.com/doc/py_api/">AxiDraw Python Module</a>.
-The link is permanent and will be kept up to date. The current release version is 3.2.</p>
+The link is permanent and will be kept up to date. The current release version is 3.3.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -1358,6 +1358,13 @@ resume plotting. </p>
 
 <p>An input file, to be plotted, is always required in both
 <code>res_home</code> and <code>res_plot</code> modes.</p>
+
+<aside class="notice">
+If you are using a custom configuration file or otherwise setting options in your plot,
+be sure and do so as well when using
+<code>res_home</code> or <code>res_plot</code>. Resuming without setting (e.g.) the right pen height
+or AxiDraw model can result in unexpected output.
+</aside>
 <h3 id='reorder'>reorder</h3>
 <blockquote>
 <div class="codetitle">mode: reorder</div>
@@ -2888,18 +2895,19 @@ for each axis.</p>
 
 <p>Limits are not checked when using manual walk commands.</p>
 
-<p>Allowed values: Integers from 1 to 3:</p>
+<p>Allowed values: Integers from 1 to 7:</p>
 
 <ul>
-<li><code>1</code> - AxiDraw V2 or AxiDraw V3</li>
-<li><code>2</code> - AxiDraw V3/A3 or AxiDraw SE/A3</li>
+<li><code>1</code> - AxiDraw V2, V3, or SE/A4</li>
+<li><code>2</code> - AxiDraw V3/A3 or SE/A3</li>
 <li><code>3</code> - AxiDraw V3 XLX</li>
 <li><code>4</code> - AxiDraw MiniKit</li>
 <li><code>5</code> - AxiDraw SE/A1</li>
 <li><code>6</code> - AxiDraw SE/A2</li>
+<li><code>7</code> - AxiDraw V3/B6</li>
 </ul>
 
-<p><strong>Default:</strong> 1 (AxiDraw V2 or AxiDraw V3), given by <code>model</code> in
+<p><strong>Default:</strong> 1 (AxiDraw V2, V3, or SE/A4), given by <code>model</code> in
 axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 
@@ -3100,6 +3108,7 @@ the file into before plotting.</p>
 
 <ul>
 <li>Removing hidden and non-printable layers and objects</li>
+<li>Removing ignored layers, if working in <a href="#layers"><code>layers</code></a> mode.</li>
 <li>Reducing all plottable shapes and paths to vertex lists</li>
 <li>Applying, then removing any transformations</li>
 <li>Removing all style information</li>
@@ -3281,6 +3290,12 @@ avoid duplicate warning messages during the plot. Thus, if you need to request
 (e.g.) the firmware version from each AxiDraw, do so individually.</p>
 <h1 id='api-changelog'>API Changelog</h1>
 <p>Revision Notes: Changes affecting API</p>
+
+<p><strong>v 3.3 (2022-06-11)</strong></p>
+
+<p>Expand <a href="#model"><code>model</code></a> option values with AxiDraw V3/B6.</p>
+
+<p>3.3.0 archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_330.zip">here</a>;</p>
 
 <p><strong>v 3.2 (2022-02-24)</strong></p>
 

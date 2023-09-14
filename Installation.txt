@@ -24,7 +24,7 @@ If you do not have pip, download and install it, following the instructions at:
 https://pip.pypa.io/en/stable/installing/
 
 
-3.) [Optional:] Use virtualenv to control versioning
+3.) [Recommended, optional] Use virtualenv to control versioning
 
 
 Install virtualenv:
@@ -62,12 +62,22 @@ cd /Users/username/Documents/axidraw-api/  (Your location and path will vary)
 ```
 
 Then use pip to install it.
+Most users can use this commmand:
 
 ```
 pip install .
-```
-(On Windows, you may need to use "python -m pip install .")
 
+```
+
+or the equivalent:
+
+```
+python -m pip install .
+```
+
+Some additional flags on pip (like `--user`) are not supported in most
+situations. If you need to customize the installation (e.g., with extra `pip`
+flags like `--user`), you should use the commands here: https://gitlab.com/evil-mad/AxiCli/bin/alt_install.
 
 5.) Test that the software is operational:
 
