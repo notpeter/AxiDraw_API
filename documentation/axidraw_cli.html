@@ -349,6 +349,9 @@
                             <a href="#layers" class="toc-h3 toc-link" data-title="layers">layers</a>
                           </li>
                           <li>
+                            <a href="#cycle" class="toc-h3 toc-link" data-title="cycle">cycle</a>
+                          </li>
+                          <li>
                             <a href="#align" class="toc-h3 toc-link" data-title="align">align</a>
                           </li>
                           <li>
@@ -370,6 +373,16 @@
                             <a href="#reorder" class="toc-h3 toc-link" data-title="reorder">reorder</a>
                           </li>
                       </ul>
+                    
+                  </li>
+                  <li>
+                    <a href="#config" class="toc-h2 toc-link" data-title="config">config</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#progress" class="toc-h2 toc-link" data-title="progress">progress</a>
+                    
                     
                   </li>
                   <li>
@@ -513,11 +526,6 @@
                     
                   </li>
                   <li>
-                    <a href="#config" class="toc-h2 toc-link" data-title="config">config</a>
-                    
-                    
-                  </li>
-                  <li>
                     <a href="#model" class="toc-h2 toc-link" data-title="model">model</a>
                     
                     
@@ -585,9 +593,9 @@ This method is described below, beginning at
 <p>While AxiCLI is designed as a &quot;stand alone&quot; utility, it is written in Python.
 If you would like to control the AxiDraw from <em>within</em> your own Python script,
 please see the <a href="https://axidraw.com/doc/py_api/">separate API documentation</a>
-for the Python API. (As a side note,
-the Python API supports an additional control method: 
-interactive XY motion control through &quot;moveto/lineto&quot; type commands.)</p>
+for the Python API. (As a side note, the Python API supports an additional control
+method:  interactive XY motion control through &quot;moveto/lineto&quot; type commands and
+vertex lists.)</p>
 <h1 id='about-axidraw'>About AxiDraw</h1>
 <p>The <a href="https://axidraw.com">AxiDraw</a> writing and drawing machine is a modern
 pen plotter designed and manufactured by
@@ -616,7 +624,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw CLI and the <a href="https://axidraw.com/doc/py_api/">AxiDraw Python Module</a>.
-The link is permanent and will be kept up to date. The current release version is 3.4.</p>
+The link is permanent and will be kept up to date. The current release version is 3.5.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -625,7 +633,7 @@ conventionally, since the download includes example python scripts, an example c
 <p><strong>Standard install</strong></p>
 
 <p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>
-The current release version is 3.4.</p>
+The current release version is 3.5.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -692,9 +700,10 @@ an input file name to be specified:</p>
 <em>Display software version of AxiDraw software and its CLI wrapper</em></p></li>
 </ul>
 
-<p>Additionally, the following utility modes do not require an input file, unless an <a href="#output_file">output file</a> is specified:
-<a href="#align"><code>align</code></a>, <a href="#toggle"><code>toggle</code></a>, <a href="#manual"><code>manual</code></a>, <a href="#sysinfo"><code>sysinfo</code></a>,
-<a href="#version"><code>version</code></a>.</p>
+<p>Additionally, the following utility modes do not require an input file,
+unless an <a href="#output_file">output file</a> is specified:
+<a href="#cycle"><code>cycle</code></a>, <a href="#align"><code>align</code></a>, <a href="#toggle"><code>toggle</code></a>,
+<a href="#manual"><code>manual</code></a>, <a href="#sysinfo"><code>sysinfo</code></a>, <a href="#version"><code>version</code></a>.</p>
 <h1 id='setting-options'>Setting options</h1><h2 id='cli-syntax'>CLI Syntax</h2>
 <blockquote>
 <div class="codetitle">CLI Syntax</div>
@@ -801,6 +810,14 @@ arguments will be described individually, after the list.</p>
 <td>Specify general mode of operation.</td>
 </tr>
 <tr>
+<td><code>--config</code>, <code>-f</code></td>
+<td>Specify configuration file to use.</td>
+</tr>
+<tr>
+<td><code>--progress</code>, <code>-b</code></td>
+<td>Enable progress bar while plotting.</td>
+</tr>
+<tr>
 <td><code>--speed_pendown</code>, <code>-s</code></td>
 <td>Maximum XY speed when the pen is down (plotting).</td>
 </tr>
@@ -885,10 +902,6 @@ arguments will be described individually, after the list.</p>
 <td>Randomize start positions of closed paths.</td>
 </tr>
 <tr>
-<td><code>--config</code>, <code>-f</code></td>
-<td>Specify configuration file to use.</td>
-</tr>
-<tr>
 <td><code>--model</code>, <code>-L</code></td>
 <td>Select model of AxiDraw hardware.</td>
 </tr>
@@ -928,9 +941,9 @@ Plot all layers that have a layer name beginning with the number 1:</p>
 </code></pre></div>
 <blockquote>
 <p>Example 2: 
-Toggle the pen up or down, using &quot;toggle&quot; mode:</p>
+Cycle the pen down then up:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode toggle   
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m cycle
 </code></pre></div>
 <blockquote>
 <p>Example 3: 
@@ -961,6 +974,10 @@ Each of these modes will be described in detail, after the list.</p>
 <tr>
 <td><code>layers</code></td>
 <td>Plot a single layer (or set of layers), selected by <code>layer</code> parameter</td>
+</tr>
+<tr>
+<td><code>cycle</code></td>
+<td>A setup mode: Lower and then raise the pen</td>
 </tr>
 <tr>
 <td><code>align</code></td>
@@ -1084,6 +1101,49 @@ name, and how to create layers when generating SVG outside of Inkscape,
 please see the 
 <a href="http://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>
 documentation.</p>
+<h3 id='cycle'>cycle</h3>
+<blockquote>
+<div class="codetitle">mode: cycle</div>
+
+<p>Example 1: 
+Cycle the pen down and then up, using &quot;cycle&quot; mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode toggle 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Cycle the pen down and then up, with pen-down and pen-up heights set to 
+20% and 80% respectively:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode cycle --pen_pos_down 20 --pen_pos_up 80
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Cycle the pen down then up, with pen-down and pen-up heights set to 
+10% and 90% respectively and all short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mcycle -d10 -u90
+</code></pre></div>
+<p><em>Cycle the pen down and back up</em></p>
+
+<p><strong>Syntax: [<code>-m cycle</code>, <code>--mode cycle</code>]</strong></p>
+
+<p>This is a setup mode that can be used used to prepare the AxiDraw for use. 
+It will lower the pen, wait 0.5 seconds, and then raise the pen. Cycling
+before inserting your pen ensures that your pen holder starts in
+the pen-up position, with current pen-up and pen-down heights applied.</p>
+
+<p>Cycle mode is equivalent to selecting the &quot;Setup&quot; tab of AxiDraw Control
+(within Inkscape) and choosing the &quot;Cycle pen down then up&quot; option
+within that tab.</p>
+
+<p>An input file is not required in this mode unless an output file is specified
+with the <a href="#output_file"><code>output_file</code></a> option.
+Execution of the command is typically faster without an input file.</p>
+
+<p>If you wish to only lower or raise the pen, not cycle down and up,
+use the <a href="#toggle"><code>toggle</code></a> mode or the
+<a href="#lower_pen-raise_pen">lower_pen/raise_pen</a> manual commands instead.</p>
 <h3 id='align'>align</h3>
 <blockquote>
 <div class="codetitle">mode: align</div>
@@ -1466,6 +1526,111 @@ Those values, detailed here, apply only when Reorder mode is active.</aside>
 <aside class="warning">
 The Reorder mode is deprecated and will be removed in a future version.
 </aside>
+<h2 id='config'>config</h2>
+<blockquote>
+<div class="codetitle">config</div>
+
+<p>Example 1: 
+Plot a file, using settings in a file called &quot;local_config.py&quot;</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --config local_config.py
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot the same file, using a path to a file in another directory.
+(Example on Mac; paths look different on other computers.)</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -f ~/axidraw/configs/draft_quality.py
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Use a configuration file called &quot;estimate.py&quot;, which defaults to have
+preview mode enabled and time reporting. This will not plot the file,
+but just estimate the time that the file will take to plot.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -f estimate.py
+</code></pre></div>
+<p><em>AxiDraw Configuration File</em></p>
+
+<p><strong>Syntax: [<code>-f</code>, <code>--config</code>] file_name</strong></p>
+
+<p>Select a custom configuration file to use. The <code>file_name</code> given in the syntax
+above may be a file name in the same directory, or a path to the configuration
+file.</p>
+
+<p>An example configuration file can be in the API download at:
+    <code>examples_config/axidraw_conf_copy.py</code></p>
+
+<p>You can duplicate, move, and rename this file as needed, though you should keep the
+&quot;.py&quot; file extension. You may wish
+to use different configuration files to have quick settings ready for (for example)
+draft versus final plotting speeds, different size AxiDraw models, different paper
+size limits, which particular AxiDraw unit to plot to, 
+or previewing without plotting.</p>
+
+<p><strong>Default:</strong> Use defaults from the axidraw_conf.py file installed
+with the software, rather than from a local configuration file.</p>
+<h2 id='progress'>progress</h2>
+<blockquote>
+<div class="codetitle">progress</div>
+
+<p>Example 1:
+Plot a file with the progress bar enabled:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --progress
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Plot a file with reordering and displaying progress:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -bG2 
+</code></pre></div>
+<p><em>Display progress bar while plotting</em></p>
+
+<p><strong>Syntax: [<code>-b</code>, <code>--progress</code>]</strong></p>
+
+<p>By default progress bars are disabled; <code>axicli</code> is a &quot;silent&quot; interface,
+providing little if any feedback while a plot is working. </p>
+
+<p>The progress bar may be enabled by using the <code>--progress</code> option (<code>-b</code>).
+It is a simple &quot;flag&quot; type argument, and takes no value argument. When enabled,
+the progress bar will visually display progress through the plot. It will
+also display some additional information such as the estimated print time and 
+&quot;axicli plot complete&quot; when the plot finishes.</p>
+
+<p>A typical display might be as follows (with a line break added for readability):</p>
+
+<p><code>Plot Progress:  53%|##########4         | 130/244</code><br />
+<code>[00:04&lt;00:02, 38.23 Nodes/s]</code></p>
+
+<p>The left part (first line) gives the percentage through the plot.
+The graph portion represents completed progress by <code>#</code> and partial progress on the leading glyph
+(not quite a full <code>#</code>) by numbers 1-9. The fraction after that (<code>130/244</code> here) is the count of
+plot &quot;nodes&quot;; an internal index that the software uses.
+The right part (second line, here) gives the elapsed and remaining time,
+formatted as: [(elapsed time) &lt; (remaining time)].
+It also shows a count of plot &quot;nodes&quot; per second.</p>
+
+<p>When plotting multiple copies, the progress bar will indicate which copy number
+is being plotted, and a new progress bar will be displayed during the delay
+between pages.</p>
+
+<p>Enabling the progress bar does lead to an increase in the time between initiating the plot
+and when the AxiDraw actually begins to plot, since it requires that a plot preview is run
+to calculate the plot length. In typical cases, this added time increases the total time
+duration for a plot by well under 1%.</p>
+
+<p>The progress bar feature is only available from the AxiDraw CLI, when the option is enabled,
+and in modes that actually plot to the AxiDraw (&quot;plot&quot;, &quot;layers&quot;, &quot;res_plot&quot;). It is not
+available while running a preview nor while generating a digest without plotting.</p>
+
+<p>To enable progress bars by default, edit axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file and change the value of
+<code>progress</code> from <code>False</code> to <code>True</code>. (Note that there is not an override to
+disable progress bars if enabled in the configuration file.)</p>
+
+<p><strong>Default:</strong> False, given by <code>progress</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='speed_pendown'>speed_pendown</h2>
 <blockquote>
 <div class="codetitle">speed_pendown</div>
@@ -1571,10 +1736,10 @@ Plot file.svg, with pen-down height of 20%:</p>
 </code></pre></div>
 <blockquote>
 <p>Example 2: 
-Toggle the pen up or down, with pen-down and pen-up heights set to 
+Cycle the pen down then up, with pen-down and pen-up heights set to 
 10% and 90% respectively:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli -mtoggle -d10 -u90
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mcycle -d10 -u90
 </code></pre></div>
 <blockquote>
 <p>Example 3: 
@@ -1791,7 +1956,7 @@ Plot a file in constant-speed mode, and with auto-rotate disabled:</p>
 page size that is taller than it is wide, then it will print in landscape
 mode rather than portrait mode.</p>
 
-<p>Auto-rotate may be disabled by using the <code>--no_rotate option</code> (<code>-N</code>).
+<p>Auto-rotate may be disabled by using the <code>--no_rotate</code> option (<code>-N</code>).
 It is a simple &quot;flag&quot; type argument, and takes no value argument.</p>
 
 <p>To disable auto-rotate by default, edit 
@@ -2827,50 +2992,6 @@ simple &quot;flag&quot; type argument, and takes no value argument</p>
 <p>To enable this option by default, edit axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file and change the value
 of <code>random_start</code> from <code>False</code> to <code>True</code>.</p>
-<h2 id='config'>config</h2>
-<blockquote>
-<div class="codetitle">config</div>
-
-<p>Example 1: 
-Plot a file, using settings in a file called &quot;local_config.py&quot;</p>
-</blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --config local_config.py
-</code></pre></div>
-<blockquote>
-<p>Example 2: 
-Plot the same file, using a path to a file in another directory.
-(Example on Mac; paths look different on other computers.)</p>
-</blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -f ~/axidraw/configs/draft_quality.py
-</code></pre></div>
-<blockquote>
-<p>Example 3: 
-Use a configuration file called &quot;estimate.py&quot;, which defaults to have
-preview mode enabled and time reporting. This will not plot the file,
-but just estimate the time that the file will take to plot.</p>
-</blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -f estimate.py
-</code></pre></div>
-<p><em>AxiDraw Configuration File</em></p>
-
-<p><strong>Syntax: [<code>-f</code>, <code>--config</code>] file_name</strong></p>
-
-<p>Select a custom configuration file to use. The <code>file_name</code> given in the syntax
-above may be a file name in the same directory, or a path to the configuration
-file.</p>
-
-<p>An example configuration file can be in the API download at:
-    <code>examples_config/axidraw_conf_copy.py</code></p>
-
-<p>You can duplicate, move, and rename this file as needed, though you should keep the
-&quot;.py&quot; file extension. You may wish
-to use different configuration files to have quick settings ready for (for example)
-draft versus final plotting speeds, different size AxiDraw models, different paper
-size limits, which particular AxiDraw unit to plot to, 
-or previewing without plotting.</p>
-
-<p><strong>Default:</strong> Use defaults from the axidraw_conf.py file installed
-with the software, rather than from a local configuration file.</p>
 <h2 id='model'>model</h2>
 <blockquote>
 <div class="codetitle">model</div>
@@ -3030,13 +3151,6 @@ AxiDraw machines&quot; below for an extended discussion.</p>
 
 <p><strong>Default:</strong> 0, given by <code>port_config</code> in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
-
-<aside class="notice">
-Previous versions of this documentation allowed an additional 
-`port_config` value of 2, intended to plot *only* to the specified port.
-The actual behavior with this value selected turns out to be identical
-to the default behavior, and so this value has been deprecated.
-</aside>
 <h2 id='output_file'>output_file</h2>
 <blockquote>
 <div class="codetitle">output_file</div>
@@ -3298,6 +3412,17 @@ avoid duplicate warning messages during the plot. Thus, if you need to request
 
 <p>Please note that the changelog.txt file included with the download includes
 some details about older releases that are no longer listed below.</p>
+
+<p><strong>v 3.5 (2022-08-10)</strong></p>
+
+<p>New feature available in CLI: <a href="#progress">Progress bars</a> while plotting.</p>
+
+<p>Added new setup mode, <a href="#cycle"><code>cycle</code></a>, to assist with setting pen height.</p>
+
+<p>New parameter in the axidraw_conf.py configuration file: <code>servo_pin</code> for re-assigning
+the pen-lift servo digital output to a different output pin.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_350.zip">here</a>.</p>
 
 <p><strong>v 3.4 (2022-07-22)</strong></p>
 

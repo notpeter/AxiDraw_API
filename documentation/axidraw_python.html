@@ -410,6 +410,9 @@
                             <a href="#layers" class="toc-h3 toc-link" data-title="layers">layers</a>
                           </li>
                           <li>
+                            <a href="#cycle" class="toc-h3 toc-link" data-title="cycle">cycle</a>
+                          </li>
+                          <li>
                             <a href="#align" class="toc-h3 toc-link" data-title="align">align</a>
                           </li>
                           <li>
@@ -629,6 +632,11 @@
                     
                   </li>
                   <li>
+                    <a href="#draw_path" class="toc-h2 toc-link" data-title="draw_path">draw_path</a>
+                    
+                    
+                  </li>
+                  <li>
                     <a href="#current_pos" class="toc-h2 toc-link" data-title="current_pos">current_pos</a>
                     
                     
@@ -675,7 +683,7 @@ scripts.</p>
 
 <ul>
 <li>Plotting SVG files, and </li>
-<li>Interactive XY motion control through &quot;moveto/lineto&quot; type commands</li>
+<li>Interactive XY motion control through &quot;moveto/lineto&quot; type commands and vertex lists.</li>
 </ul>
 
 <p>To distinguish between these two control methods, we will refer to them as the 
@@ -687,7 +695,7 @@ and <a href="#quick-start-interactive-xy">Quick start: Interactive XY</a> for mo
 information.</p>
 
 <p>If you wish to use the AxiDraw from the command line interface or within shell
-scripts and other environments that make use of shell commands, please see
+scripts or other environments that make use of shell commands, please see
 the separate documentation for the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>.</p>
 <h1 id='about-axidraw'>About AxiDraw</h1>
 <p>The <a href="https://axidraw.com">AxiDraw</a> writing and drawing machine is a modern
@@ -716,7 +724,8 @@ through our github
 <p>If you already have Python 3.7 or newer installed, use the following in a terminal:<br>
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
-<p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>. The link is permanent and will be kept up to date. The current release version is 3.4.</p>
+<p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>.
+The link is permanent and will be kept up to date. The current release version is 3.5.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -724,7 +733,7 @@ conventionally, since the download includes example python scripts, an example c
 
 <p><strong>Standard install</strong></p>
 
-<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.4.</p>
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.5.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -833,7 +842,7 @@ the changes to the options before calling additional motion commands.</p>
 
 <p>In addition to the plot options specified in <a href="#options-general">Options: General</a>,
 there is one additional parameter available in <strong>Interactive</strong> context,
-<a href="#units">units</a>, which can be used to switch between inch and millimeter units.</p>
+<a href="#units"><code>units</code></a>, which can be used to switch between inch and millimeter units.</p>
 
 <p>The options
 available in the <strong>Interactive</strong> context include those described below in the 
@@ -855,18 +864,20 @@ file (plot_inline.py),  it is easiest to call this command from within the direc
 where that file is located.</p>
 </blockquote>
 
-<p>The <code>examples_py_axidraw</code> folder in the <a href="#installation">API download</a> contains several example scripts.</p>
+<p>The <code>examples_py_axidraw</code> folder in the <a href="#installation">API download</a> contains a number of example scripts that demonstrate various features of the AxiDraw Python API.</p>
 
 <p>The files include:</p>
 
 <ul>
-<li><p>plot.py &mdash; Demonstrate use of axidraw module in &quot;plot&quot; mode, to plot an SVG file.</p></li>
-<li><p>estimate_time.py &mdash; Demonstrate use of axidraw module in &quot;plot&quot; mode, to estimate the time
+<li><p>plot.py &mdash; Demonstrate use of axidraw module in &quot;plot&quot; mode (in the <strong>Plot</strong> context), to plot an SVG file.</p></li>
+<li><p>estimate_time.py &mdash; Demonstrate use of the &quot;plot&quot; mode, to estimate the time
 that it will take to plot an SVG file.</p></li>
-<li><p>plot_inline.py &mdash; Demonstrate use of axidraw module in &quot;plot&quot; mode, to plot SVG without using a separate SVG file.</p></li>
-<li><p>toggle.py &mdash; Demonstrate use of axidraw module in &quot;toggle&quot; mode (still in the <strong>Plot</strong> context), to toggle the pen up and down.</p></li>
-<li><p>interactive_xy.py &mdash; Demonstrate basic motion commands with the axidraw Python module in <strong>Interactive</strong> context.</p></li>
-<li><p>interactive_penheights.py &mdash; Demonstrate use of axidraw module in <strong>Interactive</strong> context, to set the pen to different heights.</p></li>
+<li><p>plot_inline.py &mdash; Demonstrate use of the &quot;plot&quot; mode, to create and plot SVG elements without a separate SVG file.</p></li>
+<li><p>toggle.py &mdash; Demonstrate use of the &quot;toggle&quot; mode (still in <strong>Plot</strong> context), to toggle the pen up and down.</p></li>
+<li><p>interactive_xy.py &mdash; Demonstrate basic XY motion commands with the axidraw Python module in <strong>Interactive</strong> context.</p></li>
+<li><p>interactive_draw_path.py &mdash; Demonstrate drawing continuous paths from coordinate lists in the <strong>Interactive</strong> context.</p></li>
+<li><p>interactive_penheights.py &mdash; Demonstrate use of the <strong>Interactive</strong> context, to set the pen to different heights.</p></li>
+<li><p>turtle_pos.py &mdash; Demonstrate <strong>Interactive</strong> context, showing out of bounds motion handling and querying physical and turtle positions.</p></li>
 <li><p>low-level_usb.py &mdash; Demonstrate advanced low-level USB command features of axidraw Python module in <strong>Interactive</strong> context.</p></li>
 <li><p>interactive_usb_com.py &mdash; Second example of low-level USB command features of axidraw Python module in <strong>Interactive</strong> context.</p></li>
 <li><p>report_pos_mm.py &mdash; Self-contained script that uses a low-level USB query to report and print the current XY position of the carriage.</p></li>
@@ -1604,13 +1615,6 @@ behavior described above.</p>
 the first AxiDraw located, even if a value of <code>port</code> is specified.</p>
 
 <p><strong>Default:</strong> 0, given by <code>port_config</code> in axidraw_conf.py</p>
-
-<aside class="notice">
-Previous versions of this documentation allowed an additional 
-`port_config` value of 2, intended to plot *only* to the specified port.
-The actual behavior with this value selected turns out to be identical
-to the default behavior, and so this value has been deprecated.
-</aside>
 <h1 id='options-plot'>Options (Plot)</h1>
 <p>The following is a list of options that can be set in the <strong>Plot</strong> context, 
 and which are not applicable in the <strong>Interactive</strong> context.</p>
@@ -1701,12 +1705,12 @@ Plot all document layers that have a layer name beginning with the number 1:</p>
 </code></pre></div>
 <blockquote>
 <p>Example 2:
-Toggle the pen up or down, using &quot;toggle&quot; mode:</p>
+Cycle the pen up or down, using &quot;cycle&quot; mode:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"toggle"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"cycle"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -1742,6 +1746,10 @@ Each of these modes will be described in detail, after the list.</p>
 <tr>
 <td><code>layers</code></td>
 <td>Plot a single layer (or set of layers), selected by <code>layer</code> parameter</td>
+</tr>
+<tr>
+<td><code>cycle</code></td>
+<td>A setup mode: Lower and then raise the pen</td>
 </tr>
 <tr>
 <td><code>align</code></td>
@@ -1884,6 +1892,42 @@ name, and how to create layers when generating SVG outside of Inkscape,
 please see the 
 <a href="http://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>
 documentation.</p>
+
+<aside class="notice">
+Plot modes are only applicable for use within the <b>Plot</b> context.
+</aside>
+<h3 id='cycle'>cycle</h3>
+<blockquote>
+<div class="codetitle">mode: cycle</div>
+
+<p>Example:
+Cycle the pen down and then up, using &quot;cycle&quot; mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"cycle"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+</code></pre></div>
+<p><em>Cycle the pen down and back up</em></p>
+
+<p><strong>Syntax: <code>options.mode = &quot;cycle&quot;</code></strong></p>
+
+<p>This is a setup mode that can be used used to prepare the AxiDraw for use. 
+It will lower the pen, wait 0.5 seconds, and then raise the pen. Cycling
+before inserting your pen ensures that your pen holder starts in
+the pen-up position, with current pen-up and pen-down heights applied.</p>
+
+<p>Cycle mode is equivalent to selecting the &quot;Setup&quot; tab of AxiDraw Control
+(within Inkscape) and choosing the &quot;Cycle pen down then up&quot; option
+within that tab.</p>
+
+<p>An SVG file input to <code>plot_setup()</code> is allowed but not required for
+this mode to operate correctly.</p>
+
+<p>If you wish to only lower or raise the pen, not cycle down and up,
+use the <a href="#toggle"><code>toggle</code></a> mode or the
+<a href="#lower_pen-raise_pen">lower_pen/raise_pen</a> manual commands instead.</p>
 
 <aside class="notice">
 Plot modes are only applicable for use within the <b>Plot</b> context.
@@ -3836,8 +3880,10 @@ containing the contents of an SVG file. </p>
 <code>plot_setup(None)</code>, then the <strong>Plot</strong> context will still be initialized
 but it will  not have an SVG file available to plot.
 This approach be helpful when
-using utility modes that do not plot the file (align, toggle, manual,
-sysinfo, version) since no file need be provided. 
+using utility modes that do not plot the file (
+<a href="#cycle"><code>cycle</code></a>, <a href="#align"><code>align</code></a>,
+<a href="#toggle"><code>toggle</code></a>, <a href="#manual"><code>manual</code></a>, <a href="#sysinfo"><code>sysinfo</code></a>,
+<a href="#version"><code>version</code></a>) since no file need be provided. 
 Execution of these utility modes may also be <em>faster</em> (particularly versus
 large SVG inputs), since the input
 file will not be parsed.</p>
@@ -3850,12 +3896,12 @@ This function is only applicable for use with the <b>Plot</b> context.
 <div class="codetitle">plot_run()</div>
 
 <p>Example 1: 
-Toggle the pen up or down, using &quot;toggle&quot; mode:</p>
+Cycle the pen down then up, using &quot;cycle&quot; mode:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"toggle"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"cycle"</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
@@ -3956,6 +4002,10 @@ These functions do not apply in the <strong>Plot</strong> context.</p>
 <tr>
 <td><code>pendown()</code></td>
 <td>Lower the pen.</td>
+</tr>
+<tr>
+<td><code>draw_path()</code></td>
+<td>Draw a path defined by a coordinate list.</td>
 </tr>
 <tr>
 <td><code>current_pos()</code></td>
@@ -4195,12 +4245,12 @@ essentially any type of movement that is required.</p>
 
 <p>The arguments to <code>goto()</code> are floating point numbers that represent the 
 movement destination position. The units are in inches, unless specified
-otherwise with the <a href="#units">units</a> option. In most cases both arguments
+otherwise with the <a href="#units"><code>units</code></a> option. In most cases both arguments
 should be non-negative, since all allowed positions are in the
 (positive,positive) quadrant with respect to the Home position.</p>
 
 <p>The limits of travel are given by the hardware model, as specified with 
-the <a href="#model">model</a> option. Limit checking assumes that the session has
+the <a href="#model"><code>model</code></a> option. Limit checking assumes that the session has
 been started with the AxiDraw carriage located at the Home position.</p>
 
 <p>Relative movement commands can be used together with absolute movement
@@ -4241,16 +4291,16 @@ options and using the <a href="#lineto"><code>lineto()</code></a> function, it i
 provide essentially any type of movement that is required.</p>
 
 <p>The function works by raising the pen (if it is not already raised) and
-then performing a <a href="#goto">goto()</a> movement to the given position.</p>
+then performing a <a href="#goto"><code>goto()</code></a> movement to the given position.</p>
 
 <p>The arguments to <code>moveto()</code> are floating point numbers that represent the 
 movement destination position. The units are in inches, unless specified
-otherwise with the <a href="#units">units</a> option. In most cases both arguments
+otherwise with the <a href="#units"><code>units</code></a> option. In most cases both arguments
 should be non-negative, since all allowed positions are in the
 (positive,positive) quadrant with respect to the Home position.</p>
 
 <p>The limits of travel are given by the hardware model, as specified with 
-the <a href="#model">model</a> option. Limit checking assumes that the session has
+the <a href="#model"><code>model</code></a> option. Limit checking assumes that the session has
 been started with the AxiDraw carriage located at the Home position.</p>
 
 <aside class="notice">
@@ -4287,16 +4337,16 @@ options and using the <a href="#moveto"><code>moveto()</code></a> function, it i
 provide essentially any type of movement that is required.</p>
 
 <p>The function works by lowering the pen (if it is not already lowered) and
-then performing a <a href="#goto">goto()</a> movement to the given position.</p>
+then performing a <a href="#goto"><code>goto()</code></a> movement to the given position.</p>
 
 <p>The arguments to <code>lineto()</code> are floating point numbers that represent the 
 movement destination position. The units are in inches, unless specified
-otherwise with the <a href="#units">units</a> option. In most cases both arguments
+otherwise with the <a href="#units"><code>units</code></a> option. In most cases both arguments
 should be non-negative, since all allowed positions are in the
 (positive,positive) quadrant with respect to the Home position.</p>
 
 <p>The limits of travel are given by the hardware model, as specified with 
-the <a href="#model">model</a> option. Limit checking assumes that the session has
+the <a href="#model"><code>model</code></a> option. Limit checking assumes that the session has
 been started with the AxiDraw carriage located at the Home position.</p>
 
 <aside class="notice">
@@ -4338,10 +4388,10 @@ essentially any type of movement that is required.</p>
 
 <p>The arguments to <code>go()</code> are floating point numbers that represent the 
 movement distances. The units are in inches, unless specified
-otherwise with the <a href="#units">units</a> option.</p>
+otherwise with the <a href="#units"><code>units</code></a> option.</p>
 
 <p>The limits of travel are given by the hardware model, as specified with 
-the <a href="#model">model</a> option. Limit checking assumes that the session has
+the <a href="#model"><code>model</code></a> option. Limit checking assumes that the session has
 been started with the AxiDraw carriage located at the Home position.</p>
 
 <p>Relative movement commands can be used together with absolute movement
@@ -4382,14 +4432,14 @@ options and using the <a href="#line"><code>line()</code></a> function, it is su
 provide essentially any type of movement that is required.</p>
 
 <p>The function works by raising the pen (if it is not already raised) and
-then performing a <a href="#go">go()</a> movement with the given distances</p>
+then performing a <a href="#go"><code>go()</code></a> movement with the given distances</p>
 
 <p>The arguments to <code>move()</code> are floating point numbers that represent the 
 movement distances. The units are in inches, unless specified
-otherwise with the <a href="#units">units</a> option.</p>
+otherwise with the <a href="#units"><code>units</code></a> option.</p>
 
 <p>The limits of travel are given by the hardware model, as specified with 
-the <a href="#model">model</a> option. Limit checking assumes that the session has
+the <a href="#model"><code>model</code></a> option. Limit checking assumes that the session has
 been started with the AxiDraw carriage located at the Home position.</p>
 
 <aside class="notice">
@@ -4427,14 +4477,14 @@ options and using the <a href="#move"><code>move()</code></a> function, it is su
 provide essentially any type of movement that is required.</p>
 
 <p>The function works by raising the pen (if it is not already raised) and
-then performing a <a href="#go">go()</a> movement with the given distances</p>
+then performing a <a href="#go"><code>go()</code></a> movement with the given distances</p>
 
 <p>The arguments to <code>line()</code> are floating point numbers that represent the 
 movement distances. The units are in inches, unless specified
-otherwise with the <a href="#units">units</a> option.</p>
+otherwise with the <a href="#units"><code>units</code></a> option.</p>
 
 <p>The limits of travel are given by the hardware model, as specified with 
-the <a href="#model">model</a> option. Limit checking assumes that the session has
+the <a href="#model"><code>model</code></a> option. Limit checking assumes that the session has
 been started with the AxiDraw carriage located at the Home position.</p>
 
 <aside class="notice">
@@ -4471,7 +4521,7 @@ Interactive context.</p>
 
 <p>The <code>penup()</code> command is a command to raise the pen
 while in Interactive context. It is particularly useful in combination
-with the <a href="#go">go()</a> and <a href="#goto">goto()</a> commands, which cause movements
+with the <a href="#go"><code>go()</code></a> and <a href="#goto"><code>goto()</code></a> commands, which cause movements
 but do not raise or lower the pen.</p>
 
 <p>Note that, <code>penup()</code> will only raise the pen if it was in the down state or an
@@ -4508,7 +4558,7 @@ Interactive context.</p>
 
 <p>The <code>pendown()</code> command is a command to lower the pen
 while in Interactive context. It is particularly useful in combination
-with the <a href="#go">go()</a> and <a href="#goto">goto()</a> commands, which cause movements
+with the <a href="#go"><code>go()</code></a> and <a href="#goto"><code>goto()</code></a> commands, which cause movements
 but do not raise or lower the pen.</p>
 
 <p>By default, whenever the &quot;turtle&quot; (theoretical) XY position is outside
@@ -4534,6 +4584,92 @@ indeterminate state. It will not be lowered if it was already in the pen-down st
 
 <aside class="notice">
 This function can only be used within the <b>Interactive</b> context.
+</aside>
+<h2 id='draw_path'>draw_path</h2>
+<blockquote>
+<div class="codetitle">draw_path()</div>
+
+<p>Example 1: 
+Draw a square using draw_path(), with explicitly given vertices:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>               <span class="c1"># Open port to AxiDraw
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>             <span class="c1"># Pen-up move to (1,1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">1</span>       <span class="c1"># Switch to cm units
+</span><span class="n">ad</span><span class="p">.</span><span class="n">update</span><span class="p">()</span>                <span class="c1"># Process changes to options
+# Make a list of points to draw a square, 1 cm on a side:
+</span><span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>       <span class="c1"># Plot the path
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>             <span class="c1"># Return Home
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>            <span class="c1"># Close serial port
+</span></code></pre></div>
+<blockquote>
+<p>Example 2: 
+Draw a sine wave, 100 mm wide, using draw_path():</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">2</span>       <span class="c1"># Set mm units
+</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>               <span class="c1"># Open port to AxiDraw
+# Make a list of points to draw a square, 1 cm on a side:
+</span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">x_position</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">/</span><span class="mi">10</span>
+    <span class="n">y_position</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">math</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="p">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">vertex</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">vertices</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="n">x_position</span><span class="p">,</span> <span class="n">y_position</span><span class="p">])</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>       <span class="c1"># Plot the path
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>             <span class="c1"># Return Home
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>            <span class="c1"># Close serial port
+</span></code></pre></div>
+<p><em>Draw a path from a list of vertices</em></p>
+
+<p><strong>Syntax: <code>draw_path(vertex_list)</code></strong></p>
+
+<p>The <code>draw_path()</code> command is a command to plot a continuous pen-down shape
+within the Interactive context. It allows one to compose a coordinate list
+within a python script and then have the AxiDraw draw the resulting,
+potentially complex, path.</p>
+
+<p>The argument vertex_list is a python list of (at least two) 2-element lists, where
+each 2-element list <code>[x_position, y_position]</code> represents an (x, y) coordinate pair.
+The units of the coordinates can be set with the <a href="#units"><code>units</code></a> option. </p>
+
+<p>When called, <code>draw_path()</code> executes the following actions:</p>
+
+<ul>
+<li>Clip the input path at the travel bounds</li>
+<li>Raise the pen</li>
+<li>Execute a pen-up move to the start of the path</li>
+<li>Lower the pen</li>
+<li>Move the pen along the defined path</li>
+<li>Raise the pen</li>
+</ul>
+
+<p>If the input path exceeds the travel bounds, only the portion within travel bounds will be
+drawn. If the path leaves the travel bounds and re-enters, then multiple pen-down
+paths will be created from that, with automatic pen-up moves between them.
+If the initial vertex is outside of the travel bounds, the first pen-up move will be to the point 
+where the path enters the travel bounds. And, if the last coordinate is out of bounds,
+the final <a href="#turtle_pos">turtle position</a> will be that of the last vertex in the input path,
+and different from the <a href="#current_pos"><code>current_pos</code></a>.</p>
+
+<p>Please note that the <code>auto_clip_lift</code> parameter that can disable automatic pen lits on
+individual XY motion commands is ignored by <code>draw_path()</code>.  <code>draw_path()</code> always clips paths
+and raises the pen at the travel bounds.</p>
+
+<p>The interactive_draw_path.py <a href="#example-scripts">example script</a> contains additional
+examples of using <code>draw_path()</code>.</p>
+
+<aside class="notice">
+This function can only be used within the <b>Interactive</b> context.
+</aside>
+
+<aside class="success">
+For more complex path drawing capabilities, consider using the plot context with SVG files or inline-generated SVG. 
 </aside>
 <h2 id='current_pos'>current_pos</h2>
 <blockquote>
@@ -4575,7 +4711,7 @@ position.</p>
 
 <p>The function returns a 2-element tuple, giving the last-known (x,y) machine
 position. Position values are given in the currently active units, as
-set by the <a href="#units">units</a> option. If you do not explicitly set units, the 
+set by the <a href="#units"><code>units</code></a> option. If you do not explicitly set units, the 
 function returns values in the default inch units.</p>
 
 <p>Plotter travel is <em>clipped</em> to remain within the bounds of travel, and the
@@ -4632,7 +4768,7 @@ by any hardware travel limits.</p>
 
 <p>The returned value is a 2-element tuple, giving the last-known (x,y) turtle
 position. Position values are given in the currently active units, as
-set by the <a href="#units">units</a> option. If you do not explicitly set units, the 
+set by the <a href="#units"><code>units</code></a> option. If you do not explicitly set units, the 
 function returns values in the default inch units.</p>
 
 <p>Plotter travel is <em>clipped</em> to remain within the bounds of travel, and the
@@ -4783,13 +4919,26 @@ These functions can only be used within the <b>Interactive</b> context.
 <p>Please note that the changelog.txt file included with the download includes
 some details about older releases that are no longer listed below.</p>
 
+<p><strong>v 3.5 (2022-08-10)</strong></p>
+
+<p>New function in interactive context, <a href="#draw_path"><code>draw_path</code></a>, draws a vertex list.</p>
+
+<p>Added new setup mode, <a href="#cycle"><code>cycle</code></a>, to assist with setting pen height.</p>
+
+<p>Added two new <a href="#example-scripts">example scripts</a>, turtle_pos.py and interactive_draw_path.py.</p>
+
+<p>New parameter in the axidraw_conf.py configuration file: <code>servo_pin</code>
+(accessible via <a href="#additional-parameters"><code>params</code></a>) for re-assigning the
+pen-lift servo digital output to a different output pin.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_350.zip">here</a>.</p>
+
 <p><strong>v 3.4 (2022-07-22)</strong></p>
 
 <p>Added a new &quot;strict&quot; value to <a href="#reordering"><code>reordering</code></a> that disables all optimizations including
 path joining. Changed description (but <strong>not</strong> behavior) of the other values for clarity.</p>
 
-<p>New parameters in the axidraw_conf.py configuration file: <code>preview_color_up</code> and <code>preview_color_down</code>
-allow one to set the colors used in preview rendering.</p>
+<p>New parameters in the axidraw_conf.py configuration file: <code>preview_color_up</code> and <code>preview_color_down</code>, (accessible via <a href="#additional-parameters"><code>params</code></a>) allow one to set the colors used in preview rendering.</p>
 
 <p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_341.zip">here</a></p>
 

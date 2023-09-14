@@ -69,7 +69,7 @@ setuptools.setup = replacement_setup
 
 replacement_setup(
     name='axicli',
-    version='3.4.1',
+    version='3.5.0',
     python_requires='>=3.7.0',
     long_description=long_description,
     long_description_content_type='text/plain',

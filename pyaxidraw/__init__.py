@@ -6,7 +6,7 @@ import sys
 
 module_names = {
     'axidrawinternal':  [
-        'axidraw',
+        # 'axidraw',
         'axidraw_conf',
         'axidraw_control',
         'axidraw_merge',
