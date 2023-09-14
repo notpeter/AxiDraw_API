@@ -624,7 +624,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw CLI and the <a href="https://axidraw.com/doc/py_api/">AxiDraw Python Module</a>.
-The link is permanent and will be kept up to date. The current release version is 3.5.</p>
+The link is permanent and will be kept up to date. The current release version is 3.6.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -633,7 +633,7 @@ conventionally, since the download includes example python scripts, an example c
 <p><strong>Standard install</strong></p>
 
 <p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>
-The current release version is 3.5.</p>
+The current release version is 3.6.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -1018,6 +1018,8 @@ always require a file input.
 The other (&quot;utility&quot;) modes (<code>align</code>,  <code>toggle</code>, <code>manual</code>, <code>sysinfo</code>, <code>version</code>)
 do not require a file input <em>unless</em> an output file is specified with the
 <a href="#output_file"><code>output_file</code></a> option.</p>
+
+<p><strong>Default:</strong> <code>&#39;plot&#39;</code>, set in axidraw_conf.py or your specified <a href="#config"><code>config</code></a> file.</p>
 <h3 id='plot'>plot</h3>
 <blockquote>
 <div class="codetitle">mode: plot</div>
@@ -1256,15 +1258,18 @@ Request sysinfo using short code:</p>
 <blockquote>
 <p>Typical response to sysinfo request (example on Mac):</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>This is AxiDraw Control version 2.6.2.
-~~ An early-release version ~~
-(The current "stable" release is v. 2.5.0).
-Your AxiDraw has firmware version 2.6.5.
-Your firmware is up to date; no updates are available.
+<div class="highlight"><pre class="highlight plaintext"><code>This is AxiDraw Control version 3.6.0.
+Your AxiDraw Control software is up to date.
+
+Your AxiDraw has firmware version 2.7.0.
+An update is available to EBB firmware v. 2.8.1;
+To download the updater, please visit: axidraw.com/fw
+
 
 Additional system information:
-3.9.5 (default, May  4 2021, 03:29:30) 
-[Clang 11.0.0 (clang-1100.0.33.17)]
+3.10.6 (main, Aug 30 2022, 04:58:14) [Clang 13.1.6 (clang-1316.0.21.2.5)]
+Voltage readout: 296 (~ 9.08 V).
+Current setpoint: 483 (~ 0.89 A).
 </code></pre></div>
 <p><em>Report system information</em></p>
 
@@ -1283,6 +1288,7 @@ Control within Inkscape.</p>
 <li>The version number of the AxiDraw software.</li>
 <li>Whether a software update is available.</li>
 <li>Detailed version information of the Python interpreter running the script, as given by Python&#39;s sys.version command.</li>
+<li>Estimated voltage input at the EBB, as well as motor current setpoint.</li>
 </ul>
 
 <p>This is the only function in the AxiDraw software that uses
@@ -1662,7 +1668,7 @@ movements.</p>
 
 <p>Allowed values: Integers from 1 to 110.</p>
 
-<p><strong>Default:</strong> 25, given by <code>speed_pendown</code> in axidraw_conf.py or your 
+<p><strong>Default:</strong> 25, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='speed_penup'>speed_penup</h2>
 <blockquote>
@@ -1695,7 +1701,7 @@ time, especially on documents that have many large pen-up movements.</p>
 
 <p>Allowed values: Integers from 1 to 110. </p>
 
-<p><strong>Default:</strong> 75, given by <code>speed_penup</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 75, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='accel'>accel</h2>
 <blockquote>
@@ -1723,7 +1729,7 @@ but does influence how long it takes to get to different speeds.</p>
 
 <p>Allowed values: Integers from 1 to 100. </p>
 
-<p><strong>Default:</strong> 75, given by <code>accel</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 75, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='pen_pos_down'>pen_pos_down</h2>
 <blockquote>
@@ -1762,7 +1768,7 @@ height that will be used as the pen-down position value. </p>
 
 <p>Allowed values: Integers from 0 to 100. </p>
 
-<p><strong>Default:</strong> 40, given by <code>pen_pos_down</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 40, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='pen_pos_up'>pen_pos_up</h2>
 <blockquote>
@@ -1801,7 +1807,7 @@ height that will be used as the pen-up position value. </p>
 
 <p>Allowed values: Integers from 0 to 100.</p>
 
-<p><strong>Default:</strong> 60, given by <code>pen_pos_up</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 60, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='pen_rate_lower'>pen_rate_lower</h2>
 <blockquote>
@@ -1827,7 +1833,7 @@ pen-down position. This value is expressed as a relative percentage.</p>
 
 <p>Allowed values: Integers from 1 to 100. </p>
 
-<p><strong>Default:</strong> 50, given by <code>pen_rate_lower</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 50, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='pen_rate_raise'>pen_rate_raise</h2>
 <blockquote>
@@ -1853,7 +1859,7 @@ the pen-up position. This value is expressed as a relative percentage.</p>
 
 <p>Allowed values: Integers from 1 to 100. </p>
 
-<p><strong>Default:</strong> 75, given by <code>pen_rate_raise</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 75, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='pen_delay_down'>pen_delay_down</h2>
 <blockquote>
@@ -1891,7 +1897,7 @@ of zero will be used.</p>
 
 <p>Allowed values: Integers from -500 to 500.</p>
 
-<p><strong>Default:</strong> 0, given by <code>pen_delay_down</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 0, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='pen_delay_up'>pen_delay_up</h2>
 <blockquote>
@@ -1929,7 +1935,7 @@ of zero will be used.</p>
 
 <p>Allowed values: Integers from -500 to 500.</p>
 
-<p><strong>Default:</strong> 0, given by <code>pen_delay_up</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 0, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='no_rotate'>no_rotate</h2>
 <blockquote>
@@ -2120,6 +2126,9 @@ Each of these commands will be described in detail, after the list.</p>
 <td>Write the USB &quot;nickname&quot; of the AxiDraw</td>
 </tr>
 </tbody></table>
+
+<p><strong>Default:</strong> <code>&#39;fw_version&#39;</code>, set in axidraw_conf.py
+or your specified <a href="#config"><code>config</code></a> file.</p>
 <h3 id='fw_version'>fw_version</h3>
 <blockquote>
 <div class="codetitle">manual_cmd: fw_version</div>
@@ -2147,7 +2156,7 @@ Query the EBB firmware version (manual mode default):</p>
 <p>Query and report the firmware version of the AxiDraw&#39;s EBB control
 board. This is the default option in manual mode.</p>
 
-<p>As of this writing, the current firmware version is 2.6.5. To update the
+<p>As of this writing, the current firmware version is 2.8.1. To update the
 firmware on your AxiDraw, please see
 <a href="https://wiki.evilmadscientist.com/Updating_EBB_firmware">these instructions</a>.</p>
 <h3 id='lower_pen-raise_pen'>lower_pen, raise_pen</h3>
@@ -2342,6 +2351,8 @@ for example after pausing a plot that will not be resumed.</p>
 <p>Note that changing the motor resolution 
 will generally count as &quot;re-enabling&quot; the motors with the new resolution,
 and may alter the position that <code>walk_home</code> will return to.</p>
+
+<p>The <code>walk_home</code> command requires EBB firmware 2.6.2 or newer.</p>
 <h3 id='enable_xy-disable_xy'>enable_xy, disable_xy</h3>
 <blockquote>
 <div class="codetitle">manual_cmd: enable_xy, disable_xy</div>
@@ -2582,7 +2593,7 @@ are occasionally helpful for (e.g.,) calibration routines.</p>
 
 <p>Allowed values: Floating point numbers (not limit checked).</p>
 
-<p><strong>Default:</strong> 1.0 (not adjustable).</p>
+<p><strong>Default:</strong> 1.0, set in axidraw_conf.py or your specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='layer'>layer</h2>
 <blockquote>
 <div class="codetitle">layer</div>
@@ -2759,8 +2770,7 @@ chosen and an output file is generated.</p>
 <p>Preview mode may be enabled by using the <code>--preview</code> (<code>-v</code>) option. It is a
 simple &quot;flag&quot; type argument, and takes no additional values.</p>
 
-<p><strong>Default:</strong> False, given by <code>preview</code> in axidraw_conf.py or your
-specified <a href="#config"><code>config</code></a> file.</p>
+<p><strong>Default:</strong> False, set in axidraw_conf.py or your specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='rendering'>rendering</h2>
 <blockquote>
 <div class="codetitle">rendering</div>
@@ -2811,9 +2821,8 @@ style parameter selects which of these (if any) are rendered.</p>
 <li><code>3</code> - Render all movement, both pen-up and pen-down <strong>[DEFAULT]</strong></li>
 </ul>
 
-<p><strong>Default:</strong> 3 (render all movement), given by <code>rendering</code> in 
-axidraw_conf.py or your
-specified <a href="#config"><code>config</code></a> file.</p>
+<p><strong>Default:</strong> 3 (render all movement), set in axidraw_conf.py or 
+your specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='reordering'>reordering</h2>
 <blockquote>
 <div class="codetitle">reordering</div>
@@ -2946,8 +2955,7 @@ the <code>reordering</code> of 2, but if you save the output SVG, it will retain
 <p>The <code>reordering</code> values of 0 and 4 are identical except that the &quot;strict&quot; value of 4 also disables
 path joining. Path joining may be disabled separately via the <code>min_gap</code> parameter.</p>
 
-<p><strong>Default:</strong> 0 (Plot in original order, connecting adjoining paths to reduce unnecessary pen lifts), 
-given by <code>reordering</code> in axidraw_conf.py or your specified <a href="#config"><code>config</code></a> file.</p>
+<p><strong>Default:</strong> 0 (Plot in original order, connecting adjoining paths to reduce unnecessary pen lifts), set in axidraw_conf.py or your specified <a href="#config"><code>config</code></a> file.</p>
 
 <aside class="warning">
 The values of the reordering option have different meanings when the (Legacy) Reorder mode is active.
@@ -3033,8 +3041,7 @@ for each axis.</p>
 <li><code>7</code> - AxiDraw V3/B6</li>
 </ul>
 
-<p><strong>Default:</strong> 1 (AxiDraw V2, V3, or SE/A4), given by <code>model</code> in
-axidraw_conf.py or your
+<p><strong>Default:</strong> 1 (AxiDraw V2, V3, or SE/A4), set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 
 <p>The physical size definitions for each model type are also configured in
@@ -3090,7 +3097,7 @@ for example raising the pen, to indicate which machine is which.</p>
 <p>Allowed values of the port parameter are strings, which specify either
 the USB port or AxiDraw USB nickname to use.</p>
 
-<p><strong>Default:</strong> None, given by <code>port</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> None, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='port_config'>port_config</h2>
 <blockquote>
@@ -3149,7 +3156,7 @@ are supported and work well in this fashion, note that are some important differ
 Please see &quot;Working with multiple
 AxiDraw machines&quot; below for an extended discussion.</p>
 
-<p><strong>Default:</strong> 0, given by <code>port_config</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> 0, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='output_file'>output_file</h2>
 <blockquote>
@@ -3277,7 +3284,8 @@ wait for a plot or preview to finish. </p>
 <li><code>2</code> - Disable plots and previews; generate digest only</li>
 </ul>
 
-<p><strong>Default:</strong> 0 (Disabled), given by <code>digest</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 0 (Disabled), set in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
 <h2 id='webhook'>webhook</h2>
 <blockquote>
 <div class="codetitle">webhook</div>
@@ -3369,7 +3377,7 @@ when the plot finishes.</p>
 <p>An extended discussion about webhooks, including instructions for setting up mobile
 notifications via IFTTT, is available <a href="https://wiki.evilmadscientist.com/Webhooks">here</a>.</p>
 
-<p><strong>Default:</strong> None, given by <code>webhook_url</code> in axidraw_conf.py or your
+<p><strong>Default:</strong> None, set in axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file.</p>
 <h1 id='multiple-axidraw-units'>Multiple AxiDraw units</h1>
 <p>There are two main strategies for working with multiple machines with AxiCLI:</p>
@@ -3412,6 +3420,16 @@ avoid duplicate warning messages during the plot. Thus, if you need to request
 
 <p>Please note that the changelog.txt file included with the download includes
 some details about older releases that are no longer listed below.</p>
+
+<p><strong>v 3.6 (2022-10-01)</strong></p>
+
+<p>Defaults for <a href="#mode"><code>mode</code></a>, <a href="#manual_cmd"><code>manual_cmd</code></a>, and <a href="#walk_dist"><code>walk_dist</code></a>
+can now be set inside the configuration file.</p>
+
+<p>AxiCLI now returns a non-zero exit code on keyboard or pause button 
+interrupt <em>while plotting</em>, as well as on certain errors.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_360.zip">here</a>.</p>
 
 <p><strong>v 3.5 (2022-08-10)</strong></p>
 

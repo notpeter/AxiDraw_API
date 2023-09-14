@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -#-
-from __future__ import print_function
 
 '''
-low-level_usb.py
+low_level_usb.py
 
 Demonstrate advanced features of axidraw python module in "interactive" mode.
 
@@ -32,16 +31,25 @@ The functions demonstrated here require that the AxiDraw has at least
 firmware version 2.6.2. Visit http://axidraw.com/fw for information
 about firmware updates.
 
-Run this demo by calling: python low-level_usb.py
+Run this demo by calling: python low_level_usb.py
+
+
+---------------------------------------------------------------------
+
+About the interactive API:
+
+Interactive mode is a mode of use, designed for plotting individual motion
+segments upon request, using direct XY control. It is a complement to the
+usual plotting modes, which take an SVG document as input.
+
+So long as the AxiDraw is started in the home corner, moves are limit checked,
+and constrained to be within the safe travel range of the AxiDraw.
 
 
 AxiDraw python API documentation is hosted at: https://axidraw.com/doc/py_api/
 
+---------------------------------------------------------------------
 
-'''
-
-
-'''
 About this software:
 
 The AxiDraw writing and drawing machine is a product of Evil Mad Scientist
@@ -56,13 +64,14 @@ AxiDraw software development is hosted at https://github.com/evil-mad/axidraw
 
 Additional AxiDraw documentation is available at http://axidraw.com/docs
 
-AxiDraw owners may request technical support for this software through our 
+AxiDraw owners may request technical support for this software through our
 github issues page, support forums, or by contacting us directly at:
 https://shop.evilmadscientist.com/contact
 
 
+---------------------------------------------------------------------
 
-Copyright 2020 Windell H. Oskay, Evil Mad Scientist Laboratories
+Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories
 
 The MIT License (MIT)
 
@@ -88,33 +97,6 @@ SOFTWARE.
 
 
 
-
-
-
-'''
-
-Recommended usage of the interactive context
-
-ad = axidraw.AxiDraw() # Initialize class
-ad.interactive()            # Enter interactive mode
-
-[Optional: Apply custom settings]
-
-ad.connect()                # Open serial port to AxiDraw 
-
-[One or more motion commands]
-[Optional: Update settings, followed by calling update().]
-
-ad.disconnect()             # Close connection to AxiDraw
-
-
-All options except port and port_config can be changed after connect(). However,
-you must call update() after changing the options and before calling any
-additional motion commands.
-
-
-'''
-
 import sys
 
 from pyaxidraw import axidraw
@@ -122,7 +104,7 @@ from pyaxidraw import axidraw
 ad = axidraw.AxiDraw() # Initialize class
 
 ad.interactive()            # Enter interactive mode
-connected = ad.connect()    # Open serial port to AxiDraw 
+connected = ad.connect()    # Open serial port to AxiDraw
 
 if not connected:
     sys.exit() # end script

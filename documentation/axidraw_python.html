@@ -637,6 +637,11 @@
                     
                   </li>
                   <li>
+                    <a href="#delay" class="toc-h2 toc-link" data-title="delay">delay</a>
+                    
+                    
+                  </li>
+                  <li>
                     <a href="#current_pos" class="toc-h2 toc-link" data-title="current_pos">current_pos</a>
                     
                     
@@ -725,7 +730,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>.
-The link is permanent and will be kept up to date. The current release version is 3.5.</p>
+The link is permanent and will be kept up to date. The current release version is 3.6.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -733,7 +738,7 @@ conventionally, since the download includes example python scripts, an example c
 
 <p><strong>Standard install</strong></p>
 
-<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.5.</p>
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.6.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -815,11 +820,12 @@ Draw a single line in Interactive context:</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>   <span class="c1"># import module
 </span><span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>          <span class="c1"># Initialize class
 </span><span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>                <span class="c1"># Enter interactive context
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open serial port to AxiDraw 
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
 </span>                                <span class="c1"># Absolute moves follow:
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-up move to (1 inch, 1 inch)
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-down move, to (2 inch, 1 inch)
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Pen-up move, back to origin.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (1 inch, 1 inch)
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-down move, to (2 inch, 1 inch)
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                 <span class="c1"># Pen-up move, back to origin.
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port to AxiDraw
 </span></code></pre></div>
 <p>The <strong>Interactive</strong> context is a separate mode of operation that
@@ -831,7 +837,8 @@ within a Python script. </p>
 
 <p>Once the Python module is imported, call the <a href="#interactive"><code>interactive()</code></a>
 method to enter the <strong>Interactive</strong> context. To establish a USB connection to
-the AxiDraw, use <a href="#connect"><code>connect()</code></a>.  You must also use <a href="#disconnect"><code>disconnect()</code></a>
+the AxiDraw, use <a href="#connect"><code>connect()</code></a>, which returns <code>True</code> when
+successfully connected. You must also use <a href="#disconnect"><code>disconnect()</code></a>
 at the end of your session to terminate the USB session.</p>
 
 <p>Options may be specified at any point after the <code>interactive()</code>
@@ -878,7 +885,7 @@ that it will take to plot an SVG file.</p></li>
 <li><p>interactive_draw_path.py &mdash; Demonstrate drawing continuous paths from coordinate lists in the <strong>Interactive</strong> context.</p></li>
 <li><p>interactive_penheights.py &mdash; Demonstrate use of the <strong>Interactive</strong> context, to set the pen to different heights.</p></li>
 <li><p>turtle_pos.py &mdash; Demonstrate <strong>Interactive</strong> context, showing out of bounds motion handling and querying physical and turtle positions.</p></li>
-<li><p>low-level_usb.py &mdash; Demonstrate advanced low-level USB command features of axidraw Python module in <strong>Interactive</strong> context.</p></li>
+<li><p>low_level_usb.py &mdash; Demonstrate advanced low-level USB command features of axidraw Python module in <strong>Interactive</strong> context.</p></li>
 <li><p>interactive_usb_com.py &mdash; Second example of low-level USB command features of axidraw Python module in <strong>Interactive</strong> context.</p></li>
 <li><p>report_pos_mm.py &mdash; Self-contained script that uses a low-level USB query to report and print the current XY position of the carriage.</p></li>
 </ul>
@@ -910,9 +917,10 @@ making use of the Interactive context:</p>
 </span><span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>          <span class="c1"># Initialize class
 </span><span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>                <span class="c1"># Enter interactive context
 </span><span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">pen_pos_up</span> <span class="o">=</span> <span class="mi">70</span>      <span class="c1"># set pen-up position
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open serial port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Absolute pen-up move, to (1 inch, 1 inch)
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Absolute pen-down move, back to origin.
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Absolute pen-up move, to (1 inch, 1 inch)
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                 <span class="c1"># Absolute pen-down move, back to origin.
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port to AxiDraw
 </span></code></pre></div>
 <p>Most plotting options can be set directly like variables within Python.
@@ -1057,7 +1065,7 @@ movements.</p>
 
 <p>Allowed values: Integers from 1 to 110.</p>
 
-<p><strong>Default:</strong> 25, given by <code>speed_pendown</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 25, set in axidraw_conf.py</p>
 <h2 id='speed_penup'>speed_penup</h2>
 <blockquote>
 <div class="codetitle">speed_penup</div>
@@ -1098,7 +1106,7 @@ time, especially on documents that have many large pen-up movements.</p>
 
 <p>Allowed values: Integers from 1 to 110. </p>
 
-<p><strong>Default:</strong> 75, given by <code>speed_penup</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 75, set in axidraw_conf.py</p>
 <h2 id='accel'>accel</h2>
 <blockquote>
 <div class="codetitle">accel</div>
@@ -1134,7 +1142,7 @@ but does influence how long it takes to get to different speeds.</p>
 
 <p>Allowed values: Integers from 1 to 100. </p>
 
-<p><strong>Default:</strong> 75, given by <code>accel</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 75, set in axidraw_conf.py</p>
 <h2 id='pen_pos_down'>pen_pos_down</h2>
 <blockquote>
 <div class="codetitle">pen_pos_down</div>
@@ -1172,7 +1180,7 @@ height that will be used as the pen-down position value. </p>
 
 <p>Allowed values: Integers from 0 to 100. </p>
 
-<p><strong>Default:</strong> 40, given by <code>pen_pos_down</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 40, set in axidraw_conf.py</p>
 <h2 id='pen_pos_up'>pen_pos_up</h2>
 <blockquote>
 <div class="codetitle">pen_pos_up</div>
@@ -1210,7 +1218,7 @@ height that will be used as the pen-up position value. </p>
 
 <p>Allowed values: Integers from 0 to 100.</p>
 
-<p><strong>Default:</strong> 60, given by <code>pen_pos_up</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 60, set in axidraw_conf.py</p>
 <h2 id='pen_rate_lower'>pen_rate_lower</h2>
 <blockquote>
 <div class="codetitle">pen_rate_lower</div>
@@ -1244,7 +1252,7 @@ pen-down position. This value is expressed as a relative percentage.</p>
 
 <p>Allowed values: Integers from 1 to 100. </p>
 
-<p><strong>Default:</strong> 50, given by <code>pen_rate_lower</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 50, set in axidraw_conf.py</p>
 <h2 id='pen_rate_raise'>pen_rate_raise</h2>
 <blockquote>
 <div class="codetitle">pen_rate_raise</div>
@@ -1278,7 +1286,7 @@ the pen-up position. This value is expressed as a relative percentage.</p>
 
 <p>Allowed values: Integers from 1 to 100. </p>
 
-<p><strong>Default:</strong> 75, given by <code>pen_rate_raise</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 75, set in axidraw_conf.py</p>
 <h2 id='pen_delay_down'>pen_delay_down</h2>
 <blockquote>
 <div class="codetitle">pen_delay_down</div>
@@ -1323,7 +1331,7 @@ of zero will be used.</p>
 
 <p>Allowed values: Integers from -500 to 500.</p>
 
-<p><strong>Default:</strong> 0, given by <code>pen_delay_down</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 0, set in axidraw_conf.py</p>
 <h2 id='pen_delay_up'>pen_delay_up</h2>
 <blockquote>
 <div class="codetitle">pen_delay_up</div>
@@ -1368,7 +1376,7 @@ of zero will be used.</p>
 
 <p>Allowed values: Integers from -500 to 500.</p>
 
-<p><strong>Default:</strong> 0, given by <code>pen_delay_up</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 0, set in axidraw_conf.py</p>
 <h2 id='const_speed'>const_speed</h2>
 <blockquote>
 <div class="codetitle">const_speed</div>
@@ -1407,7 +1415,7 @@ from using constant-speed motion instead.</p>
 
 <p>Allowed values: <code>True</code>, <code>False</code>.</p>
 
-<p><strong>Default:</strong> <code>False</code>, given by <code>const_speed</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> <code>False</code>, set in axidraw_conf.py</p>
 <h2 id='model'>model</h2>
 <blockquote>
 <div class="codetitle">model</div>
@@ -1456,7 +1464,7 @@ are clipped to occur within these limits.</p>
 <li><code>7</code> - AxiDraw V3/B6</li>
 </ul>
 
-<p><strong>Default:</strong> 1 (AxiDraw V2, V3, or SE/A4), given by <code>model</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 1 (AxiDraw V2, V3, or SE/A4), set in axidraw_conf.py</p>
 
 <p>The physical size definitions for each model type are also configured in
 axidraw_conf.py.</p>
@@ -1483,7 +1491,8 @@ making use of the Interactive context:</p>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">port</span> <span class="o">=</span> <span class="s">"/dev/cu.usbmodem1441"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>
+    <span class="n">quit</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
 <p>Example 3: 
@@ -1505,7 +1514,8 @@ making use of the Interactive context:</p>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">port</span> <span class="o">=</span> <span class="s">"UV LED Array"</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>
+    <span class="n">quit</span><span class="p">()</span>
 </code></pre></div>
 <p><em>Specify a USB port or named AxiDraw to use</em></p>
 
@@ -1537,7 +1547,7 @@ for example raising the pen, to indicate which machine is which.</p>
 <p>Allowed values of the port parameter are strings, which specify either
 the USB port or AxiDraw USB nickname to use.</p>
 
-<p><strong>Default:</strong> None, given by <code>port</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> <code>None</code>, set in axidraw_conf.py</p>
 <h2 id='port_config'>port_config</h2>
 <blockquote>
 <div class="codetitle">port_config</div>
@@ -1614,7 +1624,7 @@ behavior described above.</p>
 <p>If <code>port_config</code> is 1, then the software will communicate only with
 the first AxiDraw located, even if a value of <code>port</code> is specified.</p>
 
-<p><strong>Default:</strong> 0, given by <code>port_config</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 0, set in axidraw_conf.py</p>
 <h1 id='options-plot'>Options (Plot)</h1>
 <p>The following is a list of options that can be set in the <strong>Plot</strong> context, 
 and which are not applicable in the <strong>Interactive</strong> context.</p>
@@ -1780,6 +1790,8 @@ Each of these modes will be described in detail, after the list.</p>
 <td>Return AxiDraw to home, using stored plot progress data</td>
 </tr>
 </tbody></table>
+
+<p><strong>Default:</strong> <code>&#39;plot&#39;</code>, set in axidraw_conf.py</p>
 
 <aside class="notice">
 The <code>mode</code> option is only applicable within the <b>Plot</b> context; it cannot be
@@ -2049,15 +2061,18 @@ Request sysinfo:</p>
 <blockquote>
 <p>Typical response (example on Mac):</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>This is AxiDraw Control version 2.6.2.
-~~ An early-release version ~~
-(The current "stable" release is v. 2.5.0).
-Your AxiDraw has firmware version 2.6.5.
-Your firmware is up to date; no updates are available.
+<div class="highlight"><pre class="highlight plaintext"><code>This is AxiDraw Control version 3.6.0.
+Your AxiDraw Control software is up to date.
+
+Your AxiDraw has firmware version 2.7.0.
+An update is available to EBB firmware v. 2.8.1;
+To download the updater, please visit: axidraw.com/fw
+
 
 Additional system information:
-3.9.5 (default, May  4 2021, 03:29:30) 
-[Clang 11.0.0 (clang-1100.0.33.17)]
+3.10.6 (main, Aug 30 2022, 04:58:14) [Clang 13.1.6 (clang-1316.0.21.2.5)]
+Voltage readout: 296 (~ 9.08 V).
+Current setpoint: 483 (~ 0.89 A).
 </code></pre></div>
 <p><em>Report system information</em></p>
 
@@ -2075,6 +2090,7 @@ Control within Inkscape.</p>
 <li>The version number of the AxiDraw software.</li>
 <li>Whether a software update is available.</li>
 <li>Detailed version information of the Python interpreter running the script, as given by Python&#39;s sys.version command.</li>
+<li>Estimated voltage input at the EBB, as well as motor current setpoint.</li>
 </ul>
 
 <p>An SVG file input to <code>plot_setup()</code> is allowed but not required for this mode to operate correctly.</p>
@@ -2098,7 +2114,7 @@ Query software version:</p>
 <blockquote>
 <p>Typical response:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>2.6.2
+<div class="highlight"><pre class="highlight plaintext"><code>3.6.0
 </code></pre></div>
 <blockquote>
 <p>Alternative: read the version_string variable instead:</p>
@@ -2290,6 +2306,8 @@ Each of these commands will be described in detail, after the list.</p>
 </tr>
 </tbody></table>
 
+<p><strong>Default:</strong> <code>&#39;fw_version&#39;</code>, set in axidraw_conf.py</p>
+
 <aside class="notice">
 The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
 They cannot be used within an <b>Interactive</b> context session.
@@ -2311,7 +2329,7 @@ They cannot be used within an <b>Interactive</b> context session.
 <blockquote>
 <p>Typical response:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight plaintext"><code>EBBv13_and_above EB Firmware Version 2.6.5
+<div class="highlight"><pre class="highlight plaintext"><code>EBBv13_and_above EB Firmware Version 2.8.1
 </code></pre></div>
 <p><em>Manual command: Query firmware version</em></p>
 
@@ -2324,7 +2342,7 @@ board. This is the default option in manual mode.</p>
 manual command with <code>plot_run()</code> also creates a Python string variable,
 <code>fw_version_string</code> that you can access and use within a script.</p>
 
-<p>As of this writing, the current firmware version is 2.6.5. To update the
+<p>As of this writing, the current firmware version is 2.8.1. To update the
 firmware on your AxiDraw, please see
 <a href="https://wiki.evilmadscientist.com/Updating_EBB_firmware">these instructions</a>.</p>
 
@@ -2613,9 +2631,10 @@ Home &mdash;  after one or more manual walk commands.</p>
 <p>It can also be used to return the AxiDraw to the Home position,
 for example after pausing a plot that will not be resumed.</p>
 
-<p>Note that changing the motor resolution 
-will generally count as &quot;re-enabling&quot; the motors with the new resolution,
-and may alter the position that <code>walk_home</code> will return to.</p>
+<p>Note that changing the motor resolution  will generally count as &quot;re-enabling&quot; the motors
+with the new resolution, and may alter the position that <code>walk_home</code> will return to.</p>
+
+<p>The <code>walk_home</code> command requires EBB firmware 2.6.2 or newer.</p>
 
 <aside class="notice">
 The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
@@ -2933,7 +2952,7 @@ are occasionally helpful for (e.g.,) calibration routines.</p>
 
 <p>Allowed values: Floating point numbers (not limit checked).</p>
 
-<p><strong>Default:</strong> 1.0 (not adjustable).</p>
+<p><strong>Default:</strong> 1.0, set in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3052,7 +3071,7 @@ plotting any additional copies and without an error message.</p>
 
 <p>Allowed values: Integers from 0 to 9999.</p>
 
-<p><strong>Default:</strong> 1, given by <code>copies</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 1, set in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3191,7 +3210,7 @@ output file is generated.</p>
 
 <p>Allowed values: <code>True</code>, <code>False</code>.</p>
 
-<p><strong>Default:</strong> <code>False</code>, given by <code>preview</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> <code>False</code>, set in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3242,7 +3261,7 @@ style parameter selects which of these (if any) are rendered.</p>
 <li><code>3</code> - Render all movement, both pen-up and pen-down  <strong>[DEFAULT]</strong></li>
 </ul>
 
-<p><strong>Default:</strong> 3 (render all movement), given by <code>rendering</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 3 (render all movement), set in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3429,7 +3448,7 @@ which can help to hide that specific type of visual artifact.</p>
 
 <p>Allowed values: <code>True</code>, <code>False</code>.</p>
 
-<p><strong>Default:</strong> <code>False</code>, given by <code>random_start</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> <code>False</code>, set in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3460,6 +3479,7 @@ Preview a file and read out variables giving time and distance:</p>
 <span class="n">time_estimate</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">time_estimate</span> 
 <span class="n">dist_pen_down</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">distance_pendown</span>
 <span class="n">dist_pen_total</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">distance_total</span>
+<span class="n">pen_lifts</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">pen_lifts</span>
 </code></pre></div>
 <p><em>Report time elapsed</em></p>
 
@@ -3527,7 +3547,7 @@ pen-down travel. The distance of pen-down travel alone is given by <code>distanc
 
 <p>Allowed values: <code>True</code>, <code>False</code>.</p>
 
-<p><strong>Default:</strong> <code>False</code>, given by <code>report_time</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> <code>False</code>, set in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3614,7 +3634,7 @@ the Plob and perform no other function. (Internally, it sets <a href="#preview">
 <li><code>2</code> - Disable plots and previews; generate digest only</li>
 </ul>
 
-<p><strong>Default:</strong> 0 (Disabled), given by <code>digest</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 0 (Disabled), set in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3683,7 +3703,7 @@ has completed a plot.</p>
 
 <p>Allowed values: <code>True</code>, <code>False</code>.</p>
 
-<p><strong>Default:</strong> <code>False</code>, given by <code>webhook</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> <code>False</code>, set in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3714,7 +3734,7 @@ when the plot finishes.</p>
 <p>An extended discussion about webhooks, including instructions for setting up mobile
 notifications via IFTTT, is available <a href="https://wiki.evilmadscientist.com/Webhooks">here</a>.</p>
 
-<p><strong>Default:</strong> None, given by <code>webhook_url</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> None, set in axidraw_conf.py</p>
 <h1 id='options-interactive'>Options (Interactive)</h1>
 <p>One option, <code>units</code>, applies only in the <strong>Interactive</strong> context, within a Python script.</p>
 <h2 id='units'>units</h2>
@@ -3724,15 +3744,15 @@ notifications via IFTTT, is available <a href="https://wiki.evilmadscientist.com
 <p>Example: 
 Move to different positions, given in inch and cm units:</p>
 </blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>   
-<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>          
-<span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>            
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open serial port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-up move to (1,1) inch
-</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">1</span>            <span class="c1"># set working units to cm.
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw
+</span>    <span class="n">quit</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">1</span>            <span class="c1"># set working units to cm.
 </span><span class="n">ad</span><span class="p">.</span><span class="n">update</span><span class="p">()</span>                     <span class="c1"># Process changes to options 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mf">5.08</span><span class="p">,</span><span class="mf">5.08</span><span class="p">)</span>              <span class="c1"># Relative line of (2,2) inches
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mf">5.08</span><span class="p">,</span> <span class="mf">5.08</span><span class="p">)</span>             <span class="c1"># Relative line of (2, 2) inches
 </span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Pen-up move, back to origin.
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port to AxiDraw
 </span></code></pre></div>
@@ -3742,8 +3762,7 @@ Move to different positions, given in inch and cm units:</p>
 
 <p>Set the units for movement commands given in the <strong>Interactive</strong> context.
 If you change the units after calling <code>connect()</code>, use the <code>update()</code>
-method to process
-that change before calling additional motion commands.</p>
+method to process that change before calling additional motion commands.</p>
 
 <p>Allowed values: Integers from 0 to 2:</p>
 
@@ -3786,15 +3805,16 @@ Read out boolean parameter for whether clipping to page is enabled.</p>
 <p>Also enabling digital output pin B3 to be high (on) when
 the pen is down, using the special &quot;use_b3_out&quot; parameter.</p>
 </blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>           <span class="c1"># import module
-</span><span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>                  <span class="c1"># Initialize class
-</span><span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>                        <span class="c1"># Enter interactive context
-</span><span class="n">clipping</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">params</span><span class="p">.</span><span class="n">clip_to_page</span>       <span class="c1"># Read "clip_to_page" parameter value
-</span><span class="n">ad</span><span class="p">.</span><span class="n">params</span><span class="p">.</span><span class="n">use_b3_out</span> <span class="o">=</span> <span class="bp">True</span>             <span class="c1"># enable digital output B3.
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                            <span class="c1"># Open serial port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                          <span class="c1"># Pen-up move
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                          <span class="c1"># Pen-down move back to origin
-</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                         <span class="c1"># Close serial port to AxiDraw
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>       <span class="c1"># import module
+</span><span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>              <span class="c1"># Initialize class
+</span><span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>                    <span class="c1"># Enter interactive context
+</span><span class="n">clipping</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">params</span><span class="p">.</span><span class="n">clip_to_page</span>   <span class="c1"># Read "clip_to_page" parameter value
+</span><span class="n">ad</span><span class="p">.</span><span class="n">params</span><span class="p">.</span><span class="n">use_b3_out</span> <span class="o">=</span> <span class="bp">True</span>         <span class="c1"># enable digital output B3.
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>                <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                          <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                     <span class="c1"># Pen-up move
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                     <span class="c1"># Pen-down move back to origin
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                     <span class="c1"># Close serial port to AxiDraw
 </span></code></pre></div>
 <p>As a supplement to the many options detailed above, there are additional
 parameters available in the axidraw_conf.py configuration file that
@@ -4042,10 +4062,11 @@ Draw a single line in Interactive context, using absolute moves:</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>   <span class="c1"># import module
 </span><span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>          <span class="c1"># Initialize class
 </span><span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>                <span class="c1"># Enter interactive context
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open serial port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-up move to (1,1) inches
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-down move, to (2,1) inches
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Pen-up move, back to origin
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (1,1) inches
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-down move, to (2,1) inches
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                 <span class="c1"># Pen-up move, back to origin
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port to AxiDraw
 </span></code></pre></div>
 <p><em>Initialize Interactive context</em></p>
@@ -4074,15 +4095,15 @@ with a pen-down speed of 20%:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">speed_pendown</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">connected</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">connected</span><span class="p">:</span>
-    <span class="k">return</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Pen-up move back to origin
+    <span class="n">quit</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Pen-up move back to origin
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>
 </code></pre></div>
 <blockquote>
 <p>Example 2: 
-The same, but using the connected variable to check for a connection:</p>
+The same, but using the &quot;connected&quot; variable to check for a connection:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>  
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
@@ -4090,10 +4111,10 @@ The same, but using the connected variable to check for a connection:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">speed_pendown</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connected</span><span class="p">:</span>
-    <span class="k">return</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Pen-up move back to origin
+    <span class="n">quit</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Pen-up move back to origin
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>
 </code></pre></div>
 <p><em>Open serial connection to AxiDraw</em></p>
@@ -4106,39 +4127,48 @@ begins and ends. The <code>connect()</code> function a USB serial
 connection to the AxiDraw. It also applies any option values that you have<br>
 set after calling <a href="#interactive"><code>interactive()</code></a>. 
 The port must be closed with the
-<a href="#disconnect"><code>disconnect()</code></a> function at the end of your session. The function
-returns either <code>True</code> or <code>False</code>, respectively, if it successfully connected
-or did not. </p>
+<a href="#disconnect"><code>disconnect()</code></a> function at the end of your session. </p>
 
-<p>A variable, <code>connected</code>, is also set to <code>True</code> upon a successful
-connection. Disconnecting as well as certain errors in USB communication will
-set <code>connected</code> to <code>False</code>. You can poll this variable to check if the
-connection appears to be active. </p>
+<p>Most functions in the interactive API, including all motion commands, will raise an
+error if they are called before <code>connect()</code> or when there is otherwise not
+an active connection to the AxiDraw hardware. The <code>connect()</code> function returns
+either <code>True</code> or <code>False</code>, respectively, if it successfully connected or did not. 
+A variable, <code>connected</code>, is also set to <code>True</code> upon a successful
+connection. Disconnecting via <a href="#disconnect"><code>disconnect()</code></a> as well as certain errors in 
+USB communication will set <code>connected</code> to <code>False</code>.
+You can poll this variable to check if the connection appears to be active.</p>
 
-<p>Note that in addition to opening the USB connection, <code>connect()</code> is also used
+<p>In addition to opening the USB connection, <code>connect()</code> is also used
 to process and apply any plot options that you wish to set.
-If you wish to change one or more options after calling
+If you wish to change one or more options <em>after</em> calling
 <code>connect()</code>, use the <a href="#update"><code>update()</code></a> method to process
 the changes to the options before calling additional motion commands.</p>
 
 <p>In detail, <code>connect()</code> does the following:</p>
 
 <ul>
-<li>Open the USB connection to AxiDraw </li>
 <li>Parse and apply settings</li>
+<li>Try to open the USB connection to AxiDraw</li>
+<li>Return <code>False</code> if no connection is available.</li>
 <li>Raise the pen</li>
 <li>Enable the XY stepper motors (if not already enabled)</li>
-<li>Set the current XY position to (0,0)</li>
+<li>Set the current XY position to (0, 0)</li>
 <li>Set the <code>connected</code> variable to <code>True</code></li>
+<li>Return <code>True</code></li>
 </ul>
 
 <p>Options that specify the USB port or its behavior 
 (<a href="#port"><code>port</code></a> or <a href="#port_config"><code>port_config</code></a>) must be specified before
 (not after) opening the port with <code>connect()</code>. </p>
 
-<aside class="warning">
-You must close the connection to the AxiDraw at the end of your session,
-using <code>disconnect()</code>.
+<aside class="success">
+Verify that the connection was successful before
+using motion commands.
+</aside>
+
+<aside class="success">
+Use <code>disconnect()</code> to close the connection
+to the AxiDraw at the end of your session.
 </aside>
 
 <aside class="notice">
@@ -4154,8 +4184,9 @@ Open and close an interactive connection to AxiDraw:</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>  
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>
 </code></pre></div>
 <p><em>Close serial connection to AxiDraw</em></p>
 
@@ -4178,12 +4209,13 @@ Use update() to apply changes to options after connect():</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>   <span class="c1"># import module
 </span><span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>          <span class="c1"># Initialize class
 </span><span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>                <span class="c1"># Enter interactive context
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open serial port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-up move to (1,1) inch
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (1, 1) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">1</span>            <span class="c1"># set working units to cm.
 </span><span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">speed_pendown</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># set pen-down speed to 10%
 </span><span class="n">ad</span><span class="p">.</span><span class="n">update</span><span class="p">()</span>                     <span class="c1"># Process changes to options 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mf">5.08</span><span class="p">,</span><span class="mf">5.08</span><span class="p">)</span>              <span class="c1"># Relative move: (2,2) inches
+</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mf">5.08</span><span class="p">,</span> <span class="mf">5.08</span><span class="p">)</span>             <span class="c1"># Relative move: (2, 2) inches
 </span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Pen-up move, back to origin.
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port to AxiDraw
 </span></code></pre></div>
@@ -4222,15 +4254,16 @@ Interactive context.</p>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">speed_pendown</span> <span class="o">=</span> <span class="mi">50</span>   <span class="c1"># set pen-down speed to 50%
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                    <span class="c1"># Move to (1,1) inch
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                   <span class="c1"># Move to (1, 1) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">pendown</span><span class="p">()</span>                    <span class="c1"># Lower pen
-</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Move to (3.5,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">3.5</span><span class="p">)</span>                <span class="c1"># Move to (3.5,3.5) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">3.5</span><span class="p">)</span>                  <span class="c1"># Move to (1,3.5) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                    <span class="c1"># Move to (1,1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Move to (3.5, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>               <span class="c1"># Move to (3.5, 3.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>                 <span class="c1"># Move to (1, 3.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                   <span class="c1"># Move to (1, 1) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">penup</span><span class="p">()</span>                      <span class="c1"># Raise pen
-</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                    <span class="c1"># Move to Home (0,0)
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                   <span class="c1"># Move to Home (0, 0)
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
 </span></code></pre></div>
 <p><em>Absolute move to (x,y) location</em></p>
@@ -4271,13 +4304,14 @@ movement commands in the Interactive context.</p>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">speed_pendown</span> <span class="o">=</span> <span class="mi">50</span>   <span class="c1"># set pen-down speed to 50%
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Move to (1,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                <span class="c1"># Move to (3.5,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">3.5</span><span class="p">)</span>              
-<span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">3.5</span><span class="p">)</span>                
-<span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  
-<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Raise pen, return home
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>               <span class="c1"># Move to (3.5, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                 <span class="c1"># Raise pen, return home
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
 </span></code></pre></div>
 <p><em>Absolute pen-up move to (x,y) location</em></p>
@@ -4317,13 +4351,14 @@ movement commands in the Interactive context.</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Move to (1,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                <span class="c1"># Move to (3.5,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span><span class="mf">3.5</span><span class="p">)</span>              
-<span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">3.5</span><span class="p">)</span>                
-<span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  
-<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Raise pen, return home
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>               <span class="c1"># Move to (3.5, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Raise pen, return home
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
 </span></code></pre></div>
 <p><em>Absolute pen-down move to (x,y) location</em></p>
@@ -4365,15 +4400,16 @@ Interactive context.</p>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">speed_pendown</span> <span class="o">=</span> <span class="mi">50</span>   <span class="c1"># set pen-down speed to 50%
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                      <span class="c1"># Move to (1,1) inch
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                     <span class="c1"># Move to (1, 1) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">pendown</span><span class="p">()</span>                    <span class="c1"># Lower pen
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                    <span class="c1"># Move to (3.5,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>                    <span class="c1"># Move to (3.5,3.5) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                   <span class="c1"># Move to (1,3.5) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.5</span><span class="p">)</span>                   <span class="c1"># Move to (1,1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                   <span class="c1"># Move to (3.5, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>                   <span class="c1"># Move to (3.5, 3.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                  <span class="c1"># Move to (1, 3.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">)</span>                  <span class="c1"># Move to (1, 1) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">penup</span><span class="p">()</span>                      <span class="c1"># Raise pen
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>                    <span class="c1"># Move to Home position
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>                   <span class="c1"># Move to Home position
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
 </span></code></pre></div>
 <p><em>Relative move by (x,y) with respect to current location</em></p>
@@ -4411,14 +4447,15 @@ movement commands in the Interactive context.</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                  <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Move to (1,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                <span class="c1"># Lower pen, move to (3.5,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>                <span class="c1"># Move to (3.5,3.5) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>               <span class="c1"># Move to (1,3.5) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.5</span><span class="p">)</span>               <span class="c1"># Move to (1,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>                <span class="c1"># Raise pen, return home
-</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>               <span class="c1"># Close serial port
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>        <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                  <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>               <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>             <span class="c1"># Lower pen, move to (3.5, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>             <span class="c1"># Move to (3.5, 3.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>            <span class="c1"># Move to (1, 3.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">)</span>            <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>             <span class="c1"># Raise pen, return home
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>             <span class="c1"># Close serial port
 </span></code></pre></div>
 <p><em>Relative pen-up move by (x,y) with respect to current location</em></p>
 
@@ -4456,14 +4493,15 @@ movement commands in the Interactive context.</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                  <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Move to (1,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                <span class="c1"># Lower pen, move to (3.5,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>                <span class="c1"># Move to (3.5,3.5) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>               <span class="c1"># Move to (1,3.5) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.5</span><span class="p">)</span>               <span class="c1"># Move to (1,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>                <span class="c1"># Raise pen, return home
-</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>               <span class="c1"># Close serial port
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>        <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                  <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>               <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>             <span class="c1"># Lower pen, move to (3.5, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>             <span class="c1"># Move to (3.5, 3.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>            <span class="c1"># Move to (1, 3.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">)</span>            <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>             <span class="c1"># Raise pen, return home
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>             <span class="c1"># Close serial port
 </span></code></pre></div>
 <p><em>Relative pen-down move by (x,y) with respect to current location</em></p>
 
@@ -4507,12 +4545,13 @@ Interactive context.</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">pen_rate_raise</span> <span class="o">=</span> <span class="mi">90</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">accel</span> <span class="o">=</span> <span class="mi">80</span>
 
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                    <span class="c1"># Move to (1,1) inch
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                   <span class="c1"># Move to (1, 1) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">pendown</span><span class="p">()</span>                    <span class="c1"># Lower pen
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="mf">2.5</span><span class="p">)</span>                  <span class="c1"># Move by (2.5,2.5) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>                 <span class="c1"># Move by (2.5, 2.5) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">penup</span><span class="p">()</span>                      <span class="c1"># Raise pen
-</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>                    <span class="c1"># Move to Home position
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                   <span class="c1"># Move to Home position
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
 </span></code></pre></div>
 <p><em>Raise the pen</em></p>
@@ -4542,13 +4581,14 @@ Interactive context.</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>               <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>             <span class="c1"># Pen-up move to (1,1) inch
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>       <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                 <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>            <span class="c1"># Pen-up move to (1, 1) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">pendown</span><span class="p">()</span>               <span class="c1"># Lower pen
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>              <span class="c1"># Move by (2.5,-1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>             <span class="c1"># Move by (2.5, -1) inch
 </span><span class="n">ad</span><span class="p">.</span><span class="n">penup</span><span class="p">()</span>                 <span class="c1"># Raise pen
-</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>                 <span class="c1"># Move by (0,3) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>             <span class="c1"># Pen-down move to home corner
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>                <span class="c1"># Move by (0, 3) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>            <span class="c1"># Pen-down move to home corner
 </span><span class="n">ad</span><span class="p">.</span><span class="n">penup</span><span class="p">()</span>                 <span class="c1"># Raise pen
 </span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>            <span class="c1"># Close serial port
 </span></code></pre></div>
@@ -4595,15 +4635,16 @@ Draw a square using draw_path(), with explicitly given vertices:</p>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>               <span class="c1"># Open port to AxiDraw
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>             <span class="c1"># Pen-up move to (1,1) inch
-</span><span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">1</span>       <span class="c1"># Switch to cm units
-</span><span class="n">ad</span><span class="p">.</span><span class="n">update</span><span class="p">()</span>                <span class="c1"># Process changes to options
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">1</span>            <span class="c1"># Switch to cm units
+</span><span class="n">ad</span><span class="p">.</span><span class="n">update</span><span class="p">()</span>                     <span class="c1"># Process changes to options
 # Make a list of points to draw a square, 1 cm on a side:
-</span><span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>       <span class="c1"># Plot the path
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>             <span class="c1"># Return Home
-</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>            <span class="c1"># Close serial port
+</span><span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>            <span class="c1"># Plot the path
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                 <span class="c1"># Return Home
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
 </span></code></pre></div>
 <blockquote>
 <p>Example 2: 
@@ -4613,17 +4654,19 @@ Draw a sine wave, 100 mm wide, using draw_path():</p>
 <span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">2</span>       <span class="c1"># Set mm units
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>               <span class="c1"># Open port to AxiDraw
-# Make a list of points to draw a square, 1 cm on a side:
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">2</span>        <span class="c1"># Set mm units
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>        <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                  <span class="c1">#   Exit, if no connection.
+</span>
+<span class="c1"># Make a list of points to draw a square, 1 cm on a side:
 </span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
     <span class="n">x_position</span> <span class="o">=</span> <span class="n">vertex</span><span class="o">/</span><span class="mi">10</span>
     <span class="n">y_position</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">math</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">math</span><span class="p">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">vertex</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
     <span class="n">vertices</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="n">x_position</span><span class="p">,</span> <span class="n">y_position</span><span class="p">])</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>       <span class="c1"># Plot the path
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>             <span class="c1"># Return Home
-</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>            <span class="c1"># Close serial port
+<span class="n">ad</span><span class="p">.</span><span class="n">draw_path</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>      <span class="c1"># Plot the path
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>             <span class="c1"># Return Home
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>             <span class="c1"># Close serial port
 </span></code></pre></div>
 <p><em>Draw a path from a list of vertices</em></p>
 
@@ -4671,6 +4714,44 @@ This function can only be used within the <b>Interactive</b> context.
 <aside class="success">
 For more complex path drawing capabilities, consider using the plot context with SVG files or inline-generated SVG. 
 </aside>
+<h2 id='delay'>delay</h2>
+<blockquote>
+<div class="codetitle">delay()</div>
+
+<p>Example: 
+Draw two line segments, separated by a 2.5 second interval:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                   <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">pendown</span><span class="p">()</span>                    <span class="c1"># Lower pen
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                     <span class="c1"># Move by (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2500</span><span class="p">)</span>                  <span class="c1"># Wait 2.5 seconds
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                     <span class="c1"># Move by (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">penup</span><span class="p">()</span>                      <span class="c1"># Raise pen
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                   <span class="c1"># Move to Home position
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
+</span></code></pre></div>
+<p><em>Execute a hardware-timed delay</em></p>
+
+<p><strong>Syntax: <code>delay(time_ms)</code></strong></p>
+
+<p>The <code>delay()</code> command is a command to execute a hardware-timed delay
+while in Interactive context. It effectively calls for a movement command
+that lasts <code>time_ms</code> milliseconds, but where the total movement distance is zero.</p>
+
+<p>The <code>delay()</code> command is different from (e.g.,) the <code>sleep</code> command in Python
+in that the time delay is queued with other motion control commands and executed
+by the AxiDraw&#39;s EBB control board. It can be used to insert a delay between
+motion commands that would otherwise be adjoining.</p>
+
+<aside class="notice">
+This function can only be used within the <b>Interactive</b> context.
+</aside>
 <h2 id='current_pos'>current_pos</h2>
 <blockquote>
 <div class="codetitle">current_pos()</div>
@@ -4682,23 +4763,22 @@ so the turtle and physical position agree. The second position (2,-1)
 is out of bounds. The new turtle position is (2,-1), but physical
 motion is clipped at (2,0) to remain within the bounds of motion.</p>
 </blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open port to AxiDraw 
-</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-up move to (2,1) inch
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (2, 1) inch
 </span><span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">turtle_pos</span><span class="p">()</span>            <span class="c1"># Query turtle position
-</span><span class="k">print</span><span class="p">(</span><span class="s">"Turtle XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Turtle XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 <span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">current_pos</span><span class="p">()</span>           <span class="c1"># Query current position
-</span><span class="k">print</span><span class="p">(</span><span class="s">"Physical XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Physical XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 
 <span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (2,-1) inch
 </span><span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">turtle_pos</span><span class="p">()</span>            <span class="c1"># Query turtle position
-</span><span class="k">print</span><span class="p">(</span><span class="s">"Turtle XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Turtle XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 <span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">current_pos</span><span class="p">()</span>           <span class="c1"># Query current position
-</span><span class="k">print</span><span class="p">(</span><span class="s">"Physical XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Physical XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 
 <span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
 </span></code></pre></div>
@@ -4736,23 +4816,22 @@ so the turtle and physical position agree. The second position (2,-1)
 is out of bounds. The new turtle position is (2,-1), but physical
 motion is clipped at (2,0) to remain within the bounds of motion.</p>
 </blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open port to AxiDraw 
-</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-up move to (2,1) inch
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (2, 1) inch
 </span><span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">turtle_pos</span><span class="p">()</span>            <span class="c1"># Query turtle position
-</span><span class="k">print</span><span class="p">(</span><span class="s">"Turtle XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Turtle XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 <span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">current_pos</span><span class="p">()</span>           <span class="c1"># Query current position
-</span><span class="k">print</span><span class="p">(</span><span class="s">"Physical XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Physical XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 
-<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (2,-1) inch
+<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>                <span class="c1"># Pen-up move to (2, -1) inch
 </span><span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">turtle_pos</span><span class="p">()</span>            <span class="c1"># Query turtle position
-</span><span class="k">print</span><span class="p">(</span><span class="s">"Turtle XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Turtle XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 <span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">current_pos</span><span class="p">()</span>           <span class="c1"># Query current position
-</span><span class="k">print</span><span class="p">(</span><span class="s">"Physical XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Physical XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 
 <span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
 </span></code></pre></div>
@@ -4787,34 +4866,34 @@ This function can only be used within the <b>Interactive</b> context.
 <div class="codetitle">current_pen(), turtle_pen()</div>
 
 <p>Example: 
-Command four pen-down lines to be drawn, from (5,5) to (5,3), (5,1),
-(5,-1), and (5,-3), reporting turtle and physical position and pen state
-after each move. The first two lines, to (5,3) and (5,1) are normal moves
-within travel limits. The third line is clipped at position (5,0),
+Command four pen-down lines to be drawn, from (5, 5) to (5, 3), (5, 1),
+(5, 1), and (5, -3), reporting turtle and physical position and pen state
+after each move. The first two lines, to (5, 3) and (5, 1) are normal moves
+within travel limits. The third line is clipped at position (5, 0),
 and the physical pen pen is raised there. The fourth line is entirely out
 of bounds, and no movement is made. The turtle and physical positions (both
 XY and pen state) agree so long as the turtle is within bounds.</p>
 </blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">units</span> <span class="o">=</span> <span class="mi">1</span>                <span class="c1"># Set units to cm
-</span><span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                        <span class="c1"># Open port to AxiDraw 
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>                <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                          <span class="c1">#   Exit, if no connection.
 </span>
-<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>                      <span class="c1"># Pen-up absolute move to (5,5) cm.
+<span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>                     <span class="c1"># Pen-up absolute move to (5, 5) cm.
 </span>
-<span class="k">for</span> <span class="n">_rep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>             <span class="c1"># Repeat four times:
-</span>    <span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>                   <span class="c1"># Pen-down move by -1 cm in Y
+<span class="k">for</span> <span class="n">_rep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>            <span class="c1"># Repeat four times:
+</span>    <span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>                  <span class="c1"># Pen-down move by -1 cm in Y
 </span>
     <span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">turtle_pos</span><span class="p">()</span>            <span class="c1"># Query turtle position
-</span>    <span class="k">print</span><span class="p">(</span><span class="s">"Turtle   XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span>    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Turtle   XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
     <span class="n">xy</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">current_pos</span><span class="p">()</span>           <span class="c1"># Query machine position
-</span>    <span class="k">print</span><span class="p">(</span><span class="s">"Physical XY position: {:f}, {:f}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</span>    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Physical XY position: </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">, </span><span class="si">{</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">f</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 
     <span class="n">pen_up</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">turtle_pen</span><span class="p">()</span>        <span class="c1"># Query turtle pen state
 </span>    <span class="k">print</span><span class="p">(</span><span class="s">"Turtle   pen up: "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pen_up</span><span class="p">))</span>
-    <span class="n">pen_up</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">current_pen</span><span class="p">()</span>       <span class="c1"># Query machine pen state 
+    <span class="n">pen_up</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">current_pen</span><span class="p">()</span>       <span class="c1"># Query machine pen state
 </span>    <span class="k">print</span><span class="p">(</span><span class="s">"Physical pen up: "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pen_up</span><span class="p">))</span>
 
 <span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                     <span class="c1"># return home
@@ -4867,12 +4946,12 @@ Enter interactive context, move using moveto().
 Query and print internal hardware step position, and
 return home using the firmware HM command.</p>
 </blockquote>
-<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
 <span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>                    <span class="c1"># Open port to AxiDraw 
-</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>                  <span class="c1"># Pen-up move to (2,1) inch
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Pen-up move to (2, 1) inch
 </span><span class="n">step_pos</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">usb_query</span><span class="p">(</span><span class="s">"QS</span><span class="se">\r</span><span class="s">"</span><span class="p">)</span> <span class="c1"># Query step position
 </span><span class="k">print</span><span class="p">(</span><span class="s">"Step pos: "</span> <span class="o">+</span> <span class="n">step_pos</span><span class="p">)</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">usb_command</span><span class="p">(</span><span class="s">"HM,3200</span><span class="se">\r</span><span class="s">"</span><span class="p">)</span>     <span class="c1"># Return home at 3200 steps/s
@@ -4918,6 +4997,16 @@ These functions can only be used within the <b>Interactive</b> context.
 
 <p>Please note that the changelog.txt file included with the download includes
 some details about older releases that are no longer listed below.</p>
+
+<p><strong>v 3.6 (2022-10-01)</strong></p>
+
+<p>New function in interactive context, <a href="#delay"><code>delay</code></a>, 
+which adds a hardware-timed delay.</p>
+
+<p>Defaults for <a href="#mode"><code>mode</code></a>, <a href="#manual_cmd"><code>manual_cmd</code></a>, and <a href="#walk_dist"><code>walk_dist</code></a>
+can now be set inside the configuration file.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_360.zip">here</a>.</p>
 
 <p><strong>v 3.5 (2022-08-10)</strong></p>
 
