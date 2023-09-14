@@ -713,10 +713,10 @@ through our github
 <h1 id='installation'>Installation</h1>
 <p><strong>One line install</strong></p>
 
-<p>If you already have Python 3.6 or newer installed, use the following in a terminal:<br>
+<p>If you already have Python 3.7 or newer installed, use the following in a terminal:<br>
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
-<p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>. The link is permanent and will be kept up to date. The current release version is 3.3.</p>
+<p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>. The link is permanent and will be kept up to date. The current release version is 3.4.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -724,7 +724,7 @@ conventionally, since the download includes example python scripts, an example c
 
 <p><strong>Standard install</strong></p>
 
-<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.2.</p>
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.4.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -3235,7 +3235,7 @@ SVG objects in the output SVG will be preserved in their original order.</p>
 
 <p><strong>Syntax: <code>options.reordering = value</code></strong></p>
 
-<p>When a non-zero value is given for the <code>reordering</code> option, a plot
+<p>When so selected with the <code>reordering</code> option, a plot
 optimization tool is used to re-order elements in the input SVG prior to
 plotting or rendering a preview. By changing the order and (optionally)
 direction of paths, the plot duration can be lowered by reducing the amount of
@@ -3247,13 +3247,19 @@ plot (default), layers, and res_plot.</p>
 
 <p><strong>Normal order of plotting</strong></p>
 
-<p>Normally and by default, each path within a SVG document is plotted
+<p>Normally and by default, each path within a SVG document is plotted (with one exception)
 in the same order and in the same direction as it appears in the document.
 This order is generally the order in which the objects were created. In a graphical
 vector editor like Inkscape, newer objects are drawn on top of older ones; a &quot;lower&quot;
-object is one that appears earlier in the document.</p>
+object is one that appears earlier in the document. </p>
 
-<p>Keeping the original order is often preferable, for example in handwriting-like applications,
+<p>The exception is that if one path ends very close to where another begins (and if those
+paths are not separated by layers), then those two paths are normally joined together,
+skipping an unnecessary pen lift. The maximum gap that can be joined is given by the
+<code>min_gap</code> parameter in the axidraw_conf.py configuration file.</p>
+
+<p>The default option, which generally respects the original document order,
+is often preferable, for example in handwriting-like applications,
 where you may wish the writing to be in the same order that a person would write
 the words, e.g. right-to-left, top-to-bottom on the page.</p>
 
@@ -3270,7 +3276,7 @@ the words, e.g. right-to-left, top-to-bottom on the page.</p>
 <ul>
 <li>All groups, sub-layers, and compound paths are broken apart.</li>
 <li>Paths are joined together if one starts where another ends.</li>
-<li>The paths are sorted for speed.</li>
+<li>The paths are re-ordered for speed.</li>
 </ul></li>
 <li>The document is plotted (or the preview is rendered).</li>
 <li>The document is reverted to the temporary copy.</li>
@@ -3292,7 +3298,8 @@ starts and results in a significant overall time savings.</p>
 <li>Sorting the paths for speed will consider reversing each path.</li>
 </ul>
 
-<p>If path reversal is not allowed, then every path will be plotted in the same order (and direction) as it occurs in the document.</p>
+<p>If path reversal is not allowed, then every path will be plotted in the same direction
+as it occurs in the document, even if that results in a slower plot.</p>
 
 <p>You may find it helpful to run plots
 with <a href="#preview"><code>preview</code></a>, <a href="#rendering"><code>rendering</code></a>,
@@ -3324,19 +3331,21 @@ the <code>reordering</code> of 2, but if you save the output SVG, it will retain
 
 <p><strong>Values of the reordering option</strong></p>
 
-<p>Allowed values: Integers from 0 to 3:</p>
+<p>Allowed values: Integers from 0 to 4:</p>
 
 <ul>
-<li>0: No reordering; preserve order of objects. <strong>[DEFAULT]</strong></li>
-<li>1: Reorder objects, preserving path orientation</li>
-<li>2: Reorder objects, allowing path reversal</li>
-<li>3: Same as 2 (deprecated option value)</li>
+<li>0: Least; Only connect adjoining paths. <strong>[DEFAULT]</strong></li>
+<li>1: Basic; Also reorder paths for speed</li>
+<li>2: Full; Also allow path reversal</li>
+<li>3: [Deprecated; currently gives same behavior as 2.]</li>
+<li>4: None; Strictly preserve file order</li>
 </ul>
 
-<p>The <code>reordering</code> value of 3 is a deprecated value, given for compatibility with
-older API versions. Its behavior is identical to a value of 2.</p>
+<p>The <code>reordering</code> values of 0 and 4 are identical except that the &quot;strict&quot; value of 4 also disables
+path joining. Path joining may be disabled separately via the <code>min_gap</code> parameter.</p>
 
-<p><strong>Default:</strong> 0 (No reordering), given by <code>reordering</code> in axidraw_conf.py</p>
+<p><strong>Default:</strong> 0 (Plot in original order, connecting adjoining paths to reduce unnecessary pen lifts), 
+given by <code>reordering</code> in axidraw_conf.py</p>
 
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
@@ -3520,7 +3529,7 @@ A Plob is a restricted-format subset of SVG that the AxiDraw software &quot;dige
 <li>Removing all style information</li>
 <li>Applying the auto-rotate function (if enabled)</li>
 <li>Cropping all paths at the plot edges</li>
-<li>Joining together any sufficiently close path ends</li>
+<li>Joining together sufficiently close path ends (unless disabled)</li>
 <li>Randomizing the start point of closed paths (if enabled)</li>
 <li>Reordering paths in the document for speed (if enabled)</li>
 <li>Flattening the document structure</li>
@@ -4769,13 +4778,28 @@ Advanced feature; use with great care.</aside>
 These functions can only be used within the <b>Interactive</b> context.
 </aside>
 <h1 id='api-changelog'>API Changelog</h1>
-<p>Revision Notes: Changes affecting API</p>
+<p>Revision Notes: Changes affecting API.</p>
+
+<p>Please note that the changelog.txt file included with the download includes
+some details about older releases that are no longer listed below.</p>
+
+<p><strong>v 3.4 (2022-07-22)</strong></p>
+
+<p>Added a new &quot;strict&quot; value to <a href="#reordering"><code>reordering</code></a> that disables all optimizations including
+path joining. Changed description (but <strong>not</strong> behavior) of the other values for clarity.</p>
+
+<p>New parameters in the axidraw_conf.py configuration file: <code>preview_color_up</code> and <code>preview_color_down</code>
+allow one to set the colors used in preview rendering.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_341.zip">here</a></p>
 
 <p><strong>v 3.3 (2022-06-11)</strong></p>
 
 <p>Expand <a href="#model"><code>model</code></a> option values with AxiDraw V3/B6.</p>
 
-<p>3.3.0 archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_330.zip">here</a>;</p>
+<p>Drop support for Python 3.6. Python 3.7 or newer is now required.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_330.zip">here</a></p>
 
 <p><strong>v 3.2 (2022-02-24)</strong></p>
 
@@ -4790,8 +4814,7 @@ adjustable parameters added to the configuration file.</p>
 
 <p>v 3.2.1 (bugfix) adds two new python example files.</p>
 
-<p>3.2.0 archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_320.zip">here</a>;
-3.2.1 archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_321.zip">here</a>.</p>
+<p>3.2.1 archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_321.zip">here</a>.</p>
 
 <p><strong>v 3.1 (2022-01-05)</strong></p>
 
@@ -4884,13 +4907,10 @@ now stripped of whitespace; previously, they were not.</p>
 
 <p><strong>v 2.7.0 (2020-11-11)</strong></p>
 
-<p>Add support for macOS 11 (Big Sur).</p>
+<p>Add support for macOS 11 (Big Sur) and Mac computers using Apple Silicon</p>
 
 <p>Drop support for Python 2. Python 3.5 or newer is now required. If you need
 to use Python 2, the previous release version (2.6.3) is archived below.</p>
-
-<p>New version posted 2020-11-21 (no version number change) includes dependency updates
-for compatibility with Mac computers using Apple Silicon.</p>
 
 <p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_270r13.zip">here</a>.</p>
 
@@ -4911,7 +4931,6 @@ You can also install it via:
 <ul>
 <li>This is the <em>last</em> major release of this API to support both Python 2 and Python 3.
 Future releases starting with 2.7.0 will require Python 3.5+.</li>
-<li>Add &quot;one line&quot; <a href="#installation">installation instructions</a>.</li>
 <li>Add <a href="#usb_command-usb_query"><code>usb_command</code></a> and 
 <a href="#usb_command-usb_query"><code>usb_query</code></a> functions
 in interactive context.</li>
@@ -4944,11 +4963,6 @@ in a future version.</li>
 
 <p>Add support for new AxiDraw MiniKit model</p>
 
-<p><strong>v  2.5.x  --  2019-09-04</strong></p>
-
-<p>Corrected an error in this documentation.
-The four reordering parameter values are in the range 0-3, not 1-4.</p>
-
 <p><strong>v  2.5.0  --  2019-05-02</strong></p>
 
 <p>Add reordering parameter, available in plot context.</p>
@@ -4961,11 +4975,6 @@ parameters in axidraw_conf.py. </p>
 <p><strong>v  2.3.2  --  2019-01-22</strong></p>
 
 <p>Input file no longer required for plot_setup().</p>
-
-<p><strong>v  2.3.0  --  2018-12-08</strong></p>
-
-<p>25% increase in maximum XY speed now allowed.
-Change installation process to allow installation via pip.</p>
 
 <p><strong>v  2.2.0  --  2018-10-01</strong></p>
 
@@ -4984,18 +4993,7 @@ machine travel.</p>
 <p><strong>v. 2.0.0  --  2018-08-22</strong></p>
 
 <p>Significant, breaking changes to option names and syntax, for clarity and
-compatibility. We recommend that you read through this documentation for
-the new option names.</p>
-
-<p>Summary of changes:</p>
-
-<ul>
-<li>Changed command line argument parser format</li>
-<li>Changed names of most input parameters</li>
-<li>Added short names for input parameters</li>
-<li><p>Boolean input parameters have been changed to input flags</p></li>
-<li><p>For details, please see changelog.txt included with the download.</p></li>
-</ul>
+compatibility. Please see changelog.txt included with the download for details.</p>
 <h1 id='copyright'>Copyright</h1>
 <p>Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories</p>
 

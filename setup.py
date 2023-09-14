@@ -69,8 +69,8 @@ setuptools.setup = replacement_setup
 
 replacement_setup(
     name='axicli',
-    version='3.3.0',
-    python_requires='>=3.6.0',
+    version='3.4.1',
+    python_requires='>=3.7.0',
     long_description=long_description,
     long_description_content_type='text/plain',
     url='https://axidraw.com/doc/cli_api/',
@@ -80,7 +80,7 @@ replacement_setup(
     install_requires=[
         # this only includes publicly available dependencies
         'ink_extensions>=1.1.0',
-        'lxml>=4.6.5',
+        'lxml>=4.9.1',
         'plotink>=1.6.1',
         'pyserial>=3.5',
         'requests', # just for the certificates for now
