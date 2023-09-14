@@ -447,6 +447,9 @@
                             <a href="#walk_mmx-walk_mmy" class="toc-h3 toc-link" data-title="walk_mmx, walk_mmy">walk_mmx, walk_mmy</a>
                           </li>
                           <li>
+                            <a href="#walk_home" class="toc-h3 toc-link" data-title="walk_home">walk_home</a>
+                          </li>
+                          <li>
                             <a href="#enable_xy-disable_xy" class="toc-h3 toc-link" data-title="enable_xy, disable_xy">enable_xy, disable_xy</a>
                           </li>
                           <li>
@@ -713,7 +716,7 @@ through our github
 <p>If you already have Python 3.6 or newer installed, use the following in a terminal:<br>
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
-<p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>. The link is permanent and will be kept up to date. The current release version is 3.1.</p>
+<p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>. The link is permanent and will be kept up to date. The current release version is 3.2.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -721,7 +724,7 @@ conventionally, since the download includes example python scripts, an example c
 
 <p><strong>Standard install</strong></p>
 
-<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.1.</p>
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.2.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -770,7 +773,7 @@ output_svg is a string equivalent to the contents of an SVG file.</p>
 
 <p>The examples shown here will load and plot a file, using default parameters.
 Four lines of code are needed: to import the module, create a class instance,
-load a file and select the <strong>Plot</strong> context, and begin plotting.</p>
+load a file and select the <strong>Plot</strong> context, and begin plotting. </p>
 
 <p>In addition to plotting a file, the API includes the ability to set a wide range
 of configuration options, and a number of utility functions. The options
@@ -866,6 +869,7 @@ that it will take to plot an SVG file.</p></li>
 <li><p>interactive_penheights.py &mdash; Demonstrate use of axidraw module in <strong>Interactive</strong> context, to set the pen to different heights.</p></li>
 <li><p>low-level_usb.py &mdash; Demonstrate advanced low-level USB command features of axidraw Python module in <strong>Interactive</strong> context.</p></li>
 <li><p>interactive_usb_com.py &mdash; Second example of low-level USB command features of axidraw Python module in <strong>Interactive</strong> context.</p></li>
+<li><p>report_pos_mm.py &mdash; Self-contained script that uses a low-level USB query to report and print the current XY position of the carriage.</p></li>
 </ul>
 <h1 id='setting-options'>Setting options</h1>
 <blockquote>
@@ -1436,6 +1440,8 @@ are clipped to occur within these limits.</p>
 <li><code>2</code> - AxiDraw V3/A3 or AxiDraw SE/A3</li>
 <li><code>3</code> - AxiDraw V3 XLX</li>
 <li><code>4</code> - AxiDraw MiniKit</li>
+<li><code>5</code> - AxiDraw SE/A1</li>
+<li><code>6</code> - AxiDraw SE/A2</li>
 </ul>
 
 <p><strong>Default:</strong> 1 (AxiDraw V2 or AxiDraw V3), given by <code>model</code> in axidraw_conf.py</p>
@@ -2192,11 +2198,15 @@ Each of these commands will be described in detail, after the list.</p>
 </tr>
 <tr>
 <td><code>walk_mmx</code></td>
-<td>Walk carriage in X by a distance given in millimeters</td>
+<td>Walk carriage in X by a distance given in mm</td>
 </tr>
 <tr>
 <td><code>walk_mmy</code></td>
-<td>Walk carriage in Y by a distance given in millimeters</td>
+<td>Walk carriage in Y by a distance given in mm</td>
+</tr>
+<tr>
+<td><code>walk_home</code></td>
+<td>Walk carriage to position where motors were enabled</td>
 </tr>
 <tr>
 <td><code>enable_xy</code></td>
@@ -2216,7 +2226,7 @@ Each of these commands will be described in detail, after the list.</p>
 </tr>
 <tr>
 <td><code>list_names</code></td>
-<td>Read USB &quot;nickname&quot; or ports of all attached machines</td>
+<td>Read USB &quot;nickname&quot; or port of all attached machines</td>
 </tr>
 <tr>
 <td><code>read_name</code></td>
@@ -2378,18 +2388,25 @@ This distance is given in inches, when using the <code>walk_x</code> or
 If you would prefer to use millimeter units, see the 
 <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code>, <code>walk_mmy</code></a> commands instead.</p>
 
-<p>Walk movements are relative to the current position (not absolute), and
-are NOT checked versus the current carriage position for sane range of
-motion. Furthermore, walk movements are &quot;out of band&quot; movements; they do
-not update any kind of record about the current carriage position.</p>
+<p>The <code>walk_x</code> and <code>walk_y</code> movements are relative to the current position (not absolute),
+and are NOT checked versus the current carriage position for sane range of
+motion. Use caution: They can easily run the AxiDraw past its safe range of motion.</p>
 
-<p>Use caution: These are fully manual commands, and can easily run
-the AxiDraw past its safe range of motion. After making manual movements,
-and before plotting, one should return the AxiDraw carriage to the Home corner.</p>
+<p>Walk movements are &quot;out of band&quot; movements; they can provide a means of offsetting
+the XY position of the AxiDraw carriage before starting a plot or an interactive session.
+(The position where a plot starts will be the origin for that plot, and the position
+where an interactive session starts will be the origin for that session.)
+This ability to offset the origin may occasionally
+provide utility in test, setup, and calibration routines.</p>
+
+<p>After making manual movements,
+and before plotting, you may wish to manually return the AxiDraw carriage to the Home corner.
+Alternately, you can use the <a href="#walk_home"><code>walk_home</code></a> manual command to &quot;reset&quot; any walks,
+returning the carriage to the position where the motors were first enabled.</p>
 
 <p>Please note that these &quot;walk&quot; commands are not meant as a substitute for
-full motion control. They are provided since they may occasionally
-provide utility in test, setup, and calibration routines.</p>
+full motion control. Use the Interactive context if you need a full range of
+direct XY motion commands.</p>
 
 <aside class="notice">
 The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
@@ -2462,18 +2479,91 @@ This distance is given in millimeters, when using the <code>walk_mmx</code> or
 <code>walk_mmy</code> manual commands.  If you would prefer to use inch units, 
 see the <a href="#walk_x-walk_y"><code>walk_x</code>, <code>walk_y</code></a> commands instead.</p>
 
-<p>Walk movements are relative to the current position (not absolute), and
-are NOT checked versus the current carriage position for sane range of
-motion. Furthermore, walk movements are &quot;out of band&quot; movements; they do
-not update any kind of record about the current carriage position.</p>
+<p>The <code>walk_mmx</code> and <code>walk_mmy</code> movements are relative to the current position (not absolute),
+and are NOT checked versus the current carriage position for sane range of
+motion. Use caution: They can easily run the AxiDraw past its safe range of motion.</p>
 
-<p>Use caution: These are fully manual commands, and can easily run
-the AxiDraw past its safe range of motion. After making manual movements,
-and before plotting, one should return the AxiDraw carriage to the Home corner.</p>
+<p>Walk movements are &quot;out of band&quot; movements; they can provide a means of offsetting
+the XY position of the AxiDraw carriage before starting a plot or an interactive session.
+(The position where a plot starts will be the origin for that plot, and the position
+where an interactive session starts will be the origin for that session.)
+This ability to offset the origin may occasionally
+provide utility in test, setup, and calibration routines.</p>
+
+<p>After making manual movements,
+and before plotting, you may wish to manually return the AxiDraw carriage to the Home corner.
+Alternately, you can use the <a href="#walk_home"><code>walk_home</code></a> manual command to &quot;reset&quot; any walks,
+returning the carriage to the position where the motors were first enabled.</p>
 
 <p>Please note that these &quot;walk&quot; commands are not meant as a substitute for
-full motion control. They are provided since they may occasionally
-provide utility in test, setup, and calibration routines.</p>
+full motion control. Use the Interactive context if you need a full range of
+direct XY motion commands.</p>
+
+<aside class="notice">
+The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
+They cannot be used within an <b>Interactive</b> context session.
+</aside>
+<h3 id='walk_home'>walk_home</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: walk_home</div>
+
+<p>Example 1:
+Make 20 random moves each in X and Y, each in the range 0-2 mm,
+using walk_mmx and walk_mmy, and then return Home with walk_home,
+even though we&#39;re not directly keeping track of the position.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmx"</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_mmy"</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">walk_dist</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span>
+    <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_home"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Walk the carriage Home (more precisely, to the position where the motors
+were first enabled), if it ended up in some other position when a plot was
+stopped.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"walk_home"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+</code></pre></div>
+<p><em>Manual command: Walk the carriage back to its initial position</em></p>
+
+<p><strong>Syntax: <code>options.manual_cmd = &quot;walk_home&quot;</code></strong></p>
+
+<p>The <code>walk_home</code> manual command is a special &quot;manual walk&quot; type command
+that moves the carriage to the initial position where the motors were enabled.</p>
+
+<p>In normal operation, where the AxiDraw is located in the Home position before
+enabling the motors, starting a plot, or using other manual walk commands, <code>walk_home</code>
+will return the AxiDraw to the Home position. But, if the motors were initially enabled
+in some different position, this command will instead return the AxiDraw to that other
+position.</p>
+
+<p>This command can be used to reset the AxiDraw carriage position &mdash; moving it back to
+Home &mdash;  after one or more manual walk commands.</p>
+
+<p>It can also be used to return the AxiDraw to the Home position,
+for example after pausing a plot that will not be resumed.</p>
+
+<p>Note that changing the motor resolution 
+will generally count as &quot;re-enabling&quot; the motors with the new resolution,
+and may alter the position that <code>walk_home</code> will return to.</p>
 
 <aside class="notice">
 The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
@@ -3906,7 +3996,7 @@ This function is only applicable for use with the <b>Interactive</b> context.
 <blockquote>
 <div class="codetitle">connect()</div>
 
-<p>Example: 
+<p>Example 1: 
 Draw a single line in Interactive context using relative moves,
 with a pen-down speed of 20%:</p>
 </blockquote>
@@ -3916,6 +4006,22 @@ with a pen-down speed of 20%:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">speed_pendown</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">connected</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">connected</span><span class="p">:</span>
+    <span class="k">return</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Pen-up move back to origin
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, but using the connected variable to check for a connection:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>  
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">speed_pendown</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connected</span><span class="p">:</span>
     <span class="k">return</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">move</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -3934,7 +4040,12 @@ set after calling <a href="#interactive"><code>interactive()</code></a>.
 The port must be closed with the
 <a href="#disconnect"><code>disconnect()</code></a> function at the end of your session. The function
 returns either <code>True</code> or <code>False</code>, respectively, if it successfully connected
-or did not.</p>
+or did not. </p>
+
+<p>A variable, <code>connected</code>, is also set to <code>True</code> upon a successful
+connection. Disconnecting as well as certain errors in USB communication will
+set <code>connected</code> to <code>False</code>. You can poll this variable to check if the
+connection appears to be active. </p>
 
 <p>Note that in addition to opening the USB connection, <code>connect()</code> is also used
 to process and apply any plot options that you wish to set.
@@ -3948,8 +4059,9 @@ the changes to the options before calling additional motion commands.</p>
 <li>Open the USB connection to AxiDraw </li>
 <li>Parse and apply settings</li>
 <li>Raise the pen</li>
-<li>Enable the XY stepper motors (if not powered on)</li>
+<li>Enable the XY stepper motors (if not already enabled)</li>
 <li>Set the current XY position to (0,0)</li>
+<li>Set the <code>connected</code> variable to <code>True</code></li>
 </ul>
 
 <p>Options that specify the USB port or its behavior 
@@ -3982,7 +4094,8 @@ Open and close an interactive connection to AxiDraw:</p>
 <p><strong>Syntax: <code>disconnect()</code></strong></p>
 
 <p>The <code>disconnect()</code> function closes a serial connection to AxiDraw that
-was opened with the <a href="#connect"><code>connect()</code></a> function. </p>
+was opened with the <a href="#connect"><code>connect()</code></a> function. It also sets the
+<code>connected</code> variable to <code>False</code>.</p>
 
 <aside class="notice">
 This function can only be used within the <b>Interactive</b> context.
@@ -4648,6 +4761,22 @@ These functions can only be used within the <b>Interactive</b> context.
 </aside>
 <h1 id='api-changelog'>API Changelog</h1>
 <p>Revision Notes: Changes affecting API</p>
+
+<p><strong>v 3.2 (2022-02-24)</strong></p>
+
+<p>Expand <a href="#model"><code>model</code></a> option values with AxiDraw SE/A1, SE/A2.</p>
+
+<p>Improved model for time duration of raising/lowering pen-lift servo motor; two
+adjustable parameters added to the configuration file.</p>
+
+<p>New <a href="#walk_home"><code>walk_home</code></a> command added to the list of <a href="#manual_cmd">manual commands</a>.</p>
+
+<p>New <code>connected</code> variable available in Interactive context.</p>
+
+<p>v 3.2.1 (bugfix) adds two new python example files.</p>
+
+<p>3.2.0 archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_320.zip">here</a>;
+3.2.1 archive release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_321.zip">here</a>.</p>
 
 <p><strong>v 3.1 (2022-01-05)</strong></p>
 

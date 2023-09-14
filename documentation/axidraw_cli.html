@@ -449,6 +449,9 @@
                             <a href="#walk_mmx-walk_mmy" class="toc-h3 toc-link" data-title="walk_mmx, walk_mmy">walk_mmx, walk_mmy</a>
                           </li>
                           <li>
+                            <a href="#walk_home" class="toc-h3 toc-link" data-title="walk_home">walk_home</a>
+                          </li>
+                          <li>
                             <a href="#enable_xy-disable_xy" class="toc-h3 toc-link" data-title="enable_xy, disable_xy">enable_xy, disable_xy</a>
                           </li>
                           <li>
@@ -555,16 +558,6 @@
             <a href="#multiple-axidraw-units" class="toc-h1 toc-link" data-title="Multiple AxiDraw units">Multiple AxiDraw units</a>
           </li>
           <li>
-            <a href="#troubleshooting" class="toc-h1 toc-link" data-title="Troubleshooting">Troubleshooting</a>
-              <ul class="toc-list-h2">
-                  <li>
-                    <a href="#debugging-plot-output" class="toc-h2 toc-link" data-title="Debugging plot output">Debugging plot output</a>
-                    
-                    
-                  </li>
-              </ul>
-          </li>
-          <li>
             <a href="#api-changelog" class="toc-h1 toc-link" data-title="API Changelog">API Changelog</a>
           </li>
           <li>
@@ -623,7 +616,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw CLI and the <a href="https://axidraw.com/doc/py_api/">AxiDraw Python Module</a>.
-The link is permanent and will be kept up to date. The current release version is 3.1.</p>
+The link is permanent and will be kept up to date. The current release version is 3.2.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -632,7 +625,7 @@ conventionally, since the download includes example python scripts, an example c
 <p><strong>Standard install</strong></p>
 
 <p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>
-The current release version is 3.1.</p>
+The current release version is 3.2.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -685,6 +678,9 @@ return an output SVG file using the <a href="#output_file"><code>output_file</co
 Saving the output SVG allows the capability to pause and subsequently resume a plot in
 progress, or to preview a plot. See further discussion under <a href="#res_plot-res_home"><code>res_plot</code></a> and
 <a href="#rendering"><code>rendering</code></a> below.</p>
+
+<p>A plot underway can be paused by pressing the physical pause button on the AxiDraw or by using
+Control+C on your keyboard.</p>
 <h1 id='special-commands'>Special commands</h1>
 <p>The following &quot;special&quot; commands have independent syntax and do not require
 an input file name to be specified:</p>
@@ -1277,8 +1273,8 @@ Execution of the command is typically faster without an input file.</p>
 
 <p>Examples:</p>
 
-<p>First, suppose that the AxiDraw was paused by a physical button press
-during a plot that was called by the following command:</p>
+<p>First, suppose that the AxiDraw was paused during a plot
+that was called by the following command:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -o temp.svg
 </code></pre></div>
@@ -1333,7 +1329,7 @@ progress saved.</p>
 following workflow is used to pause and resume plots that are underway:</p>
 
 <ol>
-<li>The physical pause button on the AxiDraw is pressed. (Plots can also be paused at predefined points with AxiDraw Layer Control.)</li>
+<li>The plot is paused by pressing the physical pause button on the AxiDraw, using Control+C on the keyboard, or at a predefined point in the SVG document.</li>
 <li>The plot pauses after finishing the current line segment.</li>
 <li>The SVG file is updated, saving an index of progress through the file and last-known XY carriage location.</li>
 <li>The user may then use the Resume tab to return the carriage home or to resume the plot, using the stored plot progress data from the file as a reference.</li>
@@ -1920,6 +1916,10 @@ Each of these commands will be described in detail, after the list.</p>
 <td>Walk carriage in Y by a distance given in mm</td>
 </tr>
 <tr>
+<td><code>walk_home</code></td>
+<td>Walk carriage to position where motors were enabled</td>
+</tr>
+<tr>
 <td><code>enable_xy</code></td>
 <td>Enable (energize) XY stepper motors</td>
 </tr>
@@ -1937,7 +1937,7 @@ Each of these commands will be described in detail, after the list.</p>
 </tr>
 <tr>
 <td><code>list_names</code></td>
-<td>Read USB &quot;nickname&quot; or ports of all attached machines</td>
+<td>Read USB &quot;nickname&quot; or port of all attached machines</td>
 </tr>
 <tr>
 <td><code>read_name</code></td>
@@ -2050,20 +2050,24 @@ This distance is given in inches, when using the <code>walk_x</code> or
 If you would prefer to use millimeter units, see the 
 <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code>, <code>walk_mmy</code></a> commands instead.</p>
 
-<p>Walk movements are relative to the current position (not absolute), and
-are NOT checked versus the current carriage position for sane range of
-motion. Furthermore, walk movements are &quot;out of band&quot; movements; they do
-not update any kind of record about the current carriage position.</p>
+<p>The <code>walk_x</code> and <code>walk_y</code> movements are relative to the current position (not absolute),
+and are NOT checked versus the current carriage position for sane range of
+motion. Use caution: They can easily run the AxiDraw past its safe range of motion.</p>
 
-<p>Use caution: These are fully manual commands, and can easily run
-the AxiDraw past its safe range of motion. After making manual movements,
-and before plotting, one should return the AxiDraw carriage to the Home corner.</p>
+<p>Walk movements are &quot;out of band&quot; movements; they can provide a means of offsetting
+the XY position of the AxiDraw carriage before starting a plot.
+(The position where a plot starts will be the origin for that plot.)
+This ability to offset the origin may occasionally
+provide utility in test, setup, and calibration routines.</p>
+
+<p>After making manual movements,
+and before plotting, you may wish to manually return the AxiDraw carriage to the Home corner.
+Alternately, you can use the <a href="#walk_home"><code>walk_home</code></a> manual command to &quot;reset&quot; any walks,
+returning the carriage to the position where the motors were first enabled.</p>
 
 <p>Please note that these &quot;walk&quot; commands are not meant as a substitute for
-full XY motion control. They are provided since they may occasionally
-provide utility in test, setup, and calibration routines. If you require
-full interactive XY movement (outside of an SVG file), consider using the
-interactive mode within the <a href="https://axidraw.com/doc/py_api/">Python API</a>,
+full motion control. If you require full interactive XY movement, consider using the
+interactive context within the <a href="https://axidraw.com/doc/py_api/">Python API</a>,
 which provides full XY movement control as well as software limit checking.</p>
 <h3 id='walk_mmx-walk_mmy'>walk_mmx, walk_mmy</h3>
 <blockquote>
@@ -2108,21 +2112,64 @@ This distance is given in millimeters, when using the <code>walk_mmx</code> or
 If you would prefer to use inch units, 
 see the <a href="#walk_x-walk_y"><code>walk_x</code>, <code>walk_y</code></a> commands instead.</p>
 
-<p>Walk movements are relative to the current position (not absolute), and
-are NOT checked versus the current carriage position for sane range of
-motion. Furthermore, walk movements are &quot;out of band&quot; movements; they do
-not update any kind of record about the current carriage position.</p>
+<p>The <code>walk_mmx</code> and <code>walk_mmy</code> movements are relative to the current position (not absolute),
+and are NOT checked versus the current carriage position for sane range of
+motion. Use caution: They can easily run the AxiDraw past its safe range of motion.</p>
 
-<p>Use caution: These are fully manual commands, and can easily run
-the AxiDraw past its safe range of motion. After making manual movements,
-and before plotting, one should return the AxiDraw carriage to the Home corner.</p>
+<p>Walk movements are &quot;out of band&quot; movements; they can provide a means of offsetting
+the XY position of the AxiDraw carriage before starting a plot.
+(The position where a plot starts will be the origin for that plot.)
+This ability to offset the origin may occasionally
+provide utility in test, setup, and calibration routines.</p>
+
+<p>After making manual movements,
+and before plotting, you may wish to manually return the AxiDraw carriage to the Home corner.
+Alternately, you can use the <a href="#walk_home"><code>walk_home</code></a> manual command to &quot;reset&quot; any walks,
+returning the carriage to the position where the motors were first enabled.</p>
 
 <p>Please note that these &quot;walk&quot; commands are not meant as a substitute for
-full XY motion control. They are provided since they may occasionally
-provide utility in test, setup, and calibration routines. If you require
-full interactive XY movement (outside of an SVG file), consider using the
-interactive mode within the <a href="https://axidraw.com/doc/py_api/">Python API</a>,
+full motion control. If you require full interactive XY movement, consider using the
+interactive context within the <a href="https://axidraw.com/doc/py_api/">Python API</a>,
 which provides full XY movement control as well as software limit checking.</p>
+<h3 id='walk_home'>walk_home</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: walk_home</div>
+
+<p>Example 1:
+Move the carriage back to the position where it was enabled,
+for example after a plot was stopped.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd walk_home
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Move the carriage 2.0 inches (50.8 mm) in the +x direction, and then back:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx --walk_dist 50.8
+axicli -m manual -M walk_home
+</code></pre></div>
+<p><em>Manual command: Walk the carriage back to its initial position</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] walk_home</strong></p>
+
+<p>The <code>walk_home</code> manual command is a special &quot;manual walk&quot; type command
+that moves the carriage to the initial position where the motors were enabled.</p>
+
+<p>In normal operation, where the AxiDraw is located in the Home position before
+enabling the motors, starting a plot, or using other manual walk commands, <code>walk_home</code>
+will return the AxiDraw to the Home position. But, if the motors were initially enabled
+in some different position, this command will instead return the AxiDraw to that other
+position.</p>
+
+<p>This command can be used to reset the AxiDraw carriage position &mdash; moving it back to
+Home &mdash;  after one or more manual walk commands.</p>
+
+<p>It can also be used to return the AxiDraw to the Home position,
+for example after pausing a plot that will not be resumed.</p>
+
+<p>Note that changing the motor resolution 
+will generally count as &quot;re-enabling&quot; the motors with the new resolution,
+and may alter the position that <code>walk_home</code> will return to.</p>
 <h3 id='enable_xy-disable_xy'>enable_xy, disable_xy</h3>
 <blockquote>
 <div class="codetitle">manual_cmd: enable_xy, disable_xy</div>
@@ -2426,7 +2473,7 @@ Plot a file two times, using default parameters:</p>
 </code></pre></div>
 <blockquote>
 <p>Example 2: 
-Plot a file continuously (until pause button pressed):</p>
+Plot a file continuously (until paused by button or Control+C):</p>
 </blockquote>
 <div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -c0
 </code></pre></div>
@@ -2449,13 +2496,13 @@ paper) with the <code>page_delay</code> parameter.</p>
 
 <p>A value of 0 copies is a special value that will begin plotting a continuous
 sequence of copies, without a scheduled end. The sequence will continue
-until the physical pause button is pressed.</p>
+until the Control+C or the physical pause button is pressed.</p>
 
-<p>A set of plots in progress can be canceled at any time by pressing the
-physical pause button on the AxiDraw. If a plot is active when the button
-is pressed, it will stop at that location in the usual way (saving progress
-in the output file, if an output file is specified). If the pause button is
-pressed while at home waiting between copies, then it simply exits without
+<p>A set of plots in progress can be paused at any time by pressing Control+C or the
+physical pause button on the AxiDraw. If a plot is active when paused,
+ it will stop at that location in the usual way (saving progress
+in the output file, if an output file is specified). If paused
+while at home waiting between copies, then it simply exits without
 plotting any additional copies and without an error message.</p>
 
 <p>Allowed values: Integers from 0 to 9999.</p>
@@ -2848,6 +2895,8 @@ for each axis.</p>
 <li><code>2</code> - AxiDraw V3/A3 or AxiDraw SE/A3</li>
 <li><code>3</code> - AxiDraw V3 XLX</li>
 <li><code>4</code> - AxiDraw MiniKit</li>
+<li><code>5</code> - AxiDraw SE/A1</li>
+<li><code>6</code> - AxiDraw SE/A2</li>
 </ul>
 
 <p><strong>Default:</strong> 1 (AxiDraw V2 or AxiDraw V3), given by <code>model</code> in
@@ -3219,7 +3268,7 @@ used for working with a single AxiDraw, and that does have some side-effects: </
 multiple machines &mdash; a maximum of one output file generated. (One of the plot
 processes, chosen automatically, will be the one that saves the output file.)
 That output file may safely be used for things like plot previews. However if
-the physical pause button is pressed on one of several machines while plotting
+the plot is paused (by Control+C or the physical pause button) while plotting
 in -P3 mode, then the output file saved may <em>or may not</em> contain plot progress
 data for that particular AxiDraw. </p>
 
@@ -3230,25 +3279,22 @@ AxiDraw located.</p>
 <p>For related reasons, most output messages other than errors are suppressed to
 avoid duplicate warning messages during the plot. Thus, if you need to request
 (e.g.) the firmware version from each AxiDraw, do so individually.</p>
-<h1 id='troubleshooting'>Troubleshooting</h1><h2 id='debugging-plot-output'>Debugging plot output</h2>
-<p>In case of unexpected plotting output, you may wish to preview your SVG document in
-Inkscape, to see how it will print.</p>
-
-<p>Steps:</p>
-
-<ol>
-<li>Ungroup all objects, repeatedly if necessary.</li>
-<li>Set fill type to none</li>
-<li>Set stroke type to flat color (solid)</li>
-<li>Set stroke style to a constant width, e.g., 0.5 mm (0.020 inches).</li>
-</ol>
-
-<p>Note that only path objects (and simple variations thereof) will print.
-Text should be converted to paths before plotting.
-Filled regions will not automatically be filled; use the AxiDraw Hatch Fill
-extension.</p>
 <h1 id='api-changelog'>API Changelog</h1>
 <p>Revision Notes: Changes affecting API</p>
+
+<p><strong>v 3.2 (2022-02-24)</strong></p>
+
+<p>Expand <a href="#model"><code>model</code></a> option values with AxiDraw SE/A1, SE/A2.</p>
+
+<p>Improved model for time duration of raising/lowering pen-lift servo motor; two
+adjustable parameters added to the configuration file.</p>
+
+<p>New <a href="#walk_home"><code>walk_home</code></a> command added to the list of <a href="#manual_cmd">manual commands</a>.</p>
+
+<p>Plots underway can now be paused with Control+C in addition to the physical pause button.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_320.zip">here</a>;
+3.2.1 (bugfix) release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_321.zip">here</a>.</p>
 
 <p><strong>v 3.1 (2022-01-05)</strong></p>
 
