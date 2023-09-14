@@ -17,13 +17,12 @@ here = path.abspath(path.dirname(__file__))
 print("WARNING: It looks like you might be attempting to install this in a non-pip way. This is discouraged. Use `pip install .` (or `pip install -r requirements.txt` if you are a developer with access to the relevant private repositories).")
 
 extras_require = {
-    'dev': [ 'axidrawinternal'], # see installation instructions
+    'dev': [ 'axidrawinternal>=3.0.0'], # see installation instructions
     'test': [
         'coverage', # coverage run -m unittest discover && coverage html
         'mock',
         'pyfakefs>=4.2.1',
     ],
-    'hershey': ['hersheyadvanced'], # see Installation instructions in README.md
 }
 
 extras_require['dev'].extend(extras_require['test']) # if you're developing, you're testing
@@ -58,7 +57,7 @@ setuptools.setup = replacement_setup
 
 replacement_setup(
     name='axicli',
-    version='3.0.2',
+    version='3.1.0',
     python_requires='>=3.6.0',
     long_description=long_description,
     long_description_content_type='text/plain',
@@ -69,8 +68,9 @@ replacement_setup(
     install_requires=[
         # this only includes publicly available dependencies
         'ink_extensions>=1.1.0',
-        'lxml',
-        'plotink>=1.3.1',
+        'lxml>=4.6.2',
+        'plotink>=1.4.0',
+        'pyserial>=3.5',
         'requests', # just for the certificates for now
     ],
     extras_require=extras_require,

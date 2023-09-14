@@ -1,0 +1,3430 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>AxiDraw CLI Reference</title>
+
+    <style media="screen">
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cpf {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s, .highlight .sa, .highlight .dl {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf, .highlight .fm {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv, .highlight .vm {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #f92672;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <style media="print">
+      * {
+        -webkit-transition:none!important;
+        transition:none!important;
+      }
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #586e75;
+}
+.highlight .err {
+  color: #002b36;
+  background-color: #dc322f;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
+  color: #657b83;
+}
+.highlight .cp {
+  color: #b58900;
+}
+.highlight .nt {
+  color: #b58900;
+}
+.highlight .o, .highlight .ow {
+  color: #93a1a1;
+}
+.highlight .p, .highlight .pi {
+  color: #93a1a1;
+}
+.highlight .gi {
+  color: #859900;
+}
+.highlight .gd {
+  color: #dc322f;
+}
+.highlight .gh {
+  color: #268bd2;
+  background-color: #002b36;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #6c71c4;
+}
+.highlight .kc {
+  color: #cb4b16;
+}
+.highlight .kt {
+  color: #cb4b16;
+}
+.highlight .kd {
+  color: #cb4b16;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #859900;
+}
+.highlight .sa {
+  color: #6c71c4;
+}
+.highlight .sr {
+  color: #2aa198;
+}
+.highlight .si {
+  color: #d33682;
+}
+.highlight .se {
+  color: #d33682;
+}
+.highlight .nn {
+  color: #b58900;
+}
+.highlight .nc {
+  color: #b58900;
+}
+.highlight .no {
+  color: #b58900;
+}
+.highlight .na {
+  color: #268bd2;
+}
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+  color: #859900;
+}
+.highlight .ss {
+  color: #859900;
+}
+    </style>
+    <link href="stylesheets/screen-cc0422e8.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print-953e3353.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all-894b661d.js"></script>
+
+    <link href="images/favicon-35298beb.ico" rel="icon" type="image/ico" />
+  </head>
+
+  <body class="index" data-languages="[]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar-cad8cdcb.png" alt="" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <a href="#" id="logobutton">
+      <img src="images/logo-a9ca65c7.png" class="logo" alt="" />
+      </a>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <ul id="toc" class="toc-list-h1">
+          <li>
+            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#about-axidraw" class="toc-h1 toc-link" data-title="About AxiDraw">About AxiDraw</a>
+          </li>
+          <li>
+            <a href="#installation" class="toc-h1 toc-link" data-title="Installation">Installation</a>
+          </li>
+          <li>
+            <a href="#quick-start" class="toc-h1 toc-link" data-title="Quick start">Quick start</a>
+          </li>
+          <li>
+            <a href="#special-commands" class="toc-h1 toc-link" data-title="Special commands">Special commands</a>
+          </li>
+          <li>
+            <a href="#setting-options" class="toc-h1 toc-link" data-title="Setting options">Setting options</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#cli-syntax" class="toc-h2 toc-link" data-title="CLI Syntax">CLI Syntax</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#defaults-and-precedence" class="toc-h2 toc-link" data-title="Defaults and Precedence">Defaults and Precedence</a>
+                    
+                    
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#options" class="toc-h1 toc-link" data-title="Options">Options</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#mode" class="toc-h2 toc-link" data-title="mode">mode</a>
+                    
+                      <ul class="toc-list-h3">
+                          <li>
+                            <a href="#plot" class="toc-h3 toc-link" data-title="plot">plot</a>
+                          </li>
+                          <li>
+                            <a href="#layers" class="toc-h3 toc-link" data-title="layers">layers</a>
+                          </li>
+                          <li>
+                            <a href="#align" class="toc-h3 toc-link" data-title="align">align</a>
+                          </li>
+                          <li>
+                            <a href="#toggle" class="toc-h3 toc-link" data-title="toggle">toggle</a>
+                          </li>
+                          <li>
+                            <a href="#manual" class="toc-h3 toc-link" data-title="manual">manual</a>
+                          </li>
+                          <li>
+                            <a href="#sysinfo" class="toc-h3 toc-link" data-title="sysinfo">sysinfo</a>
+                          </li>
+                          <li>
+                            <a href="#version" class="toc-h3 toc-link" data-title="version">version</a>
+                          </li>
+                          <li>
+                            <a href="#res_plot-res_home" class="toc-h3 toc-link" data-title="res_plot, res_home">res_plot, res_home</a>
+                          </li>
+                          <li>
+                            <a href="#reorder" class="toc-h3 toc-link" data-title="reorder">reorder</a>
+                          </li>
+                      </ul>
+                    
+                  </li>
+                  <li>
+                    <a href="#speed_pendown" class="toc-h2 toc-link" data-title="speed_pendown">speed_pendown</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#speed_penup" class="toc-h2 toc-link" data-title="speed_penup">speed_penup</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#accel" class="toc-h2 toc-link" data-title="accel">accel</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#pen_pos_down" class="toc-h2 toc-link" data-title="pen_pos_down">pen_pos_down</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#pen_pos_up" class="toc-h2 toc-link" data-title="pen_pos_up">pen_pos_up</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#pen_rate_lower" class="toc-h2 toc-link" data-title="pen_rate_lower">pen_rate_lower</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#pen_rate_raise" class="toc-h2 toc-link" data-title="pen_rate_raise">pen_rate_raise</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#pen_delay_down" class="toc-h2 toc-link" data-title="pen_delay_down">pen_delay_down</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#pen_delay_up" class="toc-h2 toc-link" data-title="pen_delay_up">pen_delay_up</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#no_rotate" class="toc-h2 toc-link" data-title="no_rotate">no_rotate</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#const_speed" class="toc-h2 toc-link" data-title="const_speed">const_speed</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#report_time" class="toc-h2 toc-link" data-title="report_time">report_time</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#manual_cmd" class="toc-h2 toc-link" data-title="manual_cmd">manual_cmd</a>
+                    
+                      <ul class="toc-list-h3">
+                          <li>
+                            <a href="#fw_version" class="toc-h3 toc-link" data-title="fw_version">fw_version</a>
+                          </li>
+                          <li>
+                            <a href="#lower_pen-raise_pen" class="toc-h3 toc-link" data-title="lower_pen, raise_pen">lower_pen, raise_pen</a>
+                          </li>
+                          <li>
+                            <a href="#walk_x-walk_y" class="toc-h3 toc-link" data-title="walk_x, walk_y">walk_x, walk_y</a>
+                          </li>
+                          <li>
+                            <a href="#walk_mmx-walk_mmy" class="toc-h3 toc-link" data-title="walk_mmx, walk_mmy">walk_mmx, walk_mmy</a>
+                          </li>
+                          <li>
+                            <a href="#enable_xy-disable_xy" class="toc-h3 toc-link" data-title="enable_xy, disable_xy">enable_xy, disable_xy</a>
+                          </li>
+                          <li>
+                            <a href="#bootload" class="toc-h3 toc-link" data-title="bootload">bootload</a>
+                          </li>
+                          <li>
+                            <a href="#strip_data" class="toc-h3 toc-link" data-title="strip_data">strip_data</a>
+                          </li>
+                          <li>
+                            <a href="#list_names" class="toc-h3 toc-link" data-title="list_names">list_names</a>
+                          </li>
+                          <li>
+                            <a href="#read_name" class="toc-h3 toc-link" data-title="read_name">read_name</a>
+                          </li>
+                          <li>
+                            <a href="#write_name" class="toc-h3 toc-link" data-title="write_name">write_name</a>
+                          </li>
+                      </ul>
+                    
+                  </li>
+                  <li>
+                    <a href="#walk_dist" class="toc-h2 toc-link" data-title="walk_dist">walk_dist</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#layer" class="toc-h2 toc-link" data-title="layer">layer</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#copies" class="toc-h2 toc-link" data-title="copies">copies</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#page_delay" class="toc-h2 toc-link" data-title="page_delay">page_delay</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#preview" class="toc-h2 toc-link" data-title="preview">preview</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#rendering" class="toc-h2 toc-link" data-title="rendering">rendering</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#reordering" class="toc-h2 toc-link" data-title="reordering">reordering</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#random_start" class="toc-h2 toc-link" data-title="random_start">random_start</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#config" class="toc-h2 toc-link" data-title="config">config</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#model" class="toc-h2 toc-link" data-title="model">model</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#port" class="toc-h2 toc-link" data-title="port">port</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#port_config" class="toc-h2 toc-link" data-title="port_config">port_config</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#output_file" class="toc-h2 toc-link" data-title="output_file">output_file</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#digest" class="toc-h2 toc-link" data-title="digest">digest</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#webhook" class="toc-h2 toc-link" data-title="webhook">webhook</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#webhook_url" class="toc-h2 toc-link" data-title="webhook_url">webhook_url</a>
+                    
+                    
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#multiple-axidraw-units" class="toc-h1 toc-link" data-title="Multiple AxiDraw units">Multiple AxiDraw units</a>
+          </li>
+          <li>
+            <a href="#troubleshooting" class="toc-h1 toc-link" data-title="Troubleshooting">Troubleshooting</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#debugging-plot-output" class="toc-h2 toc-link" data-title="Debugging plot output">Debugging plot output</a>
+                    
+                    
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#api-changelog" class="toc-h1 toc-link" data-title="API Changelog">API Changelog</a>
+          </li>
+          <li>
+            <a href="#copyright" class="toc-h1 toc-link" data-title="Copyright">Copyright</a>
+          </li>
+      </ul>
+        <ul class="toc-footer">
+            <li><a href='https://axidraw.com/docs'>AxiDraw Documentation Home</a></li>
+            <li><a href='https://shop.evilmadscientist.com/'>Evil Mad Scientist Home</a></li>
+            <li><a href='https://shop.evilmadscientist.com/contact'>Contact us</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='introduction'>Introduction</h1>
+<p>The AxiDraw Command Line Interface <strong>AxiCLI</strong> is an application programming interface (API)
+for using AxiDraw from either the command line interface (CLI) or within shell
+scripts and other environments that make use of shell commands. </p>
+
+<p>The primary function of this software is to plot SVG documents.
+This method is described below, beginning at
+ <a href="#quick-start">Quick start</a>.</p>
+
+<p>While AxiCLI is designed as a &quot;stand alone&quot; utility, it is written in Python.
+If you would like to control the AxiDraw from <em>within</em> your own Python script,
+please see the <a href="https://axidraw.com/doc/py_api/">separate API documentation</a>
+for the Python API. (As a side note,
+the Python API supports an additional control method: 
+interactive XY motion control through &quot;moveto/lineto&quot; type commands.)</p>
+<h1 id='about-axidraw'>About AxiDraw</h1>
+<p>The <a href="https://axidraw.com">AxiDraw</a> writing and drawing machine is a modern
+pen plotter designed and manufactured by
+<a href="https://shop.evilmadscientist.com">Evil Mad Scientist Laboratories</a>
+in Sunnyvale, California.</p>
+
+<p>For general information about getting started with and operating the AxiDraw,
+please see our extensive PDF user guide, available <a href="https://axidraw.com/guide">here</a>.</p>
+
+<p>AxiDraw software development is hosted at
+<a href="https://github.com/evil-mad/axidraw">github</a>.
+The central documentation site for AxiDraw is at the 
+<a href="http://axidraw.com/docs">Evil Mad Scientist wiki</a>; many additional development
+resources are listed there.</p>
+
+<p>AxiDraw owners may request technical and other product support by contacting
+us directly through our 
+<a href="https://shop.evilmadscientist.com/contact">contact form</a>,
+<a href="https://discord.gg/axhTzmr">discord chat</a>, or
+through our github
+<a href="https://github.com/evil-mad/axidraw/issues">issues list</a>.</p>
+<h1 id='installation'>Installation</h1>
+<p><strong>One line install</strong></p>
+
+<p>If you already have Python 3.6 or newer installed, use the following in a terminal:<br>
+<code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
+
+<p>This procedure installs both the AxiDraw CLI and the <a href="https://axidraw.com/doc/py_api/">AxiDraw Python Module</a>.
+The link is permanent and will be kept up to date. The current release version is 3.1.</p>
+
+<p>If you use this method, you may <em>also</em> want to 
+<a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
+conventionally, since the download includes example python scripts, an example configuration file, an example SVG file, and instructions for un-installing the software.</p>
+
+<p><strong>Standard install</strong></p>
+
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>
+The current release version is 3.1.</p>
+
+<p>Please see Installation.txt included with the download for full installation instructions.</p>
+
+<p>(Abbreviated instructions: Install <a href="https://www.python.org/downloads/">Python 3</a>. Unzip the archive, move into the directory, and use <code>python -m pip install .</code> to install the software.)</p>
+
+<p><strong>Upgrading</strong></p>
+
+<p>If you already have this software installed, we recommend the following method to upgrade:
+<code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip --upgrade --upgrade-strategy eager</code></p>
+<h1 id='quick-start'>Quick start</h1>
+<blockquote>
+<div class="codetitle">Quick start</div>
+
+<p>Typical usage, to plot a file:
+<code>
+axicli FILE_NAME [OPTIONS]
+</code></p>
+
+<p>Example 1: 
+Plot a file named AxiDraw_trivial.svg</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli AxiDraw_trivial.svg
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot a file named input.svg, and collect the output SVG</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli input.svg -o output.svg
+</code></pre></div>
+<blockquote>
+<p>The output is saved as a file, called output.svg</p>
+
+<p>Alternate syntax:
+<code>
+python -m axicli FILE_NAME [OPTIONS]
+</code></p>
+</blockquote>
+
+<p>The code examples here show the basic syntax for plotting an SVG file.</p>
+
+<p>In addition to plotting a file, the API includes the ability to set a wide range
+of configuration options as well as a smaller number of utility functions.</p>
+
+<p>A file input is required syntax for most operations. Certain utility modes that 
+do not perform any plotting do allow the file input to be omitted. </p>
+
+<p>By default, no <em>output</em> SVG is returned as part of the plotting process. 
+However, in some situations it may be use useful to have the program generate and
+return an output SVG file using the <a href="#output_file"><code>output_file</code></a> flag. 
+Saving the output SVG allows the capability to pause and subsequently resume a plot in
+progress, or to preview a plot. See further discussion under <a href="#res_plot-res_home"><code>res_plot</code></a> and
+<a href="#rendering"><code>rendering</code></a> below.</p>
+<h1 id='special-commands'>Special commands</h1>
+<p>The following &quot;special&quot; commands have independent syntax and do not require
+an input file name to be specified:</p>
+
+<ul>
+<li><p><code>axicli --help</code><p />
+<em>Show quick help</em></p></li>
+<li><p><code>axicli --version</code> or <code>axicli version</code><p />
+<em>Display software version of AxiDraw software and its CLI wrapper</em></p></li>
+</ul>
+
+<p>Additionally, the following utility modes do not require an input file, unless an <a href="#output_file">output file</a> is specified:
+<a href="#align"><code>align</code></a>, <a href="#toggle"><code>toggle</code></a>, <a href="#manual"><code>manual</code></a>, <a href="#sysinfo"><code>sysinfo</code></a>,
+<a href="#version"><code>version</code></a>.</p>
+<h1 id='setting-options'>Setting options</h1><h2 id='cli-syntax'>CLI Syntax</h2>
+<blockquote>
+<div class="codetitle">CLI Syntax</div>
+
+<p>One or more options may be specified with the following syntax:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli FILE_NAME --option_name value
+</code></pre></div>
+<blockquote>
+<p>Example 1:
+Plot file.svg, with maximum pen-down speed of 50%, acceleration 80%:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --speed_pendown 50 --accel 80 
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Use manual mode with the manual command to disable the XY motors
+(this command does not require an input file):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd disable_xy 
+</code></pre></div>
+<blockquote>
+<p>Example 3:
+Shell commands also have short forms, like this equivalent:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M disable_xy 
+</code></pre></div>
+<blockquote>
+<p>Example 4:
+Simulate plotting a file, generating a rendered preview of all motion,
+making use of the rendering (-g) and output file (-o) options,
+and saving the output file &quot;outputfile.svg&quot;:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -vg3 -o outputfile.svg
+</code></pre></div>
+<p>Most plotting options can be set using CLI arguments.</p>
+
+<p>For arguments that do take a value, specify only one value for each argument.</p>
+
+<p>Each option also has a &quot;short&quot; single-character version. Short options can be
+combined together with their value without a space in between. You can also
+combine together multiple short (single-character) options together, so long
+as only the last option has a value.</p>
+<h2 id='defaults-and-precedence'>Defaults and Precedence</h2>
+<p>The various options and their values are detailed in the sections below.
+For options that you do not directly specify, the default value will be used.</p>
+
+<p>The default value of most options are set from within the axidraw_conf.py
+configuration file within the files installed by the API.
+These include the pen up and pen down heights, basic speed
+settings, and so forth. The configuration file also includes additional
+parameters and defaults that are <em>only</em> set in configuration files
+and do not have any equivalent that is accessible through command line arguments.</p>
+
+<p>An example configuration file can be in the API download at:<br>
+<code>examples_config/axidraw_conf_copy.py</code></p>
+
+<p>You can make copies of this file and use them,
+along with the <a href="#config"><code>config</code></a> option, to specify a particular configuration
+file to use when plotting.</p>
+
+<p>A few specific options (including pen up/down heights, and plotting speed)
+can also be set by encoding these settings into the SVG file. The mechanism
+for doing this is called 
+&quot;<a href="http://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>&quot;,
+and it involves using special escape codes in the name of the layer(s) in the
+SVG file. Several additional commands
+such as timed delays and forced pauses can be controlled through this mechanism
+as well. </p>
+
+<p>The order of preference for options and parameters is as follows:</p>
+
+<p><strong>1</strong>: Options and values values specified in the SVG file (as in, by layer names)
+overrule those specified either by the command line or in your configuration file.</p>
+
+<p><strong>2</strong>: Options and values specified on the command line argument
+overrule those in your configuration file.</p>
+
+<p><strong>3</strong>: Options and values given in a specified configuration file overrule those
+in the default axidraw_conf.py configuration file.</p>
+
+<p>Note that each time you call AxiCLI, you are creating an independent
+AxiDraw session that works from default values and those that you specify.
+Settings are <em>not</em> preserved between invocations of it. 
+For example, if you run a plot with a certain speed
+setting specified on the command line, subsequent plots will
+use the default speed unless you specify otherwise. </p>
+
+<p>As an aside, if you do also use Inkscape for plotting SVG files, please note
+that option values and settings that you select from within the Inkscape
+GUI are not consulted and <em>do not</em> affect plotting from outside Inkscape.</p>
+<h1 id='options'>Options</h1>
+<p>The following is a list of optional arguments that can be applied. Each of these
+arguments will be described individually, after the list.</p>
+
+<table><thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>--mode</code>, <code>-m</code></td>
+<td>Specify general mode of operation.</td>
+</tr>
+<tr>
+<td><code>--speed_pendown</code>, <code>-s</code></td>
+<td>Maximum XY speed when the pen is down (plotting).</td>
+</tr>
+<tr>
+<td><code>--speed_penup</code>, <code>-S</code></td>
+<td>Maximum XY speed when the pen is up.</td>
+</tr>
+<tr>
+<td><code>--accel</code>, <code>-a</code></td>
+<td>Relative acceleration/deceleration speed.</td>
+</tr>
+<tr>
+<td><code>--pen_pos_down</code>, <code>-d</code></td>
+<td>Pen height when the pen is down (plotting).</td>
+</tr>
+<tr>
+<td><code>--pen_pos_up</code>, <code>-u</code></td>
+<td>Pen height when the pen is up.</td>
+</tr>
+<tr>
+<td><code>--pen_rate_lower</code>, <code>-r</code></td>
+<td>Speed of lowering the pen-lift motor.</td>
+</tr>
+<tr>
+<td><code>--pen_rate_raise</code>, <code>-R</code></td>
+<td>Speed of raising the pen-lift motor.</td>
+</tr>
+<tr>
+<td><code>--pen_delay_down</code>, <code>-z</code></td>
+<td>Added delay after lowering pen.</td>
+</tr>
+<tr>
+<td><code>--pen_delay_up</code>, <code>-Z</code></td>
+<td>Added delay after raising pen.</td>
+</tr>
+<tr>
+<td><code>--no_rotate</code>, <code>-N</code></td>
+<td>Disable auto-rotate; preserve plot orientation.</td>
+</tr>
+<tr>
+<td><code>--const_speed</code>, <code>-C</code></td>
+<td>Use constant speed when pen is down.</td>
+</tr>
+<tr>
+<td><code>--report_time</code>, <code>-T</code></td>
+<td>Report time and distance after the plot.</td>
+</tr>
+<tr>
+<td><code>--manual_cmd</code>, <code>-M</code></td>
+<td>Specify which &quot;manual&quot; mode command to use.</td>
+</tr>
+<tr>
+<td><code>--walk_dist</code>, <code>-w</code></td>
+<td>Distance to move for manual walk commands.</td>
+</tr>
+<tr>
+<td><code>--layer</code>, <code>-l</code></td>
+<td>Specify which layer(s) to plot in the layers mode.</td>
+</tr>
+<tr>
+<td><code>--copies</code>, <code>-c</code></td>
+<td>Specify the number of copies to plot.</td>
+</tr>
+<tr>
+<td><code>--page_delay</code>, <code>-D</code></td>
+<td>Specify delay between pages, for multiple copies.</td>
+</tr>
+<tr>
+<td><code>--preview</code>, <code>-v</code></td>
+<td>Perform offline simulation of plot only.</td>
+</tr>
+<tr>
+<td><code>--rendering</code>, <code>-g</code></td>
+<td>Render motion when using preview.</td>
+</tr>
+<tr>
+<td><code>--reordering</code>, <code>-G</code></td>
+<td>Specify level of plot optimization to use.</td>
+</tr>
+<tr>
+<td><code>--random_start</code>, <code>-Y</code></td>
+<td>Randomize start positions of closed paths.</td>
+</tr>
+<tr>
+<td><code>--config</code>, <code>-f</code></td>
+<td>Specify configuration file to use.</td>
+</tr>
+<tr>
+<td><code>--model</code>, <code>-L</code></td>
+<td>Select model of AxiDraw hardware.</td>
+</tr>
+<tr>
+<td><code>--port</code>, <code>-p</code></td>
+<td>Specify a USB port or AxiDraw to use.</td>
+</tr>
+<tr>
+<td><code>--port_config</code>, <code>-P</code></td>
+<td>Override how the USB ports are located.</td>
+</tr>
+<tr>
+<td><code>--output_file</code>, <code>-o</code></td>
+<td>Specify an output file name.</td>
+</tr>
+<tr>
+<td><code>--digest</code>, <code>-O</code></td>
+<td>Plot digest output option.</td>
+</tr>
+<tr>
+<td><code>--webhook</code>, <code>-W</code></td>
+<td>Enable webhook alerts.</td>
+</tr>
+<tr>
+<td><code>--webhook_url</code>, <code>-U</code></td>
+<td>URL for webhook alerts.</td>
+</tr>
+</tbody></table>
+<h2 id='mode'>mode</h2>
+<blockquote>
+<div class="codetitle">mode</div>
+
+<p>Example 1: 
+Plot all layers that have a layer name beginning with the number 1:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --mode layers --layer 1
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Toggle the pen up or down, using &quot;toggle&quot; mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode toggle   
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Disable the XY stepper motors, using &quot;manual&quot; mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M disable_xy 
+</code></pre></div>
+<p><em>General mode of operation</em></p>
+
+<p><strong>Syntax: [<code>-m</code>, <code>--mode</code>] value</strong></p>
+
+<p>Specify the general mode of operation. This is equivalent to selecting a
+function &quot;tab&quot; in the Inkscape-based GUI for AxiDraw Control. </p>
+
+<p>The following is a list of allowed values of the mode parameter.
+Each of these modes will be described in detail, after the list.</p>
+
+<table><thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>plot</code></td>
+<td>Plot the file. <strong>[DEFAULT]</strong></td>
+</tr>
+<tr>
+<td><code>layers</code></td>
+<td>Plot a single layer (or set of layers), selected by <code>layer</code> parameter</td>
+</tr>
+<tr>
+<td><code>align</code></td>
+<td>A setup mode: Raise pen, disable XY stepper motors</td>
+</tr>
+<tr>
+<td><code>toggle</code></td>
+<td>A setup mode: Raise the pen if it is lowered, or vice versa</td>
+</tr>
+<tr>
+<td><code>manual</code></td>
+<td>Execute a utility command, specified by <a href="#manual_cmd"><code>manual_cmd</code></a> parameter</td>
+</tr>
+<tr>
+<td><code>sysinfo</code></td>
+<td>Query EBB firmware version and report system information</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Report AxiDraw software version number</td>
+</tr>
+<tr>
+<td><code>res_plot</code></td>
+<td>Resume a plot in progress, using stored plot progress data</td>
+</tr>
+<tr>
+<td><code>res_home</code></td>
+<td>Return AxiDraw to home, using stored plot progress data</td>
+</tr>
+<tr>
+<td><code>reorder</code></td>
+<td>Re-order the SVG file for more efficient plotting</td>
+</tr>
+</tbody></table>
+
+<p>Modes that process or plot the file (<code>plot</code>,  <code>layers</code>, <code>res_plot</code>, <code>res_home</code>, <code>reorder</code>)
+always require a file input. 
+The other (&quot;utility&quot;) modes (<code>align</code>,  <code>toggle</code>, <code>manual</code>, <code>sysinfo</code>, <code>version</code>)
+do not require a file input <em>unless</em> an output file is specified with the
+<a href="#output_file"><code>output_file</code></a> option.</p>
+<h3 id='plot'>plot</h3>
+<blockquote>
+<div class="codetitle">mode: plot</div>
+
+<p>Example 1: 
+Plot a file using default mode and parameters:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, explicitly setting the mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --mode plot
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+The same, using short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m plot
+</code></pre></div>
+<p><em>Plot the SVG file</em></p>
+
+<p><strong>Syntax: [<code>-m plot</code>, <code>--mode plot</code>]</strong></p>
+
+<p>The plot mode is for plotting an SVG file. This the default mode of operation,
+and generally does not need to be explicitly specified. 
+An input file, to be plotted, is always required when in plot mode.</p>
+<h3 id='layers'>layers</h3>
+<blockquote>
+<div class="codetitle">mode: layers</div>
+
+<p>Example 1: 
+Plot all layers that have a layer name beginning with the number 1:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --mode layers --layer 1
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Render a preview of how a layer called &quot;5-blue&quot; (the only layer
+in file.svg that has a name starting with the number 5) will plot,
+including pen-up travel, and estimate how long that layer will take to
+plot. Save the output file as &quot;output.svg&quot;:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m layers -vTg3 -l5 -o output.svg
+</code></pre></div>
+<p><em>Plot a single layer (or set of layers)</em></p>
+
+<p><strong>Syntax: [<code>-m layers</code>, <code>--mode layers</code>]</strong></p>
+
+<p>Plot a single layer (or set of layers), selected by a <a href="#layer"><code>--layer</code></a> argument.</p>
+
+<p>When using the default (plot) mode, the entire document will be plotted.
+That is to say all paths, on all visible layers of the SVG document, 
+will be plotted. You can instead use layers mode to plot a single layer
+or group of layers, for example to plot only layers that should be
+plotted in one color of ink.</p>
+
+<p>If you plot in layers mode, only visible layers that have layer
+names beginning with the selected number will plot. The selected number
+is given by the value of the <code>--layer</code> parameter, and may be in the range
+of 0 - 1000.</p>
+
+<p>Plotting in this mode, with layer specified will plot only layers
+whose names begin with the selected number.</p>
+
+<p>For example, a layer named &quot;5-red&quot; will be printed if the number 5 is
+selected, but a layer named &quot;2-black&quot; or &quot;guide lines&quot; will not be.</p>
+
+<p>Layers mode is equivalent to plotting from the &quot;Layers&quot; tab of AxiDraw
+Control within Inkscape. </p>
+
+<p>An input file, to be plotted, is always required when in layers mode.</p>
+
+<p>Sublayers and other named groups are <strong>not</strong> considered to be layers for this or
+other software features that operate by layers; only &quot;top-level&quot; layers can be
+addressed in <code>layers</code> mode.</p>
+
+<p>For more information about options available based on layer
+name, and how to create layers when generating SVG outside of Inkscape,
+please see the 
+<a href="http://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>
+documentation.</p>
+<h3 id='align'>align</h3>
+<blockquote>
+<div class="codetitle">mode: align</div>
+
+<p>Example 1: 
+Enter align mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode align 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Enter align mode, setting the pen-up height to 85%:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -malign --pen_pos_up 85
+</code></pre></div>
+<p><em>Raise pen and disable XY stepper motors</em></p>
+
+<p><strong>Syntax: [<code>-m align</code>, <code>--mode align</code>]</strong></p>
+
+<p>This is a setup mode that may be used used to prepare the AxiDraw for use. 
+It will raise the pen to the &quot;pen up&quot; position and turn off (disengage)
+the XY stepper motors. In this configuration, one can manually move the
+carriage to the home corner and insert a pen.</p>
+
+<p>Note that the pen will only be raised if it was in the down state or
+indeterminate state. It will not be raised if it was already in the pen-up state.</p>
+
+<p>This mode is equivalent to selecting the &quot;Setup&quot; tab of AxiDraw Control
+(within Inkscape) and choosing the &quot;Raise pen, turn off motors&quot; option
+within that tab. Both raising the pen and turning off the XY motors
+are actions that can also be initiated in manual mode.</p>
+
+<p>An input file is not required in this mode unless
+an output file is specified
+with the <a href="#output_file"><code>output_file</code></a> option.
+Execution of the command is typically faster without an input file.</p>
+<h3 id='toggle'>toggle</h3>
+<blockquote>
+<div class="codetitle">mode: toggle</div>
+
+<p>Example 1: 
+Toggle the pen up or down:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode toggle 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Toggle the pen up or down, with pen-down and pen-up heights set to 
+40% and 60% respectively:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mtoggle --pen_pos_down 40 --pen_pos_up 60
+</code></pre></div>
+<p><em>Toggle the pen position from up to down, or vice versa.</em></p>
+
+<p><strong>Syntax: [<code>-m toggle</code>, <code>--mode toggle</code>]</strong></p>
+
+<p>This is a setup mode that may be used used to prepare the AxiDraw for use. 
+It will alternately raise or lower the pen each time that it is called.</p>
+
+<p>This mode is equivalent to selecting the &quot;Setup&quot; tab of AxiDraw Control
+(within Inkscape) and choosing the &quot;Toggle pen between UP, DOWN&quot; option
+within that tab.</p>
+
+<p>An input file is not required in this mode unless an output file is specified
+with the <a href="#output_file"><code>output_file</code></a> option.
+Execution of the command is typically faster without an input file.</p>
+
+<p>If you wish to only lower or raise the pen &mdash; not toggle to the
+opposite state &mdash; use one of the 
+<a href="#lower_pen-raise_pen">lower_pen/raise_pen</a> manual commands instead.</p>
+<h3 id='manual'>manual</h3>
+<blockquote>
+<div class="codetitle">mode: manual</div>
+
+<p>See examples for each individual manual_cmd item.</p>
+</blockquote>
+
+<p><em>Execute a &quot;manual&quot; command</em></p>
+
+<p><strong>Syntax: [<code>-m manual</code>, <code>--mode manual</code>]</strong></p>
+
+<p>Execute one of several &quot;manual&quot; utility commands, chosen from a list and
+specified with the <a href="#manual_cmd"><code>manual_cmd</code></a> argument.</p>
+
+<p>See the description of &quot;manual_cmd&quot; below for additional information
+about the available commands.</p>
+
+<p>This mode is equivalent to selecting the &quot;Manual&quot; tab of AxiDraw Control
+within Inkscape.</p>
+
+<p>An input file is not required in this mode unless an output file is specified
+with the <a href="#output_file"><code>output_file</code></a> option. Note in particular that the
+<a href="#strip_data"><code>strip_data</code></a> manual command has no effect unless both
+an input and output file are specified.</p>
+<h3 id='sysinfo'>sysinfo</h3>
+<blockquote>
+<div class="codetitle">mode: sysinfo</div>
+
+<p>Example 1: 
+Request sysinfo:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode sysinfo
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Request sysinfo using short code:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m sysinfo
+</code></pre></div>
+<blockquote>
+<p>Typical response to sysinfo request (example on Mac):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>This is AxiDraw Control version 2.6.2.
+~~ An early-release version ~~
+(The current "stable" release is v. 2.5.0).
+Your AxiDraw has firmware version 2.6.5.
+Your firmware is up to date; no updates are available.
+
+Additional system information:
+3.9.5 (default, May  4 2021, 03:29:30) 
+[Clang 11.0.0 (clang-1100.0.33.17)]
+</code></pre></div>
+<p><em>Report system information</em></p>
+
+<p><strong>Syntax: [<code>-m sysinfo</code>, <code>--mode sysinfo</code>]</strong></p>
+
+<p>Query firmware version, check online for updates, 
+and report additional system information.
+This mode is equivalent to selecting the &quot;Version&quot; tab of AxiDraw
+Control within Inkscape.</p>
+
+<p>The information items listed are:</p>
+
+<ul>
+<li>The firmware revision for the AxiDraw&#39;s EBB control board.</li>
+<li>Whether a firmware update is available.</li>
+<li>The version number of the AxiDraw software.</li>
+<li>Whether a software update is available.</li>
+<li>Detailed version information of the Python interpreter running the script, as given by Python&#39;s sys.version command.</li>
+</ul>
+
+<p>This is the only function in the AxiDraw software that uses
+an online connection, and it will only check for updates if
+explicitly requested to with the &quot;sysinfo&quot; mode or the Version tab
+within Inkscape. You can disable checking for updates (to fully
+disable the online connection) by editing the 
+axidraw_conf.py (or your <a href="#config">specified configuration file</a>)
+and changing the value of <code>check_updates</code> to <code>False</code>.</p>
+
+<p>An input file is not required in this mode unless an output file is specified
+with the <a href="#output_file"><code>output_file</code></a> option.
+Execution of the command is typically faster without an input file.</p>
+<h3 id='version'>version</h3>
+<blockquote>
+<div class="codetitle">mode: version</div>
+
+<p>Example 1: 
+Request version:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode version
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Request version using short code:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m version
+</code></pre></div>
+<blockquote>
+<p>Typical response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>2.5.0
+</code></pre></div>
+<p><em>AxiDraw Software Version</em></p>
+
+<p><strong>Syntax: [<code>-m version</code>, <code>--mode version</code>]</strong></p>
+
+<p>Query and report AxiDraw software version.
+This mode is not available in the GUI (Inkscape) based version of
+this software. </p>
+
+<p>An input file is not required in this mode unless an output file is specified
+with the <a href="#output_file"><code>output_file</code></a> option.
+Execution of the command is typically faster without an input file.</p>
+<h3 id='res_plot-res_home'>res_plot, res_home</h3>
+<blockquote>
+<div class="codetitle">modes: res_plot, res_home</div>
+
+<p>Examples:</p>
+
+<p>First, suppose that the AxiDraw was paused by a physical button press
+during a plot that was called by the following command:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -o temp.svg
+</code></pre></div>
+<blockquote>
+<p>This creates a &quot;saved progress&quot; output file called temp.svg.</p>
+
+<p>To (A) return the AxiDraw to the home corner, use:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli temp.svg --mode res_home 
+</code></pre></div>
+<blockquote>
+<p>To instead (B) resume plotting, use the following command:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli temp.svg --mode res_plot 
+</code></pre></div>
+<blockquote>
+<p>One might prefer in either case (A) or (B) to save a new output file,
+just in case one should wish to allow additional pause/resume events:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli temp.svg --mode res_home -o temp2.svg
+
+axicli temp.svg --mode res_plot -o temp2.svg
+</code></pre></div>
+<blockquote>
+<p>Again, it is possible to resume plotting after moving home via
+res_home. In order to do so, one needs to save the output data from
+the res_home command, and use that as the input for a subsequent
+res_plot command.</p>
+
+<p>Let us suppose we are starting with the &quot;saved progress&quot; file
+temp2.svg, generated with the &quot;res_home&quot; resume action above.
+Then, one could resume plotting with the following command:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli temp2.svg --mode res_plot
+</code></pre></div>
+<blockquote>
+<p>One may prefer to keep the a new file output open, should one
+wish to allow for subsequent pause/resume events:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli temp2.svg --mode res_plot -o temp3.svg
+</code></pre></div>
+<p><em>Resume a paused plot or return to Home position</em></p>
+
+<p><strong>Syntax: [<code>-m res_plot</code>, <code>--mode res_plot</code>]</strong> / <strong>[<code>-m res_home</code>, <code>--mode res_home</code>]</strong></p>
+
+<p>It is possible to pause a plot underway, and save the progress of the
+plot such that the plot can be resumed later. These two &quot;resume&quot; modes
+allow you to continue working with a plot that has been paused with
+progress saved.</p>
+
+<p>Background: When using AxiDraw Control through the Inkscape GUI, the
+following workflow is used to pause and resume plots that are underway:</p>
+
+<ol>
+<li>The physical pause button on the AxiDraw is pressed. (Plots can also be paused at predefined points with AxiDraw Layer Control.)</li>
+<li>The plot pauses after finishing the current line segment.</li>
+<li>The SVG file is updated, saving an index of progress through the file and last-known XY carriage location.</li>
+<li>The user may then use the Resume tab to return the carriage home or to resume the plot, using the stored plot progress data from the file as a reference.</li>
+</ol>
+
+<p>The same basic procedure may be used through the CLI, if the updated
+version of the SVG file is saved as the output file, by specifying an
+output file name.</p>
+
+<p>The two &quot;resume&quot; modes available are:</p>
+
+<ol>
+<li><strong>res_home</strong>: Return to Home Corner (only)</li>
+<li><strong>res_plot</strong>: Resume plotting (From Home or Where Paused)</li>
+</ol>
+
+<p>Please note that these modes can only be used <em>if</em> the file contains a
+stored record of the last-known carriage position, as well as the
+progress through the file. These records are generated automatically
+when a plot is paused, and included in the output file.</p>
+
+<p>The resume functionality allows the chained action of first moving
+to the home position (if and only if performed via res_home and
+saving the progress of having done so) and then using res_plot to
+resume plotting. </p>
+
+<p>An input file, to be plotted, is always required in both
+<code>res_home</code> and <code>res_plot</code> modes.</p>
+<h3 id='reorder'>reorder</h3>
+<blockquote>
+<div class="codetitle">mode: reorder</div>
+
+<p>Example 1: 
+Re-order an SVG file (file.svg) for more efficient plotting,
+and save the output as &quot;out.svg&quot;:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --mode reorder --reordering 3 -o out.svg
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Re-order an SVG file (file.svg) for more efficient plotting,
+and save the output as &quot;out.svg&quot;, breaking apart groups and
+sorting their elements:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m reorder --reordering 3 -o out.svg
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Re-order an SVG file (file.svg), preserving groups as-is,
+and save the output as &quot;out.svg&quot;</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m reorder -G1 -o out.svg
+</code></pre></div>
+<p><em>Re-order SVG file for speed (Legacy version; deprecated)</em></p>
+
+<p><strong>Syntax: [<code>-m reorder</code>, <code>--mode reorder</code>]</strong></p>
+
+<p>Reorder mode is one of two available ways to reducing the amount of pen-up
+travel by altering the order or plotting different elements in the SVG file.
+The other way is the <a href="#reordering"><code>reordering</code></a> option when used in a plot.</p>
+
+<p>These two approaches correspond to the two options described in the
+<a href="http://axidraw.com/guide">AxiDraw User Guide</a>: One is an option that can be
+used while plotting (but does not save any changes to the order of elements),
+while this Reorder mode is a separate stand-alone mode that can make changes
+to the file (but does not plot).</p>
+
+<p>Reorder mode is an independent mode of operation that does not plot to the AxiDraw. 
+Instead, it performs a layer-aware sorting of the plotting order: the order
+in which elements occur in the SVG file. Using this mode to process a file
+can reduce the amount of pen-up travel that will occur when subsequently
+plotting the file. </p>
+
+<p>(To instead perform re-ordering during plotting operations, you may wish to use
+the <a href="#reordering"><code>reordering</code></a> option in combination with another mode.)</p>
+
+<p>When re-ordering a set of objects that include grouped elements, groups
+may be handled in one of three ways, selected by the value of the 
+<a href="#reordering"><code>reordering</code></a> option. Note that the behavior selected by
+these values <strong>is different</strong> than that when used in any other mode.</p>
+
+<p>Allowed values of <code>reordering</code>: Integers from 0 to 3:</p>
+
+<ul>
+<li><code>0</code>: No reordering; preserve order of objects. <strong>[DEFAULT]</strong></li>
+<li><code>1</code>: Reorder objects, preserving groups.</li>
+<li><code>2</code>: Reorder objects, reordering within each group.</li>
+<li><code>3</code>: Reorder all objects, breaking apart groups.</li>
+</ul>
+
+<p>If <code>reordering</code> of 0 is selected, optimization is disabled. The plot
+order is given by the order that elements appear in the SVG file.
+This is the default option, used when no value of <code>reordering</code> is given. 
+(It is necessary to assert a <code>reordering</code> value of 1, 2, or 3 in order for
+any sorting to be performed in Reorder mode.)</p>
+
+<p>If <code>reordering</code> of 1 is selected, the order of groups and elements with respect
+to other groups and elements (on the same layer) will be altered to reduce
+pen-up travel. However, the elements within each group encountered will be
+left in their original order within the group. This may
+be useful, for example, if you have a grouped line of handwriting-like text
+that you would like to be written left-to-right, but want to optimize the
+order of other objects on the page.</p>
+
+<p>If <code>reordering</code> of 2 is selected, groups and elements will (as with the
+previous case) be re-ordered to reduce pen-up travel. However, elements
+within every group will also be re-ordered, even including highly-nested
+subgroups of subgroups.</p>
+
+<p>If <code>reordering</code> of 3 is selected, each group that is encountered will be
+dissolved, and the contents of all groups will be re-ordered along with
+all other elements on the same layer.</p>
+
+<p>Reorder mode requires an SVG file input, and an output file is required
+for it to be useful. Best practice is to keep a backup copy of your original
+SVG, in case of unexpected output.</p>
+
+<p>Since Reorder mode is an &quot;offline&quot; mode, it can be used even without an
+AxiDraw present, much like plotting with the Plot Preview
+<a href="#preview"><code>preview</code></a> option enabled. (The <code>preview</code> option is not applicable
+to reorder mode.)</p>
+
+<aside class="warning">
+The values of the reordering option have different meanings when Reorder mode is active.
+Those values, detailed here, apply only when Reorder mode is active.</aside>
+
+<aside class="warning">
+The Reorder mode is deprecated and will be removed in a future version.
+</aside>
+<h2 id='speed_pendown'>speed_pendown</h2>
+<blockquote>
+<div class="codetitle">speed_pendown</div>
+
+<p>Example 1: 
+Plot file.svg, with maximum pen-down speed of 20% selected:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --speed_pendown 20
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, with short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -s20
+</code></pre></div>
+<p><em>Pen-down Movement Speed</em></p>
+
+<p><strong>Syntax: [<code>-s</code>, <code>--speed_pendown</code>] value</strong></p>
+
+<p>Specify the speed limit for the XY carriage when the pen is down. That is,
+the maximum speed that the pen may move at while writing or drawing. This
+value is expressed as a percentage of maximum travel speed.</p>
+
+<p>Pen-down movements use smooth acceleration unless the const_speed option is
+selected. Increasing this maximum speed tends to greatly affect behavior at
+corners and precision, but has a lesser impact on the average speed and
+total plotting time, especially on documents that consist of many small
+movements.</p>
+
+<p>Allowed values: Integers from 1 to 110.</p>
+
+<p><strong>Default:</strong> 25, given by <code>speed_pendown</code> in axidraw_conf.py or your 
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='speed_penup'>speed_penup</h2>
+<blockquote>
+<div class="codetitle">speed_penup</div>
+
+<p>Example 1: 
+Plot file.svg, with maximum pen-up speed of 50% selected:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --speed_penup 50
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, with short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -S50
+</code></pre></div>
+<p><em>Pen-up Movement Speed</em></p>
+
+<p><strong>Syntax: [<code>-S</code>, <code>--speed_penup</code>] value</strong></p>
+
+<p>Specify the speed limit for the XY carriage when the pen is up. That is,
+the maximum speed that the pen may move at while moving between paths that
+will be plotted. This value is expressed as a percentage of maximum travel
+speed.</p>
+
+<p>Pen-up movements use smooth acceleration whether or not the const_speed
+option is selected. Increasing this maximum speed tends to have a minor
+effect on plot quality, but can have a significant affect on total plotting
+time, especially on documents that have many large pen-up movements.</p>
+
+<p>Allowed values: Integers from 1 to 110. </p>
+
+<p><strong>Default:</strong> 75, given by <code>speed_penup</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='accel'>accel</h2>
+<blockquote>
+<div class="codetitle">accel</div>
+
+<p>Example 1: 
+Plot file.svg, with maximum pen-down speed of 50%, acceleration 80%:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --speed_pendown 50 --accel 80 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, with short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -s50 -a80 
+</code></pre></div>
+<p><em>Acceleration Factor</em></p>
+
+<p><strong>Syntax: [<code>-a</code>, <code>--accel</code>] value</strong></p>
+
+<p>Specify the relative acceleration/deceleration speed.
+This value is expressed as a percentage of maximum acceleration rate.
+The acceleration rate does not affect the top speed that can be achieved,
+but does influence how long it takes to get to different speeds.</p>
+
+<p>Allowed values: Integers from 1 to 100. </p>
+
+<p><strong>Default:</strong> 75, given by <code>accel</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='pen_pos_down'>pen_pos_down</h2>
+<blockquote>
+<div class="codetitle">pen_pos_down</div>
+
+<p>Example 1: 
+Plot file.svg, with pen-down height of 20%:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --pen_pos_down 20 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Toggle the pen up or down, with pen-down and pen-up heights set to 
+10% and 90% respectively:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mtoggle -d10 -u90
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Lower the pen to 30% height:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mmanual -Mlower_pen -d30
+</code></pre></div>
+<p><em>Pen-down Position</em></p>
+
+<p><strong>Syntax: [<code>-d</code>, <code>--pen_pos_down</code>] value</strong></p>
+
+<p>DESCRIPTION</p>
+
+<p>Specify the height of the pen when the pen is lowered (plotting).
+This value is expressed as a percentage of the vertical travel.</p>
+
+<p>Depending on the operation that you are executing, setting this value may
+not immediately move the pen height to this position; rather, it sets the
+height that will be used as the pen-down position value. </p>
+
+<p>Allowed values: Integers from 0 to 100. </p>
+
+<p><strong>Default:</strong> 40, given by <code>pen_pos_down</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='pen_pos_up'>pen_pos_up</h2>
+<blockquote>
+<div class="codetitle">pen_pos_up</div>
+
+<p>Example 1:<br>
+Plot file.svg, with pen-up height of 80%:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --pen_pos_up 80 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Toggle the pen up or down, with pen-down and pen-up heights set to 
+10% and 90% respectively:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mtoggle -d10 -u90
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Raise the pen to 70% height:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mmanual -Mraise_pen -u70
+</code></pre></div>
+<p><em>Pen-up Position</em></p>
+
+<p><strong>Syntax: [<code>-u</code>, <code>--pen_pos_up</code>] value</strong></p>
+
+<p>DESCRIPTION</p>
+
+<p>Specify the height of the pen when the pen is raised (not plotting).
+This value is expressed as a percentage of the vertical travel.</p>
+
+<p>Depending on the operation that you are executing, setting this value may
+not immediately move the pen height to this position; rather, it sets the
+height that will be used as the pen-up position value. </p>
+
+<p>Allowed values: Integers from 0 to 100.</p>
+
+<p><strong>Default:</strong> 60, given by <code>pen_pos_up</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='pen_rate_lower'>pen_rate_lower</h2>
+<blockquote>
+<div class="codetitle">pen_rate_lower</div>
+
+<p>Example 1: 
+Plot file.svg, lowering the pen very slowly to the paper (5% speed):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --pen_rate_lower 5 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Quickly (90% speed) lower the pen to 10% height:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mmanual -Mlower_pen -d10 -r90
+</code></pre></div>
+<p><em>Pen Lowering Rate</em></p>
+
+<p><strong>Syntax: [<code>-r</code>, <code>--pen_rate_lower</code>] value</strong></p>
+
+<p>Specify the rate at which the pen is lowered from the pen-up position to the
+pen-down position. This value is expressed as a relative percentage.</p>
+
+<p>Allowed values: Integers from 1 to 100. </p>
+
+<p><strong>Default:</strong> 50, given by <code>pen_rate_lower</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='pen_rate_raise'>pen_rate_raise</h2>
+<blockquote>
+<div class="codetitle">pen_rate_raise</div>
+
+<p>Example 1:
+Plot file.svg, raising the pen very quickly from the paper (100% speed):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --pen_rate_raise 100 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Slowly (10% speed) lower the pen to 60% height:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -mmanual -Mlower_pen -u60 -R10
+</code></pre></div>
+<p><em>Pen Raising Rate</em></p>
+
+<p><strong>Syntax: [<code>-R</code>, <code>--pen_rate_raise</code>] value</strong></p>
+
+<p>Specify the rate at which the pen is raised from the pen-down position to
+the pen-up position. This value is expressed as a relative percentage.</p>
+
+<p>Allowed values: Integers from 1 to 100. </p>
+
+<p><strong>Default:</strong> 75, given by <code>pen_rate_raise</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='pen_delay_down'>pen_delay_down</h2>
+<blockquote>
+<div class="codetitle">pen_delay_down</div>
+
+<p>Example 1:
+Plot file.svg, adding an extra delay of 250 ms after lowering the pen:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --pen_delay_down 250 
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Plot file.svg, adding a &quot;negative&quot; delay, so that the carriage begins
+moving horizontally, even before it finishes lowering the pen:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -z -250 
+</code></pre></div>
+<p><em>Delay after lowering pen</em></p>
+
+<p><strong>Syntax: [<code>-z</code>, <code>--pen_delay_down</code>] value</strong></p>
+
+<p>Optional delay after lowering pen (ms). When lowering the pen, the AxiDraw
+will normally pause for a given period of time, so as to allow the pen to
+finish lowering before beginning horizontal pen-down movements. The period
+of time is calculated from the Pen Lowering Rate as well as the vertical
+distance to be traveled. </p>
+
+<p>You can optionally modify the amount of delay time by adding some number of
+milliseconds, given by <code>pen_delay_down</code>, to the calculated delay, for example
+to intentionally begin moving before the pen is fully down, or to ensure
+that the pen is making solid contact before moving. The value of this
+parameter may be positive or negative, but if the total delay (calculated
+travel time + <code>pen_delay_down</code>) is less than zero, then a total delay time
+of zero will be used.</p>
+
+<p>Allowed values: Integers from -500 to 500.</p>
+
+<p><strong>Default:</strong> 0, given by <code>pen_delay_down</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='pen_delay_up'>pen_delay_up</h2>
+<blockquote>
+<div class="codetitle">pen_delay_up</div>
+
+<p>Example 1:
+Plot file.svg, adding an extra delay of 250 ms after raising the pen:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --pen_delay_up 250 
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Plot file.svg, adding a &quot;negative&quot; delay, so that the carriage begins
+moving horizontally, even before it finishes raising the pen:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -Z -250 
+</code></pre></div>
+<p><em>Delay after raising pen</em></p>
+
+<p><strong>Syntax: [<code>-Z</code>, <code>--pen_delay_up</code>] value</strong></p>
+
+<p>Optional delay after raising pen (ms). When raising the pen, the AxiDraw
+will normally pause for a given period of time, so as to allow the pen to
+finish going up before beginning horizontal pen-up movements. The period
+of time is calculated from the Pen Raising Rate as well as the vertical
+distance to be traveled. </p>
+
+<p>You can optionally modify the amount of delay time by adding some number of
+milliseconds, given by <code>pen_delay_up</code>, to the calculated delay, for example
+to intentionally begin moving before the pen is fully up, or to ensure
+that the pen is fully above the paper before moving. The value of this
+parameter may be positive or negative, but if the total delay (calculated
+travel time + <code>pen_delay_up</code>) is less than zero, then a total delay time
+of zero will be used.</p>
+
+<p>Allowed values: Integers from -500 to 500.</p>
+
+<p><strong>Default:</strong> 0, given by <code>pen_delay_up</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='no_rotate'>no_rotate</h2>
+<blockquote>
+<div class="codetitle">no_rotate</div>
+
+<p>Example 1:
+Plot a file with auto-rotate disabled:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --no_rotate
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Plot a file in constant-speed mode, and with auto-rotate disabled:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -CN
+</code></pre></div>
+<p><em>Disable auto-rotate</em></p>
+
+<p><strong>Syntax: [<code>-N</code>, <code>--no_rotate</code>]</strong></p>
+
+<p>Disable auto-rotate; preserve plot orientation.</p>
+
+<p>By default &quot;auto rotate&quot; is enabled: If the SVG file being plotted has a 
+page size that is taller than it is wide, then it will print in landscape
+mode rather than portrait mode.</p>
+
+<p>Auto-rotate may be disabled by using the <code>--no_rotate option</code> (<code>-N</code>).
+It is a simple &quot;flag&quot; type argument, and takes no value argument.</p>
+
+<p>To disable auto-rotate by default, edit 
+axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file and change the value of
+<code>auto_rotate</code> from <code>True</code> to <code>False</code>. (Note that
+there is not an override to re-enable auto-rotate if it is disabled
+in the configuration file.)</p>
+<h2 id='const_speed'>const_speed</h2>
+<blockquote>
+<div class="codetitle">const_speed</div>
+
+<p>Example 1:
+Plot a file in constant-speed mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --const_speed
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Plot a file in constant-speed mode, and with auto-rotate disabled:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -CN
+</code></pre></div>
+<p><em>Plot with constant pen-down speed</em></p>
+
+<p><strong>Syntax: [<code>-C</code>, <code>--const_speed</code>]</strong></p>
+
+<p>Use constant speed when pen is down. </p>
+
+<p>By default, this option is disabled, and the AxiDraw will use acceleration
+so as to achieve higher maximum speeds. Some applications will benefit
+from using constant-speed motion instead.</p>
+
+<p>This feature may be enabled by using the <code>--const_speed</code> option (<code>-C</code>). It is a
+simple &quot;flag&quot; type argument, and takes no value argument</p>
+
+<p>To enable this option by default, edit axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file and change the value
+of <code>const_speed</code> from <code>False</code> to <code>True</code>.</p>
+<h2 id='report_time'>report_time</h2>
+<blockquote>
+<div class="codetitle">report_time</div>
+
+<p>Example 1: 
+Plot a file and report time elapsed:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --report_time
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Preview a file, to see how long it will take to run with 
+with constant-speed mode selected:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -vTC
+</code></pre></div>
+<p><em>Report time elapsed</em></p>
+
+<p><strong>Syntax: [<code>-T</code>, <code>--report_time</code>]</strong></p>
+
+<p>Report time and distance plotted after the plot finishes.</p>
+
+<p>By default, this option is disabled. Enabling it will print a report of
+time and distance travelled after each plot finishes. Using this feature in
+combination with Plot Preview (<a href="#preview"><code>preview</code></a>) can provide
+you with a time estimate of each
+plot, without requiring the use of the AxiDraw.</p>
+
+<p>Note also that this option is only
+applicable to the three modes which parse and plot the SVG document: 
+plot (default), layers, and res_plot. </p>
+
+<p>Time reporting may be enabled by using the <code>--report_time</code> option (<code>-T</code>). It is
+a simple &quot;flag&quot; type argument, and takes no value argument.</p>
+
+<p>To enable this option by default, edit axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file and change the value of
+<code>report_time</code> from <code>False</code> to <code>True</code>.</p>
+<h2 id='manual_cmd'>manual_cmd</h2>
+<p>This parameter allows you to specify exactly which particular &quot;manual&quot; command 
+will be executed if the <code>mode</code> is set to <code>manual</code>.
+This parameter is ignored if any mode other than manual is active. </p>
+
+<p>Please note that while some
+of these commands do perform movements, these
+commands should not be considered &quot;real time&quot; control commands. They are intended
+as utility commands, for test, setup, and calibration. (If you need real-time
+movement commands, consider using the Interactive context within the Python API.)</p>
+
+<p>An input SVG file is not required unless an output file is specified. For the
+strip_data manual command, there is no effect unless both an input and output
+file are specified. For the other manual commands, execution
+is typically faster without an input file.</p>
+
+<p>The following is a list of allowed values of the <code>manual_cmd</code> parameter.
+Each of these commands will be described in detail, after the list.</p>
+
+<table><thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>fw_version</code></td>
+<td>Query firmware version  <strong>[DEFAULT]</strong></td>
+</tr>
+<tr>
+<td><code>lower_pen</code></td>
+<td>Lower the pen</td>
+</tr>
+<tr>
+<td><code>raise_pen</code></td>
+<td>Raise the pen</td>
+</tr>
+<tr>
+<td><code>walk_x</code></td>
+<td>Walk carriage in X by a distance given in inches</td>
+</tr>
+<tr>
+<td><code>walk_y</code></td>
+<td>Walk carriage in Y by a distance given in inches</td>
+</tr>
+<tr>
+<td><code>walk_mmx</code></td>
+<td>Walk carriage in X by a distance given in mm</td>
+</tr>
+<tr>
+<td><code>walk_mmy</code></td>
+<td>Walk carriage in Y by a distance given in mm</td>
+</tr>
+<tr>
+<td><code>enable_xy</code></td>
+<td>Enable (energize) XY stepper motors</td>
+</tr>
+<tr>
+<td><code>disable_xy</code></td>
+<td>Disable (de-energize) XY stepper motors</td>
+</tr>
+<tr>
+<td><code>bootload</code></td>
+<td>Enter EBB bootloader mode</td>
+</tr>
+<tr>
+<td><code>strip_data</code></td>
+<td>Strip plotter data from file</td>
+</tr>
+<tr>
+<td><code>list_names</code></td>
+<td>Read USB &quot;nickname&quot; or ports of all attached machines</td>
+</tr>
+<tr>
+<td><code>read_name</code></td>
+<td>Read the USB &quot;nickname&quot; of the AxiDraw</td>
+</tr>
+<tr>
+<td><code>write_name</code></td>
+<td>Write the USB &quot;nickname&quot; of the AxiDraw</td>
+</tr>
+</tbody></table>
+<h3 id='fw_version'>fw_version</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: fw_version</div>
+
+<p>Example 1:
+Query the EBB firmware version:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd fw_version 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Query the EBB firmware version (manual mode default):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual
+</code></pre></div>
+<blockquote>
+<p>Typical response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>EBBv13_and_above EB Firmware Version 2.6.5
+</code></pre></div>
+<p><em>Manual command: Query firmware version</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] fw_version</strong></p>
+
+<p>Query and report the firmware version of the AxiDraw&#39;s EBB control
+board. This is the default option in manual mode.</p>
+
+<p>As of this writing, the current firmware version is 2.6.5. To update the
+firmware on your AxiDraw, please see
+<a href="https://wiki.evilmadscientist.com/Updating_EBB_firmware">these instructions</a>.</p>
+<h3 id='lower_pen-raise_pen'>lower_pen, raise_pen</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: lower pen, raise pen</div>
+
+<p>Example 1:
+Lower the pen:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M lower_pen 
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Raise the pen, very slowly</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M raise_pen --pen_rate_raise 1
+</code></pre></div>
+<p><em>Manual commands: Lower or raise the pen holder</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] lower_pen</strong></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] raise_pen</strong></p>
+
+<p>The <code>lower_pen</code> and <code>raise_pen</code> manual commands will, respectively, lower or
+raise the pen holder. These are often useful for setup and verification.</p>
+
+<p>Note that <code>lower_pen</code> will only lower the pen if it was in the up state or an
+indeterminate state. It will not be lowered if it was already in the pen-down state.</p>
+
+<p>Similarly, <code>raise_pen</code> will only raise the pen if it was in the down state or an
+indeterminate state. It will not be raised if it was already in the pen-up state.</p>
+<h3 id='walk_x-walk_y'>walk_x, walk_y</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: walk_x, walk_y</div>
+
+<p>Example 1:
+Move the carriage 1 inch in the y direction
+(one inch forward and away from Home):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd walk_y
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Move the carriage 1.5 inches in the +x direction, and then back:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_x --walk_dist 1.5
+axicli -m manual -M walk_x --walk_dist -1.5
+</code></pre></div>
+<blockquote>
+<p>Example 3:
+Move the carriage in a square, 10.0 cm on a side, with different
+speeds for each side of movement, using short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_x -w 3.937 -s 10
+axicli -m manual -M walk_y -w 3.937 -s 20
+axicli -m manual -M walk_x -w -3.937 -s 30
+axicli -m manual -M walk_y -w -3.937 -s 40
+</code></pre></div>
+<p><em>Manual commands: Walk the carriage in the X or Y direction, inch units</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] walk_x</strong></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] walk_y</strong></p>
+
+<p>These two &quot;walk&quot; commands will move the AxiDraw carriage by a distance
+in inches given by the value of the <code>walk_dist</code> parameter,
+along one axis or the other.</p>
+
+<p>The <code>walk_dist</code> parameter has a default value of 1.0.
+This distance is given in inches, when using the <code>walk_x</code> or 
+<code>walk_y</code> manual commands. 
+If you would prefer to use millimeter units, see the 
+<a href="#walk_mmx-walk_mmy"><code>walk_mmx</code>, <code>walk_mmy</code></a> commands instead.</p>
+
+<p>Walk movements are relative to the current position (not absolute), and
+are NOT checked versus the current carriage position for sane range of
+motion. Furthermore, walk movements are &quot;out of band&quot; movements; they do
+not update any kind of record about the current carriage position.</p>
+
+<p>Use caution: These are fully manual commands, and can easily run
+the AxiDraw past its safe range of motion. After making manual movements,
+and before plotting, one should return the AxiDraw carriage to the Home corner.</p>
+
+<p>Please note that these &quot;walk&quot; commands are not meant as a substitute for
+full XY motion control. They are provided since they may occasionally
+provide utility in test, setup, and calibration routines. If you require
+full interactive XY movement (outside of an SVG file), consider using the
+interactive mode within the <a href="https://axidraw.com/doc/py_api/">Python API</a>,
+which provides full XY movement control as well as software limit checking.</p>
+<h3 id='walk_mmx-walk_mmy'>walk_mmx, walk_mmy</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: walk_x, walk_y</div>
+
+<p>Example 1:
+Move the carriage 1 mm in the y direction
+(one millimeter forward and away from Home):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd walk_mmy
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Move the carriage 2.0 inches (50.8 mm) in the +x direction, and then back:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx --walk_dist 50.8
+axicli -m manual -M walk_mmx --walk_dist -50.8
+</code></pre></div>
+<blockquote>
+<p>Example 3:
+Move the carriage in a square, 100 mm on a side, with different
+speeds for each segment of movement, using short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx -w 100 -s 10
+axicli -m manual -M walk_mmy -w 100 -s 20
+axicli -m manual -M walk_mmx -w -100 -s 30
+axicli -m manual -M walk_mmy -w -100 -s 40
+</code></pre></div>
+<p><em>Manual commands: Walk the carriage in the X or Y direction, mm units</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] walk_mmx</strong></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] walk_mmy</strong></p>
+
+<p>These two &quot;walk&quot; commands will move the AxiDraw carriage by a distance
+in millimeters given by the value of the <code>walk_dist</code> parameter,
+along one axis or the other.</p>
+
+<p>The <code>walk_dist</code> parameter has a default value of 1.0.
+This distance is given in millimeters, when using the <code>walk_mmx</code> or 
+<code>walk_mmy</code> manual commands. 
+If you would prefer to use inch units, 
+see the <a href="#walk_x-walk_y"><code>walk_x</code>, <code>walk_y</code></a> commands instead.</p>
+
+<p>Walk movements are relative to the current position (not absolute), and
+are NOT checked versus the current carriage position for sane range of
+motion. Furthermore, walk movements are &quot;out of band&quot; movements; they do
+not update any kind of record about the current carriage position.</p>
+
+<p>Use caution: These are fully manual commands, and can easily run
+the AxiDraw past its safe range of motion. After making manual movements,
+and before plotting, one should return the AxiDraw carriage to the Home corner.</p>
+
+<p>Please note that these &quot;walk&quot; commands are not meant as a substitute for
+full XY motion control. They are provided since they may occasionally
+provide utility in test, setup, and calibration routines. If you require
+full interactive XY movement (outside of an SVG file), consider using the
+interactive mode within the <a href="https://axidraw.com/doc/py_api/">Python API</a>,
+which provides full XY movement control as well as software limit checking.</p>
+<h3 id='enable_xy-disable_xy'>enable_xy, disable_xy</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: enable_xy, disable_xy</div>
+
+<p>Example 1:
+Enable the XY stepper motors:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd enable_xy 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Disable the XY stepper motors:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M disable_xy 
+</code></pre></div>
+<p><em>Manual commands: Enable or Disable the XY motors</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] enable_xy</strong></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] disable_xy</strong></p>
+
+<p>These two commands turn on or turn off, respectively, power to the pair
+of stepper motors that controls the XY position of the AxiDraw carriage.</p>
+
+<p>Stepper motor power is off by default at power up. It is often useful
+to turn off power to the XY motors so that the carriage can be manually
+moved to the home corner, prior to plotting.</p>
+<h3 id='bootload'>bootload</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: bootload</div>
+
+<p>Example:
+Put the AxiDraw into bootloader mode:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd bootload
+</code></pre></div>
+<blockquote>
+<p>(Note that you will need to either update the firmware OR disconnect
+both power and USB after executing this command.)</p>
+</blockquote>
+
+<p><em>Manual command: Enter EBB Bootloader Mode</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] bootload</strong></p>
+
+<p>This command will put the AxiDraw&#39;s EBB control board into bootloader
+mode. This is a special mode that is sometimes used as part of the
+process of updating the EBB firmware. This command is not used in any
+part of normal AxiDraw operation.</p>
+
+<p>Bootloader mode may be identified by a particular rhythmic blinking of
+LEDs on the control board. If you should accidentally enter bootloader
+mode, disconnect the AxiDraw from both USB and power and then connect
+them again.</p>
+
+<p>See fw_version for more about firmware versions and updating.</p>
+<h3 id='strip_data'>strip_data</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: strip_data</div>
+
+<p>Example:
+Strip AxiDraw data from file.svg and save the result as output.svg:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m manual -M strip_data -o output.svg
+</code></pre></div>
+<p><em>Manual command: Strip plotter data from SVG file</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] strip_data</strong></p>
+
+<p>The command removes any AxiDraw specific plotter data (such as saved
+position data for the pause and resume feature) from the input file.</p>
+
+<p>In practice it has no effect unless an output file is specified.</p>
+<h3 id='list_names'>list_names</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: list_names</div>
+
+<p>Example:
+List connected AxiDraw units:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M list_names 
+</code></pre></div>
+<blockquote>
+<p>Typical response (with two connected AxiDraw units, on Mac):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>East
+/dev/cu.usbmodem1441
+</code></pre></div>
+<blockquote>
+<p>Typical response (with two connected AxiDraw units, on Windows):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>East
+COM4
+</code></pre></div>
+<p><em>Manual command: List connected AxiDraw units</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] list_names</strong></p>
+
+<p>List connected AxiDraw units, by USB &quot;nickname&quot; or by
+their USB port enumeration. AxiDraw units with firmware v2.5.5 or
+newer may have a USB &quot;nickname&quot; assigned to them. Units with older
+firmware will be listed as port designations. </p>
+
+<p>This list of connected units does not indicate whether or not an
+AxiDraw is presently busy with another task; it simply lists each unit
+that is detected by your computer&#39;s USB interface.</p>
+
+<p>See documentation for <code>read_name</code> and <code>write_name</code> below for more
+about AxiDraw naming.</p>
+<h3 id='read_name'>read_name</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: read_name</div>
+
+<p>Example:
+Read the USB Nickname from a single connected AxiDraw:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd read_name
+</code></pre></div>
+<blockquote>
+<p>Typical responses:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>AxiDraw nickname: AxiDraw 16
+</code></pre></div>
+<p>or</p>
+<div class="highlight"><pre class="highlight plaintext"><code>This AxiDraw does not have a nickname assigned.
+</code></pre></div>
+<p><em>Manual command: Read AxiDraw USB Nickname</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] read_name</strong></p>
+
+<p>The <code>read_name</code> option is for reading an assigned USB 
+&quot;nickname.&quot; A nickname may be assigned to a given AxiDraw if it has 
+firmware version 2.5.5 or newer. Nicknames are not required, but may be
+helpful when operating more than one AxiDraw: You can specify the given
+machine by name. (See the <a href="#port"><code>--port</code></a> parameter for additional information.)</p>
+
+<p>When reading the name, it may be helpful to disconnect all AxiDraw
+units other than that one, so that you can be sure of which AxiDraw you
+are communicating with. Alternately, you can use an identifying action
+(say, toggling the pen) to identify which unit you are communicating
+with, or specify a <code>--port</code> option.</p>
+<h3 id='write_name'>write_name</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: write_name</div>
+
+<p>Example 1: 
+Write a USB Nickname to a single connected AxiDraw:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M "write_nameAxiDraw 17"
+</code></pre></div>
+<blockquote>
+<p>Typical response: </p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>Nickname written. Rebooting EBB.
+
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Clear the USB Nickname from the Axidraw nicknamed &quot;AxiDraw 17&quot;:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual --port "AxiDraw 17" -M "write_name"
+</code></pre></div>
+<p><em>Manual command: Write AxiDraw USB Nickname</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] write_name[NICKNAME]</strong></p>
+
+<p>The <code>write_name</code> command is for assigning a USB &quot;nickname&quot;. A nickname
+may be assigned to a given AxiDraw if it has 
+firmware version 2.5.5 or newer. Nicknames are not required, but may be
+helpful when operating more than one AxiDraw: You can specify the given
+machine by name. (See the --port parameter for additional information.)</p>
+
+<p>When writing the name, it may be helpful to disconnect all AxiDraw
+units other than that one, so that you can be sure of which AxiDraw you
+are communicating with. Alternately, you can use an identifying action
+(say, toggling the pen) to identify which unit you are communicating
+with, or specify a <code>--port</code> option.</p>
+
+<p>When using <code>write_name</code>, the name itself is specified by concatenating the
+name with the <code>write_name</code> parameter. For example as <code>write_nameNorth</code> to
+assign the nickname &quot;North&quot;. The name may be up to 16 characters long.
+Using a nickname of at least 3 characters is recommended. Writing an
+empty string (with nothing following <code>write_name</code>) will clear the
+nickname. </p>
+
+<p>Since the nickname parameter is stored in a certain flash memory cell
+that can only be written a finite number of times, avoid applications
+that involve automated, repeated changes to the nickname tag.</p>
+<h2 id='walk_dist'>walk_dist</h2>
+<blockquote>
+<div class="codetitle">walk_dist</div>
+
+<p>Example 1: 
+Move the carriage 2.5 inches in the +x direction, and then back.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd walk_x --walk_dist 2.5
+axicli --mode manual --manual_cmd walk_x --walk_dist -2.5
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, with short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_x -w 2.5
+axicli -m manual -M walk_x -w -2.5
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+The same, in millimeter units (noting 2.5 inches is 63.5 mm):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli -m manual -M walk_mmx -w 63.5
+axicli -m manual -M walk_mmx -w -63.5
+</code></pre></div>
+<p><em>Walk Distance</em></p>
+
+<p><strong>Syntax: [<code>-w</code>, <code>--walk_dist</code>] value</strong></p>
+
+<p>The distance to move the XY carriage of the AxiDraw, when in <code>manual</code> mode,
+and the <code>manual_cmd</code> parameter specifies either 
+<code>walk_x</code>, <code>walk_y</code>, <code>walk_mmx</code>, or <code>walk_mmy</code>.</p>
+
+<p>The units of <code>walk_dist</code> are context dependent. When used with
+<a href="#walk_x-walk_y"><code>walk_x</code> or <code>walk_y</code></a>, <code>walk_dist</code> gives the distance in inches.
+When used with
+<a href="#walk_mmx-walk_mmy"><code>walk_mmx</code> or <code>walk_mmy</code></a>, <code>walk_dist</code> 
+gives the distance in millimeters.</p>
+
+<p><code>walk_dist</code> is a floating point value, with a default value of 1.0.
+Values should be chosen with care, so as to not to move the carriage past
+the available range of unobstructed motion.
+Larger distances can be achieved on larger AxiDraw models.</p>
+
+<p>Walk movements are relative to the current position (not absolute), and are
+<strong>NOT</strong> checked for sane range of motion. These are fully manual commands, and
+can easily run the AxiDraw past its safe range of motion.</p>
+
+<p>The &quot;walk&quot; commands are not meant as a substitute for full motion control, but
+are occasionally helpful for (e.g.,) calibration routines.</p>
+
+<p>Allowed values: Floating point numbers (not limit checked).</p>
+
+<p><strong>Default:</strong> 1.0 (not adjustable).</p>
+<h2 id='layer'>layer</h2>
+<blockquote>
+<div class="codetitle">layer</div>
+
+<p>Example 1: 
+Plot only layers with layer name beginning with &quot;3&quot;:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --mode layers --layer 3
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, with short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m layers -l3
+</code></pre></div>
+<p><em>Select layer(s) to plot when in layers mode</em></p>
+
+<p><strong>Syntax: [<code>-l</code>, <code>--layer</code>] value</strong></p>
+
+<p>Specify a number which indicates which layer (or layers) will be plotted
+when plotting in <a href="#layers"><code>layers</code></a> mode.</p>
+
+<p>Normally, when plot mode is selected, we plot paths from all layers. You can
+also choose to plot a single layer or group of layers, for example to plot
+only a single color of ink. </p>
+
+<p>Plotting in <a href="#layers"><code>layers</code></a> mode, with a given layer specified by this parameter
+will plot only layers whose names begin with the selected number.
+While only a single integer value may be given for <code>layer</code>, 
+that value may match with multiple layer names, so that any number of
+layers may be selected for plotting.</p>
+
+<p>For example, suppose that your file has layers with the following names:</p>
+
+<ul>
+<li>&quot;guide lines&quot;</li>
+<li>&quot;5-red&quot;</li>
+<li>&quot;2 black&quot;</li>
+<li>&quot;55&quot;</li>
+<li>&quot;5 Outlines&quot;</li>
+</ul>
+
+<p>Then, if a <code>layer</code> parameter of 5 is given in <a href="#layers"><code>layers</code></a> mode, 
+the two layers named
+&quot;5-red&quot; and &quot;5 Outlines&quot; will be plotted, while the layers named 
+&quot;guide lines&quot;, &quot;55&quot;, and &quot;2 black&quot; will be skipped.</p>
+
+<p>Allowed values: Integers from 1 to 1000.</p>
+
+<p><strong>Default:</strong> 1, given by <code>default_Layer</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='copies'>copies</h2>
+<blockquote>
+<div class="codetitle">copies</div>
+
+<p>Example 1: 
+Plot a file two times, using default parameters:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --copies 2  
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot a file continuously (until pause button pressed):</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -c0
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Plot a file 25 times, with a 5 s delay between each plot:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg  --copies 25 --page_delay 5
+</code></pre></div>
+<p><em>Number of copies to plot</em></p>
+
+<p><strong>Syntax: [<code>-c</code>, <code>--copies</code>] value</strong></p>
+
+<p>If <code>copies</code> has a value other than 0, then a plot that is started in plot or 
+layers mode will be plotted that number of times. This parameter has no
+effect in modes other than plot or layers.</p>
+
+<p>An optional delay may be chosen between subsequent plots (e.g., for changing
+paper) with the <code>page_delay</code> parameter.</p>
+
+<p>A value of 0 copies is a special value that will begin plotting a continuous
+sequence of copies, without a scheduled end. The sequence will continue
+until the physical pause button is pressed.</p>
+
+<p>A set of plots in progress can be canceled at any time by pressing the
+physical pause button on the AxiDraw. If a plot is active when the button
+is pressed, it will stop at that location in the usual way (saving progress
+in the output file, if an output file is specified). If the pause button is
+pressed while at home waiting between copies, then it simply exits without
+plotting any additional copies and without an error message.</p>
+
+<p>Allowed values: Integers from 0 to 9999.</p>
+
+<p><strong>Default:</strong> 1, given by <code>copies</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='page_delay'>page_delay</h2>
+<blockquote>
+<div class="codetitle">page_delay</div>
+
+<p>Example 1: 
+Plot a file 2 times, with a 5 s delay between plots</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --copies 2 --page_delay 5 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot continuously, with a 30 s delay between each plot:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -c0 -D30 
+</code></pre></div>
+<p><em>Delay between copies</em></p>
+
+<p><strong>Syntax: [<code>-D</code>, <code>--page_delay</code>] value</strong></p>
+
+<p>When plotting multiple copies, specify the delay in seconds between
+subsequent plots.</p>
+
+<p>This value is used to specify the time interval that the AxiDraw dwells at
+the home position between subsequent layer or document plots, when plotting
+multiple copies. See the description of <code>--copies</code> for more information.</p>
+
+<p>Allowed values: Non-negative numbers.</p>
+
+<p><strong>Default:</strong> 15; set in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='preview'>preview</h2>
+<blockquote>
+<div class="codetitle">preview</div>
+
+<p>Example 1: 
+Do not plot a file, but report how long it will take to plot.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -v --report_time 
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Preview a file, generating a rendered preview of all motion,
+making use of the rendering (-g) and output file (-o) options to save
+the output file as &quot;outputfile.svg&quot;</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -vg3 -o outputfile.svg
+</code></pre></div>
+<p><em>Plot preview</em></p>
+
+<p><strong>Syntax: [<code>-v</code>, <code>--preview</code>]</strong></p>
+
+<p>Plot Preview is an offline simulation setting that, if enabled, disables
+communication to the USB port and the AxiDraw does not move. 
+This can be useful for one or more of
+the following reasons:</p>
+
+<ul>
+<li>To estimate (in combination with <a href="#report_time"><code>report_time</code></a>) the duration of a plot.</li>
+<li>To render (if an output file is given) a graphical representation of
+the plot, to verify that the file will plot correctly.</li>
+<li>To perform a &quot;preflight check&quot; for any errors that might be encountered
+while plotting the file.</li>
+</ul>
+
+<p>Since it is an offline simulation, it can be used even without an
+AxiDraw present.</p>
+
+<p>Note that the Plot Preview can be used in combination with other modes. If
+enabled, no serial communication will be attempted, so certain operations
+(e.g., raise pen) will neither function nor produce an error. </p>
+
+<p>If Plot Preview is enabled, then it can also produce graphical output if
+both an appropriate value of the <a href="#rendering"><code>rendering</code></a> parameter is
+chosen and an output file is generated.</p>
+
+<p>Preview mode may be enabled by using the <code>--preview</code> (<code>-v</code>) option. It is a
+simple &quot;flag&quot; type argument, and takes no additional values.</p>
+
+<p><strong>Default:</strong> False, given by <code>preview</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='rendering'>rendering</h2>
+<blockquote>
+<div class="codetitle">rendering</div>
+
+<p>Example 1: 
+Preview a file, generating a rendered preview of pen-up motion,
+making use of the -v and -o options:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -vg 2 -o outputfile.svg
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Preview a file, generating a rendered preview of pen-down motion,
+and reporting the estimated duration of the plot:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -Tvg 1 -o outputfile.svg
+</code></pre></div>
+<p><em>Rendering style</em></p>
+
+<p><strong>Syntax: [<code>-g</code>, <code>--rendering</code>] value</strong></p>
+
+<p>When plotting with Plot Preview <code>--preview</code> (<code>-v</code>) enabled and with an
+output file (<code>--output_file</code> or <code>-o</code>) specified, you can generate a
+rendered preview of how the SVG document
+will plot. The rendering style option allows you to select which part (if
+any) of the plotting is rendered. </p>
+
+<p>Note also that this option is only applicable to the three modes which
+parse and plot the SVG document:  plot (default), layers, and res_plot.
+Further, it only has an effect when Plot Preview is enabled.</p>
+
+<p>When a preview is rendered, that preview is added to the output SVG
+document, in a special &quot;documentation&quot; layer that will not be plotted.
+(For more information about documentation layers, please see the 
+<a href="http://wiki.evilmadscientist.com/AxiDraw_Layer_Control">AxiDraw Layer Control</a>
+documentation.)</p>
+
+<p>The preview layer has sub-layers for showing the pen-up and/or pen-down
+movement of the carriage, depending which are generated. The rendering
+style parameter selects which of these (if any) are rendered.</p>
+
+<p>Allowed values: Integers from 0 to 3:</p>
+
+<ul>
+<li><code>0</code> - Do not render previews </li>
+<li><code>1</code> - Render pen-down movement only</li>
+<li><code>2</code> - Render pen-up movement only</li>
+<li><code>3</code> - Render all movement, both pen-up and pen-down <strong>[DEFAULT]</strong></li>
+</ul>
+
+<p><strong>Default:</strong> 3 (render all movement), given by <code>rendering</code> in 
+axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='reordering'>reordering</h2>
+<blockquote>
+<div class="codetitle">reordering</div>
+
+<p>Example 1: 
+Plot an SVG file (file.svg), reordering for speed including allowing
+path reversal prior to plotting.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -G2
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Preview how an SVG file (file.svg) will plot with basic optimization,
+reordering elements for speed but preserving their directions.
+SVG objects in the output SVG file will be preserved in their original order.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -vTg2 -G1 -o out.svg
+</code></pre></div>
+<p><em>Specify level of plot optimization</em></p>
+
+<p><strong>Syntax: [<code>-G</code>, <code>--reordering</code>] value</strong></p>
+
+<p>When a non-zero value is given for the <code>reordering</code> option, a plot
+optimization tool is used to re-order elements in the input SVG prior to
+plotting or rendering a preview. By changing the order and (optionally)
+direction of paths, the plot duration can be lowered by reducing the amount of
+pen-up travel required during the plot. </p>
+
+<p>The <code>reordering</code> option is only applicable in the modes that parse and plot the SVG document: 
+<a href="#plot"><code>plot</code></a> (default), <a href="#layers"><code>layers</code></a>, and <a href="#res_plot-res_home"><code>res_plot</code></a>.</p>
+
+<p>(There is also a separate legacy <a href="#reorder"><code>reorder</code></a> mode, which
+uses different values of the <code>reordering</code> parameter.)</p>
+
+<p><strong>Normal order of plotting</strong></p>
+
+<p>Normally and by default, each path within a SVG document is plotted
+in the same order and in the same direction as it appears in the document.
+This order is generally the order in which the objects were created. In a graphical
+vector editor like Inkscape, newer objects are drawn on top of older ones; a &quot;lower&quot;
+object is one that appears earlier in the document.</p>
+
+<p>Keeping the original order is often preferable, for example in handwriting-like applications,
+where you may wish the writing to be in the same order that a person would write
+the words, e.g. right-to-left, top-to-bottom on the page.</p>
+
+<p><strong>How reordering works</strong></p>
+
+<p>When you plot an SVG document, the following operations occur:</p>
+
+<ol>
+<li>A temporary copy of the SVG document is made.</li>
+<li>Graphical elements like circles and rectangles are rendered into paths.</li>
+<li>The document is separated by layers.</li>
+<li>Within each layer:
+
+<ul>
+<li>All groups, sub-layers, and compound paths are broken apart.</li>
+<li>Paths are joined together if one starts where another ends.</li>
+<li>The paths are sorted for speed.</li>
+</ul></li>
+<li>The document is plotted (or the preview is rendered).</li>
+<li>The document is reverted to the temporary copy.</li>
+<li>If rendering a preview, the preview paths are added to the document.</li>
+</ol>
+
+<p>Path sorting uses a &quot;greedy&quot; algorithm, a suboptimal but relatively fast 
+approach. Depending on the nature of the SVG document, it can reduce the
+pen-up travel distance by 50-90% and reduce the plotting time by 30-50%.
+Potential time savings should be weighed against the execution time of the sort,
+which may be considerable for documents with a great number of separate objects.
+In most cases reordering adds only a few seconds before plotting
+starts and results in a significant overall time savings.</p>
+
+<p>If path reversal is allowed, then:</p>
+
+<ul>
+<li>The stage of joining two paths with coincident ends will check to see if paths can be joined if one or both are reversed.</li>
+<li>Sorting the paths for speed will consider reversing each path.</li>
+</ul>
+
+<p>If path reversal is not allowed, then every path will be plotted in the same order
+(and direction) as it occurs in the document.</p>
+
+<p>You may find it helpful to run plots
+with <a href="#preview"><code>preview</code></a>, <a href="#rendering"><code>rendering</code></a>,
+and/or <a href="#report_time"><code>report_time</code></a> enabled.
+With those tools, you can visualize the effect that optimization has with
+different values of <code>reordering</code> and estimate the plot duration on documents
+that have and have not been sorted.</p>
+
+<p><strong>Re-ordering is by layer</strong></p>
+
+<p>The optimization tool is layer-aware: All objects will be left on their original layers.
+That makes it safe to use on multicolor plots where colors are separated by layers.</p>
+
+<p>An SVG document without layers can still be optimized. The document root, the set of
+elements that are not in layers, is re-ordered as though it is a single layer.</p>
+
+<p>If the SVG contains elements in document root that are separated by layers, each set of
+elements that <em>is not separated by layers</em> is treated as a virtual layer for the purposes
+of reordering.</p>
+
+<p><strong>Changes to the document are not saved</strong></p>
+
+<p>The changes to the order of elements in the SVG document
+are <em>ephemeral</em> and only made to the temporary copy.
+If you save an output SVG, the objects in that output SVG will retain their original order.</p>
+
+<p>For example, if your SVG document has deeply nested groups, you can plot it with
+the <code>reordering</code> of 2, but if you save the output SVG, it will retain your original grouping.</p>
+
+<p><strong>Values of the reordering option</strong></p>
+
+<p>Allowed values: Integers from 0 to 3:</p>
+
+<ul>
+<li>0: No reordering; preserve order of objects. <strong>[DEFAULT]</strong></li>
+<li>1: Reorder objects, preserving path orientation</li>
+<li>2: Reorder objects, allowing path reversal</li>
+<li>3: Same as 2 (deprecated option value)</li>
+</ul>
+
+<p>The <code>reordering</code> value of 3 is a deprecated value, given for compatibility with
+older API versions. Its behavior is identical to a value of 2.</p>
+
+<p><strong>Default:</strong> 0 (No reordering), given by <code>reordering</code> in 
+axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+
+<aside class="warning">
+The values of the reordering option have different meanings when the (Legacy) Reorder mode is active.
+See the description of that mode for its behavior.
+</aside>
+<h2 id='random_start'>random_start</h2>
+<blockquote>
+<div class="codetitle">random_start</div>
+
+<p>Example 1: 
+Plot a file, randomizing the start position of closed shapes within that file:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --random_start
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, using short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -Y
+</code></pre></div>
+<p><em>Randomize start positions of closed paths</em></p>
+
+<p><strong>Syntax: [<code>-Y</code>, <code>--random_start</code>]</strong></p>
+
+<p>Randomize start locations of closed paths.</p>
+
+<p>By default, this option is disabled, and the AxiDraw will draw closed paths
+in the direction that they are given in the file (or possibly, the reverse of that,
+depending on the <a href="#reordering"><code>reordering</code></a> option).</p>
+
+<p>A pen may form a visible mark at the location where it is lowered or raised.
+In artwork where the same closed shape is repeated many times, that can cause a seam-like visual
+artifact if many of those marks line up at matching points on the repeated shapes. </p>
+
+<p>With the <code>random_start</code> option, the start position of closed paths &mdash;
+paths where the start points and end points are coincident &mdash; will be randomized,
+which can help to hide that specific type of visual artifact.</p>
+
+<p>This feature may be enabled by using the <code>--random_start</code> option (<code>-Y</code>). It is a
+simple &quot;flag&quot; type argument, and takes no value argument</p>
+
+<p>To enable this option by default, edit axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file and change the value
+of <code>random_start</code> from <code>False</code> to <code>True</code>.</p>
+<h2 id='config'>config</h2>
+<blockquote>
+<div class="codetitle">config</div>
+
+<p>Example 1: 
+Plot a file, using settings in a file called &quot;local_config.py&quot;</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --config local_config.py
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot the same file, using a path to a file in another directory.
+(Example on Mac; paths look different on other computers.)</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -f ~/axidraw/configs/draft_quality.py
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Use a configuration file called &quot;estimate.py&quot;, which defaults to have
+preview mode enabled and time reporting. This will not plot the file,
+but just estimate the time that the file will take to plot.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -f estimate.py
+</code></pre></div>
+<p><em>AxiDraw Configuration File</em></p>
+
+<p><strong>Syntax: [<code>-f</code>, <code>--config</code>] file_name</strong></p>
+
+<p>Select a custom configuration file to use. The <code>file_name</code> given in the syntax
+above may be a file name in the same directory, or a path to the configuration
+file.</p>
+
+<p>An example configuration file can be in the API download at:
+    <code>examples_config/axidraw_conf_copy.py</code></p>
+
+<p>You can duplicate, move, and rename this file as needed, though you should keep the
+&quot;.py&quot; file extension. You may wish
+to use different configuration files to have quick settings ready for (for example)
+draft versus final plotting speeds, different size AxiDraw models, different paper
+size limits, which particular AxiDraw unit to plot to, 
+or previewing without plotting.</p>
+
+<p><strong>Default:</strong> Use defaults from the axidraw_conf.py file installed
+with the software, rather than from a local configuration file.</p>
+<h2 id='model'>model</h2>
+<blockquote>
+<div class="codetitle">model</div>
+
+<p>Example 1: 
+Plot a file, while setting size limits for AxiDraw V3/A3:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --model 2
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot the same file, restricting the motion area to that of the 
+AxiDraw V3 XLX: </p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -L3
+</code></pre></div>
+<p><em>AxiDraw hardware model</em></p>
+
+<p><strong>Syntax: [<code>-L</code>, <code>--model</code>] value</strong></p>
+
+<p>Select which model of AxiDraw hardware you are using. This is used to set
+the limits of travel. Limits are set by dead reckoning, under the assumption
+that a given plot was started in the Home Corner, and that no loss of
+position control has occurred. Paths in the document will be clipped to
+the edges of the SVG document or of physical travel, whichever is smaller
+for each axis.</p>
+
+<p>Limits are not checked when using manual walk commands.</p>
+
+<p>Allowed values: Integers from 1 to 3:</p>
+
+<ul>
+<li><code>1</code> - AxiDraw V2 or AxiDraw V3</li>
+<li><code>2</code> - AxiDraw V3/A3 or AxiDraw SE/A3</li>
+<li><code>3</code> - AxiDraw V3 XLX</li>
+<li><code>4</code> - AxiDraw MiniKit</li>
+</ul>
+
+<p><strong>Default:</strong> 1 (AxiDraw V2 or AxiDraw V3), given by <code>model</code> in
+axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+
+<p>The physical size definitions for each model type are also configured in
+in the configuration file.</p>
+<h2 id='port'>port</h2>
+<blockquote>
+<div class="codetitle">port</div>
+
+<p>Example 1: 
+Plot a file to the USB port enumerated as /dev/cu.usbmodem1441:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -p /dev/cu.usbmodem1441
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot a file to an AxiDraw with USB Nickname &quot;GlueDispenser&quot;:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -pGlueDispenser
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Plot a file to an AxiDraw with USB Nickname &quot;UV LED Array&quot;:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --port "UV LED Array"
+</code></pre></div>
+<p><em>Specify a USB port or named AxiDraw to use</em></p>
+
+<p><strong>Syntax: [<code>-p</code>, <code>--port</code>] value</strong></p>
+
+<p>By default, the AxiDraw software works with the first available AxiDraw
+located on USB. Alternately, you can use the port parameter to specify a
+particular machine. You can specify the machine using the USB port
+enumeration (e.g., <code>COM6</code> on Windows or <code>/dev/cu.usbmodem1441</code> on a Mac) or by
+using an assigned USB nickname.</p>
+
+<p>If any port is specified, then the software will attempt to open the
+connection to that (and only that) AxiDraw or USB port. It will return an
+error if the port or AxiDraw cannot be found. This behavior may be
+overridden by use of the <code>port_config</code> parameter.</p>
+
+<p>USB port enumerations are typically not permanent; they may change with
+events as simple as unplugging a device and plugging it back in.</p>
+
+<p>For a more permanent designation, you can assign an &quot;AxiDraw USB Nickname&quot;
+to a given machine as well. This USB nickname may be read and written using
+the manual commands. (See <a href="#manual_cmd"><code>manual_cmd</code></a> for additional information.)</p>
+
+<p>Be aware that if multiple AxiDraw units are connected to one computer, it
+may not be trivial to identify which physical machine is currently
+identified as which USB device. You may wish to try an identifying action,
+for example raising the pen, to indicate which machine is which.</p>
+
+<p>Allowed values of the port parameter are strings, which specify either
+the USB port or AxiDraw USB nickname to use.</p>
+
+<p><strong>Default:</strong> None, given by <code>port</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h2 id='port_config'>port_config</h2>
+<blockquote>
+<div class="codetitle">port_config</div>
+
+<p>Example 1: 
+Plot a file <i>only</i> to an AxiDraw with USB Nickname &quot;UV LED Array&quot;;
+Return an error if that unit is not found, explicitly using the
+default value (0) of port_config:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -p "UV LED Array" --port_config 0
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot a file to the first available AxiDraw found on USB:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --port "AxiDraw 19" -P1
+</code></pre></div>
+<blockquote>
+<p>Example 3: 
+Plot the same file simultaneously to all attached AxiDraw units:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -P3
+</code></pre></div>
+<p><em>Override how the USB ports are located</em></p>
+
+<p><strong>Syntax: [<code>-P</code>, <code>--port_config</code>] value</strong></p>
+
+<p>By default, the software handles assignments of USB ports as follows:</p>
+
+<ul>
+<li><p>If no <code>port</code> value is specified, the first AxiDraw located via USB
+will be used.</p></li>
+<li><p>If a <code>port</code> value is specified, then the software will attempt
+to communicate only with that specified AxiDraw.</p></li>
+</ul>
+
+<p>The <code>port_config</code> parameter can override this behavior. Allowed values of the
+ parameter are integers 0, 1, and 3:</p>
+
+<ul>
+<li><code>0</code> - Do not override; use standard &quot;port&quot; parameter behavior.</li>
+<li><code>1</code> - Address only the first AxiDraw located via USB</li>
+<li><code>3</code> - Address all AxiDraw units located via USB</li>
+</ul>
+
+<p>If <code>port_config</code> is 0, then the software will follow the default 
+behavior described above.</p>
+
+<p>If <code>port_config</code> is 1, then the software will communicate only with
+the first AxiDraw located, even if even if a --port parameter is specified.</p>
+
+<p>If <code>port_config</code> is 3, the software will simultaneously communicate with
+all AxiDraw units located via USB. While most features (including plotting)
+are supported and work well in this fashion, note that are some important differences.
+Please see &quot;Working with multiple
+AxiDraw machines&quot; below for an extended discussion.</p>
+
+<p><strong>Default:</strong> 0, given by <code>port_config</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+
+<aside class="notice">
+Previous versions of this documentation allowed an additional 
+`port_config` value of 2, intended to plot *only* to the specified port.
+The actual behavior with this value selected turns out to be identical
+to the default behavior, and so this value has been deprecated.
+</aside>
+<h2 id='output_file'>output_file</h2>
+<blockquote>
+<div class="codetitle">output_file</div>
+
+<p>Example 1: 
+Plot a file named input.svg, and save an output file as output.svg:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli input.svg -o output.svg
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Preview a file, generating a rendered preview of pen-down motion,
+and calculating the estimated duration of the plot:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -Tvg 1 -o outputfile.svg
+</code></pre></div>
+<p><em>Specify output SVG file name</em></p>
+
+<p><strong>Syntax: [<code>-o</code>, <code>--output_file</code>] file_name</strong></p>
+
+<p>Normally, this program accepts an SVG file as input, and does not produce
+an output file. However, if an output file name is specified, then it will
+produce and save an output SVG file. The output file contains the same SVG
+drawing that it accepted as input, but may also have plot progress saved
+in the file, or a rendered preview.</p>
+
+<p>See the documentation above, under <a href="#res_plot-res_home"><code>res_plot</code></a>, 
+<a href="#res_plot-res_home"><code>res_home</code></a> for
+more about how the plot progress data is saved in the output file, and how
+that can be used for the resume modes.</p>
+
+<p>See the documentation above under both <a href="#preview"><code>preview</code></a> and
+<a href="#rendering"><code>rendering</code></a>
+for more about how rendered previews are generated.</p>
+
+<p>See the <a href="#digest"><code>digest</code></a> feature below for an option to save an optimized
+&quot;Plob&quot; plot digest, rather than the full SVG.</p>
+
+<p>While certain utility modes do not generally require that an input file is
+specified, an input file is required in <em>all</em> cases when an output file is
+specified.</p>
+
+<p>Allowed values of the parameter are strings, which specify the output
+file name, or a relative or absolute path ending in a file name.</p>
+
+<p><strong>Default:</strong> None</p>
+<h2 id='digest'>digest</h2>
+<blockquote>
+<div class="codetitle">digest</div>
+
+<p>Example 1: 
+Plot a file named input.svg, and save the &quot;Plob&quot; plot digest
+instead of the full SVG:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli input.svg --digest 1 -o output_plob.svg
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+Generate a &quot;Plob&quot; plot digest from the file named input.svg, and save it
+without plotting the document or rendering a preview:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli input.svg -O2 -o output_plob.svg
+</code></pre></div>
+<p><em>Plot digest output option</em></p>
+
+<p><strong>Syntax: [<code>-O</code>, <code>--digest</code>]</strong></p>
+
+<p>When a <code>digest</code> value greater than 0 is chosen, the <a href="#output_file"><code>output_file</code></a> will not be
+the (lightly modified) input SVG, but instead a &quot;plot digest object&quot;, or <strong>Plob</strong>.
+A Plob is a restricted-format subset of SVG that the AxiDraw software &quot;digests&quot;
+the file into before plotting.</p>
+
+<p>In detail, the Plob is a new file generated from the input SVG after:</p>
+
+<ul>
+<li>Removing hidden and non-printable layers and objects</li>
+<li>Reducing all plottable shapes and paths to vertex lists</li>
+<li>Applying, then removing any transformations</li>
+<li>Removing all style information</li>
+<li>Applying the auto-rotate function (if enabled)</li>
+<li>Cropping all paths at the plot edges</li>
+<li>Joining together any sufficiently close path ends</li>
+<li>Randomizing the start point of closed paths (if enabled)</li>
+<li>Reordering paths in the document for speed (if enabled)</li>
+<li>Flattening the document structure</li>
+<li>Adding metadata including the hardware model</li>
+</ul>
+
+<p>Generating the Plob is <strong>destructive</strong>; any SVG shapes such as rectangles or original paths
+that were present in the original SVG document will <em>not</em> be present in the Plob output.
+Keep a copy of your original SVG document.</p>
+
+<p>A Plob file may be used as the input to the AxiDraw software, just like any other SVG input.
+Plotting a Plob prepared for the same AxiDraw model allows the AxiDraw software to
+skip all of the steps above and immediately begin plotting the document. If a plot underway is
+paused while the <code>digest</code> option is enabled, the output Plob will include plot progress data for
+resuming the plot, just as a regular SVG would.</p>
+
+<p>The <code>digest</code> option may be helpful in a variety of situations, including but not limited to:</p>
+
+<ul>
+<li>Processing a document <em>once</em> into a Plob that can be plotted many times</li>
+<li>Using different computers for document preparation versus plotting</li>
+<li>Improving the speed of operations that involve pause and resume cycles</li>
+<li>Separating a document with named layers into separate files</li>
+</ul>
+
+<p>If a <code>digest</code> value of <code>1</code> is chosen and an output file is saved, that output file will be
+in the Plob format (instead of full SVG), but no other changes occur.
+Plots and plot previews will proceed normally.</p>
+
+<p>A <code>digest</code> value of <code>2</code> overrides most software functions, to <em>only</em> generate
+the Plob and perform no other function.
+(Internally, it enables <a href="#preview"><code>preview</code></a> but disables running previews and time estimates.)
+Using this option minimizes the total time for Plob generation, as there is no need to
+wait for a plot or preview to finish. </p>
+
+<p>Allowed values: Integers from 0 to 2:</p>
+
+<ul>
+<li><code>0</code> - Disabled; No change to behavior or output  <strong>[DEFAULT]</strong></li>
+<li><code>1</code> - Output &quot;plob&quot; digest, not full SVG, when outputting file</li>
+<li><code>2</code> - Disable plots and previews; generate digest only</li>
+</ul>
+
+<p><strong>Default:</strong> 0 (Disabled), given by <code>digest</code> in axidraw_conf.py</p>
+<h2 id='webhook'>webhook</h2>
+<blockquote>
+<div class="codetitle">webhook</div>
+
+<p>Example 1: 
+Plot a file and generate a webhook notification, to a specific URL
+when the plot finishes.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --webhook --webhook_url "https://url.to.post.to/"
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, using short codes</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -WU "https://url.to.post.to/"
+</code></pre></div>
+<p><em>Enable webhook alerts</em></p>
+
+<p><strong>Syntax: [<code>-W</code>, <code>--webhook</code>]</strong></p>
+
+<p>If the <code>webhook</code> option is enabled and an URL is provided via the 
+<a href="#webhook_url"><code>webhook_url</code></a> option, then the software will post to
+that URL when a plot completes.</p>
+
+<p>This feature can be used in combination
+with various services including <a href="http://ifttt.com">IFTTT</a>, to provide various forms of 
+notifications such as email alerts, mobile alerts, 
+or integration with other hardware or software.</p>
+
+<p>When enabled, webhook alerts are only generated when a plot finishes (or is paused)
+and all three of these conditions are met:</p>
+
+<ol>
+<li>When actually plotting to the AxiDraw (not in <code>preview</code> mode),</li>
+<li>In a mode that plots a document: <code>plot</code> (default), <code>layers</code>, or <code>res_plot</code>, and</li>
+<li>An URL is provided via the <code>webhook_url</code> option.</li>
+</ol>
+
+<p>The data posted to the URL is JSON formatted and contains the following key/value pairs:</p>
+
+<table><thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>value1</code></td>
+<td>Document name</td>
+</tr>
+<tr>
+<td><code>value2</code></td>
+<td>Elapsed time</td>
+</tr>
+<tr>
+<td><code>value3</code></td>
+<td>Port (if provided)</td>
+</tr>
+</tbody></table>
+
+<p>The &quot;Port&quot; value here is taken from the <a href="#port"><code>port</code></a> option. If you are operating multiple 
+named AxiDraw machines, this value can be used to indicate which machine
+has completed a plot.</p>
+
+<p>Webooks may be enabled by using the <code>--webhook</code> option (<code>-W</code>). It is
+a simple &quot;flag&quot; type argument, and takes no value argument.</p>
+
+<p>To enable this option by default, edit axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file and change the value of
+<code>webhook</code> from <code>False</code> to <code>True</code>.</p>
+<h2 id='webhook_url'>webhook_url</h2>
+<blockquote>
+<div class="codetitle">webhook_url</div>
+
+<p>Example: 
+Plot a file and generate a webhook notification, to a specific URL
+when the plot finishes.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --webhook --webhook_url "https://url.to.post.to/"
+</code></pre></div>
+<p><em>URL for webhook alerts</em></p>
+
+<p><strong>Syntax: [<code>-U</code>, <code>--webhook_url</code>] value</strong></p>
+
+<p>The URL to post data to, if the <a href="#webhook"><code>webhook</code></a> option is enabled.</p>
+
+<p>The <code>webhook</code> option has no effect unless a URL is also provided, via this option.</p>
+
+<p>An extended discussion about webhooks, including instructions for setting up mobile
+notifications via IFTTT, is available <a href="https://wiki.evilmadscientist.com/Webhooks">here</a>.</p>
+
+<p><strong>Default:</strong> None, given by <code>webhook_url</code> in axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file.</p>
+<h1 id='multiple-axidraw-units'>Multiple AxiDraw units</h1>
+<p>There are two main strategies for working with multiple machines with AxiCLI:</p>
+
+<p>(A) Launch multiple instances of AxiCLI, using the <code>--port</code> argument to select
+different machines.</p>
+
+<p>This method is straightforward, and can be used to send different files to
+different AxiDraw units.</p>
+
+<p>(B) Use <code>--port_config 3</code> (or <code>-P3</code>) to simultaneously plot the same file to
+all Axidraw units located via USB.</p>
+
+<p>This method is a production-oriented choice for plotting the same document
+multiple times. While efficient, it uses the same interface that is normally
+used for working with a single AxiDraw, and that does have some side-effects: </p>
+
+<ol>
+<li>The pause/resume feature is not fully supported with <code>-P3</code>, and</li>
+<li>Most output messages (other than errors) are suppressed.</li>
+</ol>
+
+<p>The reason for these changes is that there is still &mdash; even when plotting to
+multiple machines &mdash; a maximum of one output file generated. (One of the plot
+processes, chosen automatically, will be the one that saves the output file.)
+That output file may safely be used for things like plot previews. However if
+the physical pause button is pressed on one of several machines while plotting
+in -P3 mode, then the output file saved may <em>or may not</em> contain plot progress
+data for that particular AxiDraw. </p>
+
+<p>If you plot with option <code>-P3</code> in modes <code>res_plot</code> or <code>res_home</code>, the software
+will automatically revert to <code>-P1</code> mode instead, plotting to only the first 
+AxiDraw located.</p>
+
+<p>For related reasons, most output messages other than errors are suppressed to
+avoid duplicate warning messages during the plot. Thus, if you need to request
+(e.g.) the firmware version from each AxiDraw, do so individually.</p>
+<h1 id='troubleshooting'>Troubleshooting</h1><h2 id='debugging-plot-output'>Debugging plot output</h2>
+<p>In case of unexpected plotting output, you may wish to preview your SVG document in
+Inkscape, to see how it will print.</p>
+
+<p>Steps:</p>
+
+<ol>
+<li>Ungroup all objects, repeatedly if necessary.</li>
+<li>Set fill type to none</li>
+<li>Set stroke type to flat color (solid)</li>
+<li>Set stroke style to a constant width, e.g., 0.5 mm (0.020 inches).</li>
+</ol>
+
+<p>Note that only path objects (and simple variations thereof) will print.
+Text should be converted to paths before plotting.
+Filled regions will not automatically be filled; use the AxiDraw Hatch Fill
+extension.</p>
+<h1 id='api-changelog'>API Changelog</h1>
+<p>Revision Notes: Changes affecting API</p>
+
+<p><strong>v 3.1 (2022-01-05)</strong></p>
+
+<p>New plot digest feature: The <a href="#digest"><code>digest</code></a> option can enable saving a plot digest,
+rather than the full SVG output</p>
+
+<p>New Webhook notifications feature. Added <a href="#webhook"><code>webhook</code></a> and <a href="#webhook_url"><code>webhook_url</code></a>
+options.</p>
+
+<p>New parameter in the axidraw_conf.py configuration file: <code>report_lifts</code>
+enables reporting the number of pen lifts in a plot.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_310r1.zip">here</a>.</p>
+
+<p><strong>v 3.0 (2021-10-12)</strong></p>
+
+<p>Added new <a href="#random_start"><code>random_start</code></a> feature to randomize the start position of closed paths.</p>
+
+<p>Added new <a href="#special-commands"><code>axicli --version</code></a> command</p>
+
+<p>Significant changes to plot optimization:</p>
+
+<ul>
+<li>Improved automatic path joining.</li>
+<li>New sub-path optimization: All sub-paths on a layer can now be re-ordered.</li>
+<li>New feature can optionally reverse paths during optimization.</li>
+<li>New option to randomize start position of closed paths</li>
+<li>Layer aware sorting (and other per-layer control) is by top-level layers only, not sublayers.</li>
+</ul>
+
+<p>As part of this, changes to the <a href="#reordering"><code>reordering</code></a> option:</p>
+
+<ul>
+<li>The previous values were 0-3. 0: No reordering (Default), 1: Reorder but preserve
+groups, 2: Reorder within groups, and 3: Break apart groups.</li>
+<li>The new values are 0-3. 0: No reordering (Default), 1: Reorder objects, preserving
+path orientation, and 2: Reorder objects, allow path reversal.</li>
+<li>The value of 3 is deprecated and may be
+removed in future versions. It behaves identically to a value of 2.</li>
+</ul>
+
+<p>These new features and changes are only available as part of a plot, 
+and <strong>not</strong> in <a href="#reorder"><code>reorder</code></a> mode, which retains its prior options.</p>
+
+<p>Reorder mode is now deprecated and will be removed in a future version.</p>
+
+<p>Additional changes:</p>
+
+<ul>
+<li>Added upgrade instructions to the <a href="#installation">installation instructions</a>.</li>
+<li>The <code>ebb_version</code> manual command, previously deprecated, has been removed.</li>
+</ul>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_302r1.zip">here</a>.</p>
+
+<p><strong>v 2.7.5 (2021-08-18)</strong></p>
+
+<p>Add support for Python 3.10; Python 3.6-3.10 are now supported.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_275r2.zip">here</a>.</p>
+
+<p><strong>v 2.7.4 (2021-06-17)</strong></p>
+
+<p>Drop support for Python 3.5. Python 3.6 or newer is now required.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_274r1.zip">here</a>.</p>
+
+<p><strong>v 2.7.0 (2020-11-11)</strong></p>
+
+<p>Add support for macOS 11 (Big Sur).</p>
+
+<p>Drop support for Python 2. Python 3.5 or newer is now required. If you need
+to use Python 2, the previous release version (2.6.3) is archived below.</p>
+
+<p>New version posted 2020-11-21 (no version number change) includes dependency updates
+for compatibility with Mac computers using Apple Silicon.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_270r13.zip">here</a></p>
+
+<p><strong>v 2.6.3 (2020-08-19)</strong></p>
+
+<p>This is the last point release of the software supporting Python 2, and is
+archived for download <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip">here</a>.
+You can also install it via:
+<code>pip install https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip</code></p>
+
+<p><strong>v 2.6.0 (2020-07-04)</strong></p>
+
+<ul>
+<li>This is the <em>last</em> major release of this API to support both python 2 and python 3.
+Future releases will require python 3.</li>
+<li>Add &quot;one line&quot; <a href="#installation">installation instructions</a>.</li>
+<li>Add <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code></a> and 
+<a href="#walk_mmx-walk_mmy"><code>walk_mmy</code></a> <a href="#manual_cmd">manual commands</a>, for manual walk 
+in millimeter units.</li>
+<li>Renamed <code>ebb_version</code> to <a href="#fw_version"><code>fw_version</code></a>. The deprecated
+manual command <code>ebb_version</code> is functional but will be removed
+in a future version.</li>
+<li>New parameters are available in the axidraw_conf.py configuration file:
+<code>servo_timeout</code> and <code>use_b3_out</code></li>
+</ul>
+
+<p><strong>v  2.5.x  --  2020-01-02</strong></p>
+
+<p>Deprecated a value for <code>port_config</code>.</p>
+
+<p><strong>v  2.5.6  --  2019-12-13</strong></p>
+
+<p>Add support for new AxiDraw MiniKit model</p>
+
+<p><strong>v  2.5.x  --  2019-09-04</strong></p>
+
+<p>Corrected an error in this documentation.
+The four reordering parameter values are in the range 0-3, not 1-4.</p>
+
+<p><strong>v  2.5.0  --  2019-05-13</strong></p>
+
+<p>Added option (<code>-f</code>, <code>--config</code>) for local configuration file.</p>
+
+<p>Renamed <code>group_sorting</code> option to <code>reordering</code>, (<code>-G</code>, <code>--reordering</code>) and
+changed parameter values.  Reordering is now available directly in
+the plotting modes, which allows full previews to be rendered.</p>
+
+<p>Removed the (old, limited) preview options from reorder mode.</p>
+
+<p>Changed names of some parameters in axidraw_conf.py. </p>
+
+<p><strong>v  2.4.0  --  2019-04-02</strong></p>
+
+<p>CLI scripts now installed such that one can now call <code>axicli &lt;input&gt;</code> or 
+<code>python -m axicli &lt;input&gt;</code> directly, instead of <code>python axicli.py &lt;input&gt;</code>.</p>
+
+<p><strong>v  2.3.2  --  2019-01-22</strong></p>
+
+<p>Input file no longer required for operations in align, toggle,
+manual, sysinfo, or version modes, unless an output file is specified.</p>
+
+<p><strong>v  2.3.0  --  2018-12-08</strong></p>
+
+<p>25% increase in maximum XY speed now allowed.
+Change installation process to allow installation via pip.</p>
+
+<p><strong>v  2.2.0  --  2018-10-01</strong></p>
+
+<p>Automatic checking for updates now performed with the <code>sysinfo</code> mode.
+Reorder mode and <code>group_sorting</code> option added.</p>
+
+<p><strong>v  2.1.1  --  2018-08-31</strong></p>
+
+<p>Plots now clipped at edges of SVG document.</p>
+
+<p><strong>v. 2.1.0  --  2018-08-24</strong></p>
+
+<p>Plots now clipped with pen-up at extents of machine travel</p>
+
+<p><strong>v. 2.0.0  --  2018-08-22</strong></p>
+
+<p>Significant, breaking changes to option names and syntax, for clarity and
+compatibility. We recommend that you read through this documentation for
+the new option names.</p>
+
+<p>Summary of changes:</p>
+
+<ul>
+<li>Changed command line argument parser format</li>
+<li>Changed names of most input parameters</li>
+<li>Added short names for input parameters</li>
+<li><p>Boolean input parameters have been changed to input flags</p></li>
+<li><p>For details, please see changelog.txt included with the download.</p></li>
+</ul>
+<h1 id='copyright'>Copyright</h1>
+<p>Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories</p>
+
+      </div>
+      <div class="dark-box">
+      </div>
+    </div>
+  </body>
+</html>

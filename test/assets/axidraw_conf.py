@@ -1,10 +1,14 @@
+#
+# ***** THIS IS FOR TESTING ONLY AND MAY NOT BE UP-TO-DATE *****
+# Use pyaxidraw/axidraw_conf.py or axidrawinternal/axidraw_conf instead.
+#
 # axidraw_conf.py
 # Part of the AxiDraw driver software
 # 
 # https://github.com/evil-mad/axidraw
-# Version 3.1.0, dated 2022-01-05.
+# Version 2.5.0, dated 2019-05-13.
 #
-# Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories
+# Copyright 2019 Windell H. Oskay, Evil Mad Scientist Laboratories
 #
 # https://github.com/evil-mad/AxiDraw
 #
@@ -45,103 +49,69 @@ pen_rate_lower = 50     # Rate of lowering pen (1-100)
 pen_delay_up = 0        # Optional delay after pen is raised (ms)
 pen_delay_down = 0      # Optional delay after pen is lowered (ms)
 
-const_speed = False     # Use constant velocity mode when pen is down
-report_time = False     # Report time elapsed
-default_layer = 1       # Layer(s) selected for layers mode (1-1000)
+const_speed = False     # Use constant velocity mode when pen is down.
+report_time = False     # Report time elapsed.
+default_layer = 1       # Layer(s) selected for layers mode (1-1000).
 
 copies = 1              # Copies to plot, or 0 for continuous plotting. Default: 1
 page_delay = 15         # Optional delay between copies (s).
 
 preview = False         # Preview mode; simulate plotting only.
 rendering = 3           # Preview mode rendering option (0-3):
-                            # 0: Do not render previews
+                            # 0: Do not render layers
                             # 1: Render only pen-down movement
                             # 2: Render only pen-up movement
                             # 3: Render all movement (Default)
 
-model = 1               # AxiDraw Model (1-4)
-                            # 1: AxiDraw V2 or V3 (Default)
-                            # 2: AxiDraw V3/A3 or SE/A3
-                            # 3: AxiDraw V3 XLX
-                            # 4: AxiDraw MiniKit
+model = 1               # AxiDraw Model (1-3). 
+                            # 1: AxiDraw V2 or V3 (Default).
+                            # 2: AxiDraw V3/A3 or SE/A3.
+                            # 3: AxiDraw V3 XLX.
                             
-port = None             # Serial port or named AxiDraw to use
-                            # None (Default) will plot to first unit located
+port = None             # Serial port or named AxiDraw to use. 
+                            # None (Default) will plot to first unit located.
 
 port_config = 0         # Serial port behavior option (0-2)
-                            # 0: Plot to first unit found, unless port is specified (Default)
+                            # 0: Plot to first unit found, unless port is specified (Default),
                             # 1: Plot to first AxiDraw unit located
-                            # 2: Plot to a specific AxiDraw only, given by port
+                            # 2: Plot to a specific AxiDraw only, given by port.
 
 auto_rotate = True      # Auto-select portrait vs landscape orientation
                             # Default: True
 
-reordering = 0          # Plot optimization option
-                            # 0: Preserve order of objects given in SVG file (Default)
-                            # 1: Reorder objects, preserving path orientation
-                            # 2: Reorder objects, allow path reversal
-
-random_start = False    # Randomize start locations of closed paths. (Default: False)
+reordering = 0          # Plot optimization option for how groups are handled
+                            # 0: Preserve order of objects given in SVG file (Default).
+                            # 1: Reorder objects, preserving groups
+                            # 2: Reorder objects, reordering within each group
+                            # 3: Reorder all objects, breaking apart groups
 
 resolution = 1          # Resolution: (1-2):
                             # 1: High resolution (smoother, slightly slower) (Default)
                             # 2: Low resolution (coarser, slightly faster)
 
-digest = 0              # Plot digest output option. (Do NOT enable if using within Inkscape.)
-                            # 0: Disabled; No change to behavior or output (Default)
-                            # 1: Output "plob" digest, not full SVG, when saving file
-                            # 2: Disable plots and previews; generate digest only
+'''
+Additional user-adjustable control parameters:
 
-webhook = False         # Enable webhook alerts
-                            # Default: False
+These parameters are adjustable only from the command line, and are not
+visible from within the Inkscape GUI.
 
-webhook_url = None      # URL for webhook alerts
+'''
+
+check_updates = True  # If True, allow AxiDraw Control to check online to see
+                      #    what the current software version is, when you
+                      #    query the version. Set to False to disable. Note that
+                      #    this is the only internet-enabled function in the
+                      #    AxiDraw software.
+
+smoothness = 10.0     # Curve smoothing (default: 10.0)
+
+cornering = 10.0      # Cornering speed factor (default: 10.0)
 
 
 # Effective motor resolution is approx. 1437 or 2874 steps per inch, in the two modes respectively.
 # Note that these resolutions are defined along the native axes of the machine (X+Y) and (X-Y),
-# not along the XY axes of the machine. This parameter chooses 8X or 16X motor microstepping.
+# not along the XY axes of the machine. This parameter chooses 8X or 16X microstepping on the motors.
 
-'''
-Additional user-adjustable control parameters:
-
-Values below this point are configured only in this file, not through the user interface(s).
-'''
-
-servo_timeout = 60000   # Time, ms, for servo motor to power down 
-                        #   after last movement command  (default: 60000)
-                        #   This feature requires EBB v 2.5 hardware (with USB
-                        #   micro not USB mini connector) and firmware version
-                        #   2.6.0 or newer
-
-check_updates = True    # If True, allow AxiDraw Control to check online to see
-                        #    what the current software version is, when you
-                        #    query the version. Set to False to disable. Note that
-                        #    this is the only internet-enabled function in the
-                        #    AxiDraw software.
-
-smoothness = 10.0       # Curve smoothing (default: 10.0)
-
-cornering = 10.0        # Cornering speed factor (default: 10.0)
-
-use_b3_out = False      # If True, enable digital output pin B3, which will be high (3.3V)
-                        #   when the pen is down, and low otherwise. Can be used to control
-                        #   external devices like valves, relays, or lasers.
-
-auto_rotate_ccw = True  # If True (default), auto-rotate is counter-clockwise when active.
-                        #   If False, auto-rotate direction is clockwise.
-
-options_message = True  # If True (default), display an advisory message if Apply is clicked
-                        #   in the AxiDraw Control GUI, while in tabs that have no effect.
-                        #   (Clicking Apply on these tabs has no effect other than the message.)
-                        #   This message can prevent the situation where one clicks Apply on the
-                        #   Options tab and then waits a few minutes before realizing that
-                        #   no plot has been initiated.
-
-report_lifts = False    # Report number of pen lifts when reporting plot duration (Default: False)
-
-auto_clip_lift = True   # Option applicable to the Interactive Python API only.
-                        #   If True (default), keep pen up when motion is clipped by travel bounds.
 
 '''
 Secondary control parameters:
@@ -162,10 +132,6 @@ y_travel_V3A3 = 11.69     # AxiDraw V3/A3: Y Carriage travel in inches.         
 
 x_travel_V3XLX = 23.42    # AxiDraw V3 XLX: X Carriage travel in inches.                Default: 595 mm = about 23.42 inches
 y_travel_V3XLX = 8.58     # AxiDraw V3 XLX: Y Carriage travel in inches.                Default: 218 mm = about 8.58 inches
-
-x_travel_MiniKit = 6.30  # AxiDraw MiniKit: X Carriage travel in inches.                Default: 160 mm = about 6.30 inches
-y_travel_MiniKit = 4.00   # AxiDraw MiniKit: Y Carriage travel in inches.               Default: 101.6 mm = 4.00 inches
-
 
 native_res_factor = 1016.0  # Motor resolution calculation factor, steps per inch, and used in conversions. Default: 1016.0
 # Note that resolution is defined along native (not X or Y) axes.
@@ -200,9 +166,8 @@ time_slice = 0.025  # Interval, in seconds, of when to update the motors. Defaul
 
 bounds_tolerance = 0.003  # Suppress warnings if bounds are exceeded by less than this distance (inches).
 
-min_gap = 0.008     # Automatic path joining threshold, inches. Default: 0.008
-                    # If greater than zero, pen-up moves shorter than this distance
-                    #   will be replaced by pen-down moves. Set negative to disable.
+# Allow sufficiently short pen-up moves to be substituted with a pen-down move:
+min_gap = 0.008  # Distance Threshold (inches). Default value: 0.008 inches; smaller than most pen lines.
 
 # Servo motion limits, in units of (1/12 MHz), about 83 ns:
 servo_max = 27831  # Highest allowed position; "100%" on the scale.    Default value: 25200 units, or 2.31 ms.
@@ -216,10 +181,5 @@ skip_voltage_check = False  # Set to True if you would like to disable EBB input
 
 clip_to_page = True  # Clip plotting area to SVG document size. Default: True
 
-# the tolerance for determining when the bezier has been segmented enough to plot:
-bezier_segmentation_tolerance = 0.02 / smoothness
-
-# Tolerance for merging nearby vertices:
-#  Larger values of segment_supersample_tolerance give smoother plotting along paths that
-#  were created with too many vertices. A value of 0 will disable supersampling.
-segment_supersample_tolerance = bezier_segmentation_tolerance / 16
+bezier_segmentation_tolerance = 0.02 / smoothness # the tolerance for determining when the bezier has been segmented enough to plot
+segment_supersample_tolerance = bezier_segmentation_tolerance / 16 # the tolerance for determining which segments can be merged

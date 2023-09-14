@@ -1,23 +1,30 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -#-
-from __future__ import print_function
 
 '''
-estimate_time.py
+plot.py
 
-Demonstrate use of axidraw module in "plot" mode, to estimate the time
-that it will take to plot an SVG file.
+Demonstrate use of axidraw module in "plot" mode, to plot an SVG file.
 
-Run this demo by calling: python estimate_time.py
+Run this demo by calling: python plot.py
 
-To save the time estimate to a file, you may be able to use a command similar to:
-    python estimate_time.py > file.txt
-    
-    
+
+This is a minimal example to show how one can import the AxiDraw module
+and use it to plot an SVG file with the AxiDraw.
+
+(There is also a separate "interactive" mode, which can be used for moving
+the AxiDraw to various points upon command, rather than plotting an SVG file.)
+
+
 AxiDraw python API documentation is hosted at: https://axidraw.com/doc/py_api/
 
-
 '''
+
+
+
+
+
+
 
 '''
 About this software:
@@ -40,7 +47,7 @@ https://shop.evilmadscientist.com/contact
 
 
 
-Copyright 2020 Windell H. Oskay, Evil Mad Scientist Laboratories
+Copyright 2021 Windell H. Oskay, Evil Mad Scientist Laboratories
 
 The MIT License (MIT)
 
@@ -65,15 +72,18 @@ SOFTWARE.
 '''
 
 
+
 import os.path
-from pyaxidraw import axidraw
+from axidrawinternal import axidraw
 
 ad = axidraw.AxiDraw()             # Create class instance
 
+
+
 '''
-Try a few different possible locations for our file, so that this can be
-called from either the root or examples_python directory, or if you're
-in the same directory with the test file.
+Try a few different possible locations for our file,
+so that this can be called from either the root or examples_python directory,
+or if you're in the same directory with the file.
 '''
 
 location1 = "test/assets/AxiDraw_trivial.svg"
@@ -104,11 +114,13 @@ ad.plot_setup("AxiDraw_trivial.svg")
 '''
 
 
+ad.options.speed_pendown = 50 # Set maximum pen-down speed to 50%
 
-ad.options.preview  = True
+
+'''
+See documentation for a description of additional options and their allowed values:
+https://axidraw.com/doc/py_api/
+
+'''
 
 ad.plot_run()   # plot the document
-
-# print("Estimated print time: {0} ms".format(ad.pt_estimate))
-print("{0}".format(ad.pt_estimate))
-
