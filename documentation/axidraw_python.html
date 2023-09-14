@@ -461,6 +461,12 @@
                             <a href="#enable_xy-disable_xy" class="toc-h3 toc-link" data-title="enable_xy, disable_xy">enable_xy, disable_xy</a>
                           </li>
                           <li>
+                            <a href="#res_read" class="toc-h3 toc-link" data-title="res_read">res_read</a>
+                          </li>
+                          <li>
+                            <a href="#res_adj_in-res_adj_mm" class="toc-h3 toc-link" data-title="res_adj_in, res_adj_mm">res_adj_in, res_adj_mm</a>
+                          </li>
+                          <li>
                             <a href="#strip_data" class="toc-h3 toc-link" data-title="strip_data">strip_data</a>
                           </li>
                           <li>
@@ -524,6 +530,11 @@
                     
                   </li>
                   <li>
+                    <a href="#hiding" class="toc-h2 toc-link" data-title="hiding">hiding</a>
+                    
+                    
+                  </li>
+                  <li>
                     <a href="#report_time" class="toc-h2 toc-link" data-title="report_time">report_time</a>
                     
                     
@@ -563,6 +574,16 @@
               <ul class="toc-list-h2">
                   <li>
                     <a href="#keyboard-interrupts" class="toc-h2 toc-link" data-title="Keyboard interrupts">Keyboard interrupts</a>
+                    
+                    
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#functions-general" class="toc-h1 toc-link" data-title="Functions: General">Functions: General</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#load_config" class="toc-h2 toc-link" data-title="load_config">load_config</a>
                     
                     
                   </li>
@@ -657,6 +678,11 @@
                     
                   </li>
                   <li>
+                    <a href="#block" class="toc-h2 toc-link" data-title="block">block</a>
+                    
+                    
+                  </li>
+                  <li>
                     <a href="#current_pos" class="toc-h2 toc-link" data-title="current_pos">current_pos</a>
                     
                     
@@ -745,7 +771,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>.
-The link is permanent and will be kept up to date. The current release version is 3.7.2.</p>
+The link is permanent and will be kept up to date. The current release version is 3.9.3.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -753,7 +779,7 @@ conventionally, since the download includes example python scripts, an example c
 
 <p><strong>Standard install</strong></p>
 
-<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.8.1.</p>
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.9.3.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -810,7 +836,8 @@ available in the <strong>Plot</strong> context include those described below in 
 <a href="#options-general">Options: General</a> and <a href="#options-plot">Options: Plot</a>
  sections. Options may be set at any point
 after <a href="#plot_setup"><code>plot_setup()</code></a> and before <a href="#plot_run"><code>plot_run()</code></a>. For more about the functions
-available in the <strong>Plot</strong> context, see <a href="#functions-plot">Functions: Plot</a>.</p>
+available in the <strong>Plot</strong> context, see <a href="#functions-general">Functions: general</a>  and 
+<a href="#functions-plot">Functions: Plot</a>.</p>
 
 <p>An SVG input is required for most operations that are outside of
 the <strong>Interactive</strong> context. (Certain utility modes that 
@@ -862,15 +889,11 @@ call. The options will be applied when you call
 <code>connect()</code>, use the <a href="#update"><code>update()</code></a> method to process
 the changes to the options before calling additional motion commands.</p>
 
-<p>In addition to the plot options specified in <a href="#options-general">Options: General</a>,
-there is one additional option available in <strong>Interactive</strong> context,
-<a href="#units"><code>units</code></a>, which can be used to switch between inch and millimeter units.</p>
-
 <p>The options
 available in the <strong>Interactive</strong> context include those described below in the 
 <a href="#options-general">Options: General</a> and <a href="#options-interactive">Options: Interactive</a>
 sections. The options described in <a href="#options-plot">Options: Plot</a> <em>do not</em> apply
-in the <strong>Interactive</strong> context.</p>
+in the <strong>Interactive</strong> context. </p>
 <h1 id='example-scripts'>Example scripts</h1>
 <blockquote>
 <div class="codetitle">Example scripts</div>
@@ -1752,6 +1775,10 @@ arguments will be described individually, after the list.</p>
 <td>Randomize start positions of closed paths.</td>
 </tr>
 <tr>
+<td><code>hiding</code></td>
+<td>Enable hidden-line removal</td>
+</tr>
+<tr>
 <td><code>report_time</code></td>
 <td>Report time and distance after the plot.</td>
 </tr>
@@ -2283,6 +2310,10 @@ progress through the file. These records are generated automatically
 when a plot is paused, and included in the output SVG. You must use this
 output SVG as the <em>input</em> to the next plotting cycle, by using <a href="#plot_setup"><code>plot_setup</code></a>.</p>
 
+<p>The position that a plot will be resumed at can be read and set by the
+<a href="#res_read"><code>res_read</code></a> and
+<a href="#res_adj_in-res_adj_mm"><code>res_adj_in</code></a>/<a href="#res_adj_in-res_adj_mm"><code>res_adj_mm</code></a> manual commands.</p>
+
 <p>The resume functionality allows the chained action of first moving
 to the home position (if and only if performed via <code>res_home</code> and
 saving the progress of having done so) and then using <code>res_plot</code> to
@@ -2314,8 +2345,8 @@ as utility commands, for test, setup, and calibration. (If you need real-time
 movement commands, consider using the <strong>Interactive</strong> context instead.)</p>
 
 <p>An SVG document input to <code>plot_setup()</code> is allowed but not required in manual mode.
-However, one command, <code>strip_data</code>,
-is <em>not useful</em> unless input and input and output SVG are specified.
+However, several of the commands (such as <code>res_adj_in</code>, <code>strip_data</code>, etc.)
+are <em>not useful</em> unless input or input and output SVG are specified.
 For manual commands such as <code>raise_pen</code> that do not interact with the SVG
 document, execution is typically faster without SVG input file.</p>
 
@@ -2367,6 +2398,18 @@ Each of these commands will be described in detail, after the list.</p>
 <tr>
 <td><code>disable_xy</code></td>
 <td>Disable (de-energize) XY stepper motors</td>
+</tr>
+<tr>
+<td><code>res_read</code></td>
+<td>Read position where a paused plot will resume</td>
+</tr>
+<tr>
+<td><code>res_adj_in</code></td>
+<td>Adjust resume position of paused plot in inches</td>
+</tr>
+<tr>
+<td><code>res_adj_mm</code></td>
+<td>Adjust resume position of paused plot in mm</td>
 </tr>
 <tr>
 <td><code>strip_data</code></td>
@@ -2766,6 +2809,177 @@ moved to the home corner, prior to plotting.</p>
 The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
 They cannot be used within an <b>Interactive</b> context session.
 </aside>
+<h3 id='res_read'>res_read</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: res_read</div>
+
+<p>Example:
+Read pause position from file.svg. Also populate variable
+ &quot;resume_position&quot; with that distance.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"res_read"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+<span class="n">resume_position</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">res_dist</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"resume_position : </span><span class="si">{</span><span class="n">resume_position</span><span class="p">:.</span><span class="mi">3</span><span class="n">f</span><span class="si">}</span><span class="s"> mm"</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Typical response, with a file paused at 200 mm of pen-down travel:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>Plot was paused after 200.000 mm (7.874 inches) of pen-down travel.
+resume_position : 200.000 mm
+</code></pre></div>
+<blockquote>
+<p>Typical responses, for a file that finished plotting normally:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>No in-progress plot data found in file.
+To set up the plot to be resumed at a given point, add an offset.
+resume_position : 0.000 mm
+</code></pre></div>
+<blockquote>
+<p>Typical response, with a file that has had its resume
+position adjusted:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>Plot was originally paused after 200.000 mm (7.874 inches) of
+pen-down travel. The resume position was then adjusted to
+225.400 mm (8.874 inches).
+resume_position : 225.400 mm
+</code></pre></div>
+<p><em>Manual command: Read position where a paused plot will resume</em></p>
+
+<p><strong>Syntax: <code>options.manual_cmd = &quot;res_read&quot;</code></strong></p>
+
+<p>When a plot is paused, the progress through the file is saved in the SVG document so that
+the plot may be resumed later with <a href="#res_plot-res_home"><code>res_plot</code></a> mode. The <code>res_read</code> manual
+command reads the SVG and reports that progress as human-readable text.</p>
+
+<p>Plot progress is measured as the total path length of <em>pen-down movement</em> 
+from the beginning of the plot to where it was paused. One may adjust that
+distance, so it is more proper to say that it measures the pen-down distance from the
+beginning of the plot to the point <em>where the AxiDraw would resume plotting</em> with 
+<a href="#res_plot-res_home"><code>res_plot</code></a> mode.</p>
+
+<p>The &quot;beginning of the plot&quot; refers to the first vertex of the
+first plottable object in the SVG document. (Exactly what that object is depends on
+which optimizations are applied and, for example, whether the plot was started
+in Layers mode.)</p>
+
+<p>The &quot;beginning of the plot&quot; still refers to the first plottable object, even
+when a plot is resumed with <a href="#res_plot-res_home"><code>res_plot</code></a> mode; it is
+<em>not</em> the position from which the plot was resumed. For example, if a plot were paused after
+plotting paths with a total arc length of 250 mm, and then resumed and paused again
+after drawing another 100 mm, <code>res_plot</code> would report a value of 350 mm.</p>
+
+<p>In addition to printing the resume position, running this manual command with
+<a href="#plot_run"><code>plot_run()</code></a> also creates a Python variable, <code>res_dist</code> that
+contains the resume position in millimeters.</p>
+
+<p>The resume position can be adjusted with the <a href="#res_adj_in-res_adj_mm"><code>res_adj_in</code></a> and
+<a href="#res_adj_in-res_adj_mm"><code>res_adj_mm</code></a> commands. See the 
+<a href="#res_plot-res_home"><code>res_plot</code></a> mode description for further discussion
+of pause-and-resume methods when using this API.</p>
+
+<aside class="notice">
+The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
+They cannot be used within an <b>Interactive</b> context session.
+</aside>
+<h3 id='res_adj_in-res_adj_mm'>res_adj_in, res_adj_mm</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: res_adj_in, res_adj_mm</div>
+
+<p>Example 1:
+Adjust resume position from file.svg, such that when resumed 
+it would start 20 mm before its pause position. Also populate
+variable &quot;resume_position&quot; with that new distance.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"res_adj_mm"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span>
+<span class="n">output_svg</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>  
+<span class="n">resume_position</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">res_dist</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"New resume_position : </span><span class="si">{</span><span class="n">resume_position</span><span class="p">:.</span><span class="mi">3</span><span class="n">f</span><span class="si">}</span><span class="s"> mm"</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Typical response, with a file paused at 200 mm of pen-down travel:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>Plot was paused after 200.000 mm of pen-down travel.
+After adding a new offset of -20.000 mm, the resume position
+    is now set at 180.000 mm.
+New resume_position : 180.000 mm
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Configure a document to begin printing (when used with res_plot
+mode) after 12.5 inches of pen-down distance. </p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"res_adj_in"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">12.5</span>
+<span class="n">output_svg</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>  
+<span class="n">resume_position</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">res_dist</span>
+<span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"New resume_position : </span><span class="si">{</span><span class="n">resume_position</span><span class="p">:.</span><span class="mi">3</span><span class="n">f</span><span class="si">}</span><span class="s"> mm"</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Typical response, with a file that was not initially paused:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>This document was configured to start plotting at the beginning
+of the file. After adding a new offset of 12.500 inches, the
+resume position is now set at 12.500 inches.
+New resume_position : 317.500 mm
+</code></pre></div>
+<p><em>Manual commands: Adjust resume position of paused plot</em></p>
+
+<p><strong>Syntax: <code>options.manual_cmd = &quot;res_adj_in&quot;</code></strong></p>
+
+<p><strong>Syntax: <code>options.manual_cmd = &quot;res_adj_mm&quot;</code></strong></p>
+
+<p>These two commands adjust the position where a paused plot will resume,
+by a distance given by the value of the <a href="#dist"><code>dist</code></a> option and 
+units selected by choosing either <code>res_adj_in</code> or <code>res_adj_mm</code>. 
+See the <a href="#res_read"><code>res_read</code></a> command description for how to read the existing
+resume position and for an extended discussion of what that position means.</p>
+
+<p>The <code>dist</code> option has a default value of 1.0 and can be positive or negative.
+Its value, in units of inches when using <code>res_adj_in</code>, and in millimeters
+when using <code>res_adj_mm</code>, is added to the the current resume position
+to produce the new position. </p>
+
+<p>If the new resume position is less than or equal
+to zero, it will reset to zero (the beginning of the plot), where
+<a href="#res_plot-res_home"><code>res_plot</code></a> mode cannot &quot;resume&quot; the plot. The
+resume position can also be set to a distance longer than the total pen-down
+length of the plot. In that case, <code>res_plot</code> mode can be run, but nothing will
+print (since the resume point is after the end of the plot).</p>
+
+<p>If an SVG document does not have any in-progress plot saved, it
+<em>is</em> possible to use <code>res_adj_in</code> or <code>res_adj_mm</code> to add an offset
+from zero, and then start a plot at that position using <code>res_plot</code>.
+This provides a means of starting a plot partway through, even if
+it did not begin as a paused plot.</p>
+
+<p>As with <a href="#res_read"><code>res_read</code></a>, running the <code>res_adj_in</code> or <code>res_adj_mm</code> 
+manual command with <a href="#plot_run"><code>plot_run()</code></a> creates a Python variable, 
+<code>res_dist</code> that contains the new resume position in millimeters.</p>
+
+<aside class="success">
+It may be helpful to know the total pen-down length of a plot. If so,
+Running a plot preview with the <code>report_time</code> option enabled can
+calculate that for you.
+</aside>
+
+<aside class="notice">
+The <code>manual_cmd</code> options are only applicable for use within the <b>Plot</b> context.
+They cannot be used within an <b>Interactive</b> context session.
+</aside>
 <h3 id='strip_data'>strip_data</h3>
 <blockquote>
 <div class="codetitle">manual_cmd: strip_data</div>
@@ -2990,7 +3204,7 @@ They cannot be used within an <b>Interactive</b> context session.
 <blockquote>
 <div class="codetitle">dist</div>
 
-<p>Example: 
+<p>Example 1: 
 Move the carriage 1.5 inches in the +x direction:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
@@ -3001,7 +3215,20 @@ Move the carriage 1.5 inches in the +x direction:</p>
 <span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="mf">1.5</span>
 <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
 </code></pre></div>
-<p><em>Distance for Walk manual commands</em></p>
+<blockquote>
+<p>Example 2:
+Adjust resume position from file.svg, such that when resumed 
+it would start 20 mm before its pause position.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s">"manual"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">manual_cmd</span> <span class="o">=</span> <span class="s">"res_adj_mm"</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">dist</span> <span class="o">=</span> <span class="o">-</span><span class="mi">20</span>
+<span class="n">output_svg</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div>
+<p><em>Distance for Walk and Adjust Resume Position manual commands</em></p>
 
 <p><strong>Syntax: <code>options.dist = value</code></strong></p>
 
@@ -3013,9 +3240,11 @@ negative. Its default value is 1.0.</p>
 
 <p>The units of the distance given by <code>dist</code> are selected by choosing
 a specific manual command. The distance is in millimeters
-for manual walk commands <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code></a> or <a href="#walk_mmx-walk_mmy"><code>walk_mmy</code></a>.
+for manual walk commands <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code></a> or <a href="#walk_mmx-walk_mmy"><code>walk_mmy</code></a>
+and for the <a href="#res_adj_in-res_adj_mm"><code>res_adj_mm</code></a> command to adjust resume position.
 The distance is in inches for manual walk commands
-<a href="#walk_x-walk_y"><code>walk_x</code></a> or <a href="#walk_x-walk_y"><code>walk_y</code></a>.</p>
+<a href="#walk_x-walk_y"><code>walk_x</code></a> or <a href="#walk_x-walk_y"><code>walk_y</code></a>
+and for the <a href="#res_adj_in-res_adj_mm"><code>res_adj_in</code></a> command to adjust resume position.</p>
 
 <p>Values of <code>dist</code> should be chosen with care, since no limit checking is performed.
 This is especially true with the manual walk commands, which are relative to the
@@ -3530,6 +3759,57 @@ which can help to hide that specific type of visual artifact.</p>
 <aside class="notice">
 This option is only applicable for use within the <b>Plot</b> context.
 </aside>
+<h2 id='hiding'>hiding</h2>
+<blockquote>
+<div class="codetitle">hiding</div>
+
+<p>Example: 
+Plot a file, using hidden-line removal:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span> 
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"file.svg"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">hiding</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+</code></pre></div>
+<p><em>Enable hidden-line removal</em></p>
+
+<p><strong>Syntax: <code>options.hiding = True</code></strong></p>
+
+<p>By default, this option is disabled, and the AxiDraw will draw all paths
+(or objects that can be directly represented as paths) in the SVG document. All
+fill and stroke (outline) properties of individual objects are ignored. Phrased differently,
+All paths are normally plotted as though there is a stroke along the path and no fill.</p>
+
+<p>When the <code>hiding</code> option is enabled, the AxiDraw software will instead plot paths (or not)
+based (1) on their fill and stroke properties and (2) whether or not
+they are occluded behind other objects. An object that does not have a stroke property (e.g.,
+no outline in Inkscape) will not plot, nor will one hidden behind a solid fill.
+Typically, when working with documents that include filled regions, this means that the
+AxiDraw output will visually resemble the original SVG artwork more closely. In cases of 
+ambiguity, consider running Plot Preview (<a href="#preview"><code>preview</code></a>) with rendering enabled in
+order to understand how the document is processed.</p>
+
+<p>There are two important drawbacks to bear in mind. First, the <code>hiding</code> option requires
+additional processing time before plotting, especially in instances with large numbers of
+objects to process. Second, hidden-line removal <strong>does not</strong>
+preserve the orientation of individual SVG strokes.
+We generally recommend using the <a href="#reordering"><code>reordering</code></a> option, with &quot;full&quot; reordering (  <code>options.reordering = 2</code>) to orient the output paths for efficient plotting.</p>
+
+<p>In cases where the processing time becomes large, or when processing repeatedly might be needed
+(as in, when a document might be paused and resumed during the plotting process),
+it may be convenient to instead process the
+document <em>once</em>, separately, using the <a href="#digest"><code>digest</code></a> option.</p>
+
+<p>This feature may be enabled by setting <code>hiding</code> equal to <code>True</code>.</p>
+
+<p>Allowed values: <code>True</code>, <code>False</code>.</p>
+
+<p><strong>Default:</strong> <code>False</code>, set in axidraw_conf.py</p>
+
+<aside class="notice">
+This option is only applicable for use within the <b>Plot</b> context.
+</aside>
 <h2 id='report_time'>report_time</h2>
 <blockquote>
 <div class="codetitle">report_time</div>
@@ -3581,8 +3861,9 @@ since the plot resumed. (Distances are calculated this way, using the total pen-
 through the document, to ensure that a plot can
 be paused and resumed, even if started in <code>res_plot</code> mode.)</p>
 
-<p>If <code>report_time</code> is enabled and one of the applicable modes is selected,
-then calling <a href="#plot_run"><code>plot_run()</code></a> will also populate five numeric Python
+<p>Whether or not <code>report_time</code> is enabled, calling <a href="#plot_run"><code>plot_run()</code></a>
+in an applicable mode
+will also populate five numeric Python
 variables that can be accessed from within a script:</p>
 
 <table><thead>
@@ -3854,6 +4135,8 @@ Move to different positions, given in inch and cm units:</p>
 If you change the units after calling <code>connect()</code>, use the <code>update()</code>
 method to process that change before calling additional motion commands.</p>
 
+<p>The <code>units</code> option cannot presently be set in a configuration file.</p>
+
 <p>Allowed values: Integers from 0 to 2:</p>
 
 <ul>
@@ -4046,6 +4329,71 @@ if <code>errors.keyboard</code> is set also set to <code>True</code>. </p>
 <p><code>keyboard_pause</code> is <code>False</code> by default. If you wish to set it <code>True</code>, do so prior to 
 <a href="#plot_run"><code>plot_run()</code></a> in the <strong>Plot</strong> context or 
 <a href="#connect"><code>connect()</code></a> in the <strong>Interactive</strong> context.</p>
+<h1 id='functions-general'>Functions: General</h1>
+<p>One function, <code>load_config()</code>, is available within both the <strong>Plot</strong> and <strong>Interactive</strong> context.</p>
+<h2 id='load_config'>load_config</h2>
+<blockquote>
+<div class="codetitle">load_config()</div>
+
+<p>Example 1: 
+Loading settings from a file, and use the Interactive context</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">load_config</span><span class="p">(</span><span class="s">"axidraw_conf_copy.py"</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">lineto</span><span class="p">(</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>               <span class="c1"># Line to (3.5, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">moveto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                 <span class="c1"># Raise pen, return home
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
+</span></code></pre></div>
+<blockquote>
+<p>Example 2: 
+Plot a file, using settings from a configuration file</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>   
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_setup</span><span class="p">(</span><span class="s">"AxiDraw_trivial.svg"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">load_config</span><span class="p">(</span><span class="s">"axidraw_conf_copy.py"</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">plot_run</span><span class="p">()</span>
+</code></pre></div>
+<p><em>Load settings from AxiDraw configuration file</em></p>
+
+<p><strong>Syntax: <code>load_config(file name or path)</code></strong></p>
+
+<p>The <code>load_config</code> function reads an AxiDraw configuration file and applies
+the settings within that file. The configuration file argument to the function
+(&quot;file name or path&quot;) is required.  It can be either the name of the configuration
+file or the path to the file. The function can be called in either the <strong>Plot</strong> or
+<strong>Interactive</strong> context; use <a href="#plot_setup"><code>plot_setup()</code></a> or <a href="#interactive"><code>interactive()</code></a> 
+before calling <code>load_config()</code>.</p>
+
+<p>It is never <em>necessary</em> to use the <code>load_config</code> function.
+All options and parameters can be set directly within your Python script using
+the normal <a href="#setting-options">syntax to specify options</a> along with
+the <a href="#additional-parameters"><code>params</code> syntax</a>. However, <code>load_config()</code> does
+provide a method of separating settings out from the script, which can be helpful
+when working with multiple sets of options, or to ensure a uniform
+method for setting options when also working with the 
+<a href="https://axidraw.com/doc/cli_api/#config">AxiDraw CLI</a>.</p>
+
+<p>An example configuration file can be in the API download at:
+    <code>examples_config/axidraw_conf_copy.py</code></p>
+
+<p>You can duplicate, move, rename, and edit this file as needed, though you should keep the
+&quot;.py&quot; file extension. You may wish
+to use different configuration files to have quick settings ready for (for example)
+draft versus final plotting speeds, different size AxiDraw models, different paper
+size limits, which particular AxiDraw unit to plot to, 
+or previewing without plotting. Configuration files do not need to be as complex as the
+example file; it is perfectly reasonable to use a configuration file that specifies 
+even just a single option value.</p>
+
+<aside class="success">
+This function can be used in both the <b>Plot</b> and <b>Interactive</b> contexts.
+</aside>
 <h1 id='functions-plot'>Functions: Plot</h1>
 <p>This is the Python function reference for the functions available within the <strong>Plot</strong> context.
 These functions do not apply in the <strong>Interactive</strong> context.</p>
@@ -4234,6 +4582,14 @@ These functions do not apply in the <strong>Plot</strong> context.</p>
 <tr>
 <td><code>draw_path()</code></td>
 <td>Draw a path defined by a coordinate list.</td>
+</tr>
+<tr>
+<td><code>delay()</code></td>
+<td>Execute a hardware-timed delay.</td>
+</tr>
+<tr>
+<td><code>block()</code></td>
+<td>Wait for all motion commands to complete.</td>
 </tr>
 <tr>
 <td><code>current_pos()</code></td>
@@ -4960,6 +5316,50 @@ motion commands that would otherwise be adjoining.</p>
 <aside class="notice">
 This function can only be used within the <b>Interactive</b> context.
 </aside>
+<h2 id='block'>block</h2>
+<blockquote>
+<div class="codetitle">block()</div>
+
+<p>Example: 
+Use block() to ensure that motion is complete before reading
+step position:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">from</span> <span class="nn">pyaxidraw</span> <span class="kn">import</span> <span class="n">axidraw</span>
+<span class="n">ad</span> <span class="o">=</span> <span class="n">axidraw</span><span class="p">.</span><span class="n">AxiDraw</span><span class="p">()</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ad</span><span class="p">.</span><span class="n">connect</span><span class="p">():</span>            <span class="c1"># Open serial port to AxiDraw;
+</span>    <span class="n">quit</span><span class="p">()</span>                      <span class="c1">#   Exit, if no connection.
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                   <span class="c1"># Move to (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">pendown</span><span class="p">()</span>                    <span class="c1"># Lower pen
+</span><span class="n">ad</span><span class="p">.</span><span class="n">go</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                     <span class="c1"># Move by (1, 1) inch
+</span><span class="n">ad</span><span class="p">.</span><span class="n">delay</span><span class="p">(</span><span class="mi">2500</span><span class="p">)</span>                  <span class="c1"># Wait 2.5 seconds
+</span><span class="n">ad</span><span class="p">.</span><span class="n">block</span><span class="p">()</span>                      <span class="c1"># Wait until delay is complete
+</span><span class="n">step_pos</span> <span class="o">=</span> <span class="n">ad</span><span class="p">.</span><span class="n">usb_query</span><span class="p">(</span><span class="s">"QS</span><span class="se">\r</span><span class="s">"</span><span class="p">)</span> <span class="c1"># Query step position
+</span><span class="k">print</span><span class="p">(</span><span class="s">"Step pos: "</span> <span class="o">+</span> <span class="n">step_pos</span><span class="p">)</span>
+<span class="n">ad</span><span class="p">.</span><span class="n">penup</span><span class="p">()</span>                      <span class="c1"># Raise pen
+</span><span class="n">ad</span><span class="p">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                   <span class="c1"># Move to Home position
+</span><span class="n">ad</span><span class="p">.</span><span class="n">disconnect</span><span class="p">()</span>                 <span class="c1"># Close serial port
+</span></code></pre></div>
+<p><em>Wait for all motion commands to complete</em></p>
+
+<p><strong>Syntax: <code>block()</code></strong></p>
+
+<p>The <code>block</code> command polls the AxiDraw to determine if any motion
+commands are currently executing or queued to execute. If so, it
+checks again, every 50 ms, until all existing motion commands
+are completed, and then returns.</p>
+
+<p>Standard <strong>Interactive</strong> context motion commands are typically made
+of relatively short motion segments that are automatically queued, and
+the <code>block</code> command isn&#39;t necessary or helpful in most common use cases.
+However, in certain circumstances, such as when using
+<a href="#usb_command-usb_query">low-level usb commands</a> or sequencing external
+equipment, <code>block()</code> may be helpful to ensure that no motion commands are
+executing at some point in the script.</p>
+
+<aside class="notice">
+This function can only be used within the <b>Interactive</b> context.
+</aside>
 <h2 id='current_pos'>current_pos</h2>
 <blockquote>
 <div class="codetitle">current_pos()</div>
@@ -5206,6 +5606,25 @@ These functions can only be used within the <b>Interactive</b> context.
 <p>Please note that the changelog.txt file included with the download is more comprehensive
 and includes details about older releases that are no longer listed below.</p>
 
+<p><strong>v 3.9 (2023-05)</strong></p>
+
+<p>New option in <strong>Plot</strong> context, <a href="#hiding"><code>hiding</code></a>, enables new hidden-line removal feature.</p>
+
+<p>Added new <a href="#res_read"><code>res_read</code></a>, <a href="#res_adj_in-res_adj_mm"><code>res_adj_in</code></a> and
+<a href="#res_adj_in-res_adj_mm"><code>res_adj_mm</code></a> manual commands, which allow one to read
+and/or adjust the the position at which a paused plot will be resumed. Added new
+variable <code>res_dist</code> to provide the numeric distance from <a href="#res_read"><code>res_read</code></a>.</p>
+
+<p>Added new <a href="#load_config"><code>load_config</code></a> function to load settings from a configuration file.</p>
+
+<p>Added new <a href="#block"><code>block</code></a> function to wait for all motion commands to complete.</p>
+
+<p>The numeric time report values noted in the description of the
+<a href="#report_time"><code>report_time</code></a> option are now always populated, even if <code>report_time</code>
+is not enabled.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_393.zip">here</a>.</p>
+
 <p><strong>v 3.8 (2023-01)</strong></p>
 
 <p>Added new <a href="#penlift"><code>penlift</code></a> option, to enable brushless servo option.</p>
@@ -5384,29 +5803,8 @@ can disable automatic pen lifts at plotting bounds and the new behavior of
 now stripped of whitespace; previously, they were not.</p>
 
 <p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_274r1.zip">here</a>.</p>
-
-<p><strong>v 2.7.0 (2020-11-11)</strong></p>
-
-<p>Add support for macOS 11 (Big Sur) and Mac computers using Apple Silicon</p>
-
-<p>Drop support for Python 2. Python 3.5 or newer is now required. If you need
-to use Python 2, the previous release version (2.6.3) is archived below.</p>
-
-<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_270r13.zip">here</a>.</p>
-
-<p><strong>v 2.6.3 (2020-08-19)</strong></p>
-
-<p>Add new <a href="#turtle_pos"><code>turtle_pos</code></a> and <a href="#current_pos"><code>current_pos</code></a> functions.</p>
-
-<p>Several new <a href="#example-scripts">example scripts</a> added, along with a section
-in this documentation listing what the different example scripts do.</p>
-
-<p>This is the last point release of the software supporting Python 2, and is
-archived for download <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip">here</a>.
-You can also install it via:
-<code>pip install https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip</code></p>
 <h1 id='copyright'>Copyright</h1>
-<p>Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories</p>
+<p>Copyright 2023 Windell H. Oskay, Evil Mad Scientist Laboratories</p>
 
       </div>
       <div class="dark-box">

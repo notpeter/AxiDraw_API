@@ -1,4 +1,3 @@
-from __future__ import print_function
 import copy
 import errno
 import os
@@ -7,6 +6,13 @@ import sys
 import warnings
 
 from lxml import etree
+
+OPTION_NAMES = ['mode', 'speed_pendown', 'speed_penup', 'accel', 'pen_pos_down', 'pen_pos_up',
+                    'pen_rate_lower', 'pen_rate_raise', 'pen_delay_down', 'pen_delay_up',
+                    'random_start', 'hiding', 'reordering', 'no_rotate', 'const_speed',
+                    'report_time','manual_cmd', 'dist', 'layer', 'copies', 'page_delay',
+                    'preview', 'rendering', 'model', 'penlift', 'port', 'port_config', 'webhook',
+                    'webhook_url', 'digest', 'progress']
 
 def handle_info_cases(no_flag_arg, quick_help, cli_version, software_name = None, version = None):
     ''' handles the simple cases like "version" and "help" '''
@@ -17,7 +23,7 @@ def handle_info_cases(no_flag_arg, quick_help, cli_version, software_name = None
         sys.exit()
 
     if no_flag_arg == "version":
-        print (cli_version)
+        print(cli_version)
         sw_string = "Software "
         if software_name:
             sw_string = software_name + " " + sw_string
@@ -37,7 +43,7 @@ def check_for_input(input_file, bad_input_message):
 
 def effect_parse(effect, svg_input):
     ''' `effect` is an `inkex.Effect` object, e.g. `AxiDrawControl`
-    if `svg_input` is None`, it usees stdin '''
+    if `svg_input` is None`, it uses stdin '''
     # hack so inkex handles stdin properly
     # https://github.com/evil-mad/ink_extensions/blob/6a246a5c530491302e155b4d1965e989381438e6/ink_extensions/inkex.py#L194
     effect.svg_file = None
@@ -86,7 +92,7 @@ def load_config(config):
         print('    {}'.format(se.text))
         print('The config file should be a python file (e.g., a file that ends in ".py").')
         sys.exit(1)
-    except IOError as ose:
+    except OSError as ose:
         if len(config) > 3 and config[-3:] == ".py" and ose.errno == errno.ENOENT:
             # if config is a filename ending in ".py" but it doesn't appear to exist
             print("Could not find any file named {}.".format(config))
@@ -128,14 +134,16 @@ def assign_option_values(options_obj, command_line, configs, option_names):
 def get_configured_value(attr, configs):
     """ configs is a list of configuration dicts, in order of priority.
 
-    e.g. if configs is a list [user_config, other_config], then the default for "speed_pendown" will be user_config.speed_pendown if user_config.speed_pendown exists, and if not, the default will be other_config.speed_pendown.
+    e.g. if configs is a list [user_config, other_config], then the default for
+    "speed_pendown" will be user_config.speed_pendown if user_config.speed_pendown exists,
+    and if not, the default will be other_config.speed_pendown.
     """
     for config in configs:
         if attr in config:
             return config[attr]
     raise ValueError("The given attr ({}) was not found in any of the configurations.".format(attr))
 
-class FakeConfigModule():
+class FakeConfigModule:
     ''' just turns a dict into an object
     so attributes can be set/retrieved object-style '''
     def __init__(self, a_dict):

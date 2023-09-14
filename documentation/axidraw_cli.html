@@ -468,6 +468,12 @@
                             <a href="#enable_xy-disable_xy" class="toc-h3 toc-link" data-title="enable_xy, disable_xy">enable_xy, disable_xy</a>
                           </li>
                           <li>
+                            <a href="#res_read" class="toc-h3 toc-link" data-title="res_read">res_read</a>
+                          </li>
+                          <li>
+                            <a href="#res_adj_in-res_adj_mm" class="toc-h3 toc-link" data-title="res_adj_in, res_adj_mm">res_adj_in, res_adj_mm</a>
+                          </li>
+                          <li>
                             <a href="#strip_data" class="toc-h3 toc-link" data-title="strip_data">strip_data</a>
                           </li>
                           <li>
@@ -487,6 +493,11 @@
                   </li>
                   <li>
                     <a href="#dist" class="toc-h2 toc-link" data-title="dist">dist</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#layer" class="toc-h2 toc-link" data-title="layer">layer</a>
                     
                     
                   </li>
@@ -517,6 +528,11 @@
                   </li>
                   <li>
                     <a href="#random_start" class="toc-h2 toc-link" data-title="random_start">random_start</a>
+                    
+                    
+                  </li>
+                  <li>
+                    <a href="#hiding" class="toc-h2 toc-link" data-title="hiding">hiding</a>
                     
                     
                   </li>
@@ -624,7 +640,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw CLI and the <a href="https://axidraw.com/doc/py_api/">AxiDraw Python Module</a>.
-The link is permanent and will be kept up to date. The current release version is 3.7.2.</p>
+The link is permanent and will be kept up to date. The current release version is 3.9.3.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -633,7 +649,7 @@ conventionally, since the download includes example python scripts, an example c
 <p><strong>Standard install</strong></p>
 
 <p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>
-The current release version is 3.8.1.</p>
+The current release version is 3.9.3.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -761,9 +777,14 @@ and do not have any equivalent that is accessible through command line arguments
 <p>An example configuration file can be in the API download at:<br>
 <code>examples_config/axidraw_conf_copy.py</code></p>
 
-<p>You can make copies of this file and use them,
-along with the <a href="#config"><code>config</code></a> option, to specify a particular configuration
-file to use when plotting.</p>
+<p>You can duplicate, move, rename, and edit this file as needed, though you should keep the
+&quot;.py&quot; file extension. You may wish
+to use different configuration files to have quick settings ready for (for example)
+draft versus final plotting speeds, different size AxiDraw models, different paper
+size limits, which particular AxiDraw unit to plot to, 
+or previewing without plotting. Configuration files do not need to be as complex as the
+example file; it is perfectly reasonable to use a configuration file that specifies 
+even just a single option value.</p>
 
 <p>A few specific options (including pen up/down heights, and plotting speed)
 can also be set by encoding these settings into the SVG file. The mechanism
@@ -900,6 +921,10 @@ arguments will be described individually, after the list.</p>
 <tr>
 <td><code>--random_start</code>, <code>-Y</code></td>
 <td>Randomize start positions of closed paths.</td>
+</tr>
+<tr>
+<td><code>--hiding</code>, <code>-H</code></td>
+<td>Enable hidden-line removal.</td>
 </tr>
 <tr>
 <td><code>--model</code>, <code>-L</code></td>
@@ -1417,6 +1442,10 @@ stored record of the last-known carriage position, as well as the
 progress through the file. These records are generated automatically
 when a plot is paused, and included in the output file.</p>
 
+<p>The position that a plot will be resumed at can be read and set by the
+<a href="#res_read"><code>res_read</code></a> and
+<a href="#res_adj_in-res_adj_mm"><code>res_adj_in</code></a>/<a href="#res_adj_in-res_adj_mm"><code>res_adj_mm</code></a> manual commands.</p>
+
 <p>The resume functionality allows the chained action of first moving
 to the home position (if and only if performed via res_home and
 saving the progress of having done so) and then using res_plot to
@@ -1567,12 +1596,14 @@ file.</p>
 <p>An example configuration file can be in the API download at:
     <code>examples_config/axidraw_conf_copy.py</code></p>
 
-<p>You can duplicate, move, and rename this file as needed, though you should keep the
+<p>You can duplicate, move, rename, and edit this file as needed, though you should keep the
 &quot;.py&quot; file extension. You may wish
 to use different configuration files to have quick settings ready for (for example)
 draft versus final plotting speeds, different size AxiDraw models, different paper
 size limits, which particular AxiDraw unit to plot to, 
-or previewing without plotting.</p>
+or previewing without plotting. Configuration files do not need to be as complex as the
+example file; it is perfectly reasonable to use a configuration file that specifies 
+even just a single option value.</p>
 
 <p><strong>Default:</strong> Use defaults from the axidraw_conf.py file installed
 with the software, rather than from a local configuration file.</p>
@@ -2066,8 +2097,8 @@ as utility commands, for test, setup, and calibration. (If you need real-time
 movement commands, consider using the Interactive context within the Python API.)</p>
 
 <p>An input SVG file is not required unless an output file is specified. However,
-one command,  <code>strip_data</code>, is <em>not useful</em> unless
-input and input and output files are specified. 
+several of the commands (such as <code>res_adj_in</code>, <code>strip_data</code>, etc.) are <em>not useful</em> unless
+input or input and output files are specified. 
 For manual commands such as <code>raise_pen</code> that do not interact with the SVG
 document, execution is typically faster without SVG input file.</p>
 
@@ -2119,6 +2150,18 @@ Each of these commands will be described in detail, after the list.</p>
 <tr>
 <td><code>disable_xy</code></td>
 <td>Disable (de-energize) XY stepper motors</td>
+</tr>
+<tr>
+<td><code>res_read</code></td>
+<td>Read position where a paused plot will resume</td>
+</tr>
+<tr>
+<td><code>res_adj_in</code></td>
+<td>Adjust resume position of paused plot in inches</td>
+</tr>
+<tr>
+<td><code>res_adj_mm</code></td>
+<td>Adjust resume position of paused plot in mm</td>
 </tr>
 <tr>
 <td><code>strip_data</code></td>
@@ -2395,6 +2438,129 @@ of stepper motors that controls the XY position of the AxiDraw carriage.</p>
 <p>Stepper motor power is off by default at power up. It is often useful
 to turn off power to the XY motors so that the carriage can be manually
 moved to the home corner, prior to plotting.</p>
+<h3 id='res_read'>res_read</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: res_read</div>
+
+<p>Example:
+Strip AxiDraw data from file.svg and save the result as output.svg:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m manual -M res_read -o output.svg
+</code></pre></div>
+<blockquote>
+<p>Typical response, with a file paused at 200 mm of pen-down travel:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>Plot was paused after 200.000 mm (7.874 inches) of pen-down travel.
+</code></pre></div>
+<blockquote>
+<p>Typical responses, for a file that finished plotting normally:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>No in-progress plot data found in file.
+To set up the plot to be resumed at a given point, add an offset.
+</code></pre></div>
+<blockquote>
+<p>Typical response, with a file that has had its resume
+position adjusted:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>Plot was originally paused after 200.000 mm (7.874 inches) of
+pen-down travel. The resume position was then adjusted to 225.400 mm
+(8.874 inches).
+</code></pre></div>
+<p><em>Manual command: Read position where a paused plot will resume</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] res_read</strong></p>
+
+<p>When a plot is paused, the progress through the file is saved in the SVG document so that
+the plot may be resumed later with <a href="#res_plot-res_home"><code>res_plot</code></a> mode. The <code>res_read</code> manual
+command reads the SVG and reports that progress as human-readable text.</p>
+
+<p>Plot progress is measured as the total path length of <em>pen-down movement</em> 
+from the beginning of the plot to where it was paused. One may adjust that
+distance, so it is more proper to say that it measures the pen-down distance from the
+beginning of the plot to the point <em>where the AxiDraw would resume plotting</em> with 
+<a href="#res_plot-res_home"><code>res_plot</code></a> mode.</p>
+
+<p>The &quot;beginning of the plot&quot; refers to the first vertex of the
+first plottable object in the SVG document. (Exactly what that object is depends on
+which optimizations are applied and, for example, whether the plot was started
+in Layers mode.)</p>
+
+<p>The &quot;beginning of the plot&quot; still refers to the first plottable object, even
+when a plot is resumed with <a href="#res_plot-res_home"><code>res_plot</code></a> mode; it is
+<em>not</em> the position from which the plot was resumed. For example, if a plot were paused after
+plotting paths with a total arc length of 250 mm, and then resumed and paused again
+after drawing another 100 mm, <code>res_plot</code> would report a value of 350 mm.</p>
+
+<p>The resume position can be adjusted with the <a href="#res_adj_in-res_adj_mm"><code>res_adj_in</code></a> and
+<a href="#res_adj_in-res_adj_mm"><code>res_adj_mm</code></a> commands. See the 
+<a href="#res_plot-res_home"><code>res_plot</code></a> mode description for further discussion
+of pause-and-resume methods when using this API.</p>
+<h3 id='res_adj_in-res_adj_mm'>res_adj_in, res_adj_mm</h3>
+<blockquote>
+<div class="codetitle">manual_cmd: res_adj_in, res_adj_mm</div>
+
+<p>Example 1:
+Adjust resume position from file.svg, such that when resumed 
+it would start 20 mm before its pause position.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m manual -M res_adj_mm --dist -20 -o file.svg
+</code></pre></div>
+<blockquote>
+<p>Typical response, with a file paused at 200 mm of pen-down travel:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>Plot was paused after 200.000 mm of pen-down travel.
+After adding a new offset of -20.000 mm, the resume position
+    is now set at 180.000 mm.
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Configure a document to begin printing (when used with res_plot
+mode) after 12.5 inches of pen-down distance. </p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m manual -M res_adj_in --dist 12.5 -o file.svg
+</code></pre></div>
+<blockquote>
+<p>Typical response, with a file that was not initially paused:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>This document was configured to start plotting at the beginning
+of the file. After adding a new offset of 12.500 inches, the
+resume position is now set at 12.500 inches.
+</code></pre></div>
+<p><em>Manual commands: Adjust resume position of paused plot</em></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] res_adj_in</strong></p>
+
+<p><strong>Syntax: [<code>-M</code>, <code>--manual_cmd</code>] res_adj_mm</strong></p>
+
+<p>These two commands adjust the position where a paused plot will resume,
+by a distance given by the value of the <a href="#dist"><code>dist</code></a> option and 
+units selected by choosing either <code>res_adj_in</code> or <code>res_adj_mm</code>. 
+See the <a href="#res_read"><code>res_read</code></a> command description for how to read the existing
+resume position and for an extended discussion of what that position means.</p>
+
+<p>The <code>dist</code> option has a default value of 1.0 and can be positive or negative.
+Its value, in units of inches when using <code>res_adj_in</code>, and in millimeters
+when using <code>res_adj_mm</code>, is added to the the current resume position
+to produce the new position. </p>
+
+<p>If the new resume position is less than or equal
+to zero, it will reset to zero (the beginning of the plot), where
+<a href="#res_plot-res_home"><code>res_plot</code></a> mode cannot &quot;resume&quot; the plot. The
+resume position can also be set to a distance longer than the total pen-down
+length of the plot. In that case, <code>res_plot</code> mode can be run, but nothing will
+print (since the resume point is after the end of the plot).</p>
+
+<p>If an SVG document does not have any in-progress plot saved, it
+<em>is</em> possible to use <code>res_adj_in</code> or <code>res_adj_mm</code> to add an offset
+from zero, and then start a plot at that position using <code>res_plot</code>.
+This provides a means of starting a plot partway through, even if
+it did not begin as a paused plot.</p>
+
+<aside class="success">
+It may be helpful to know the total pen-down length of a plot. If so,
+Running a plot preview with the <code>report_time</code> option enabled can
+calculate that for you.
+</aside>
 <h3 id='strip_data'>strip_data</h3>
 <blockquote>
 <div class="codetitle">manual_cmd: strip_data</div>
@@ -2565,55 +2731,61 @@ them again.</p>
 <blockquote>
 <div class="codetitle">dist</div>
 
-<p>Example: 
+<p>Example 1: 
 Move the carriage 2.5 inches in the +x direction, and then back.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight plaintext"><code>axicli --mode manual --manual_cmd walk_x --dist 2.5
 axicli -m manual -M walk_x -w -2.5
+</code></pre></div>
+<blockquote>
+<p>Example 2:
+Adjust resume position from file.svg, such that when resumed 
+it would start 20 mm before its existing pause position.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -m manual -M res_adj_mm --dist -20 -o file.svg
+</code></pre></div>
+<p><em>Distance for Walk and Adjust Resume Position manual commands</em></p>
 
-*Distance for Walk manual commands*
+<p><strong>Syntax: [<code>-w</code>, <code>--dist</code>] value</strong></p>
 
-**Syntax: [`-w`, `--dist`] value**
+<p>The <code>dist</code> option provides the amount of distance for
+<a href="#manual"><code>manual</code></a> mode commands, when the manual command specified by
+<a href="#manual_cmd"><code>manual_cmd</code></a> requires a distance input. 
+The value of <code>dist</code> is a floating point number that may be positive or
+negative. Its default value is 1.0.</p>
 
-The `dist` option provides the amount of distance for
-[`manual`](#manual) mode commands, when the manual command specified by
-[`manual_cmd`](#manual_cmd) requires a distance input. 
-The value of `dist` is a floating point number that may be positive or
-negative. Its default value is 1.0.
-
-The units of the distance given by `dist` are selected by choosing
+<p>The units of the distance given by <code>dist</code> are selected by choosing
 a specific manual command. The distance is in millimeters
-for manual walk commands [`walk_mmx`](#walk_mmx-walk_mmy) or [`walk_mmy`](#walk_mmx-walk_mmy).
+for manual walk commands <a href="#walk_mmx-walk_mmy"><code>walk_mmx</code></a> or <a href="#walk_mmx-walk_mmy"><code>walk_mmy</code></a>
+and for the <a href="#res_adj_in-res_adj_mm"><code>res_adj_mm</code></a> command to adjust resume position.
 The distance is in inches for manual walk commands
-[`walk_x`](#walk_x-walk_y) or [`walk_y`](#walk_x-walk_y).
+<a href="#walk_x-walk_y"><code>walk_x</code></a> or <a href="#walk_x-walk_y"><code>walk_y</code></a>
+and for the <a href="#res_adj_in-res_adj_mm"><code>res_adj_in</code></a> command to adjust resume position.</p>
 
-Values of `dist` should be chosen with care, since no limit checking is performed.
+<p>Values of <code>dist</code> should be chosen with care, since no limit checking is performed.
 This is especially true with the manual walk commands, which are relative to the
 current position (not absolute), and are
-**NOT** checked for safe range of motion. These are fully manual commands, and
-can easily run the AxiDraw past its safe range of motion.
+<strong>NOT</strong> checked for safe range of motion. These are fully manual commands, and
+can easily run the AxiDraw past its safe range of motion.</p>
 
-Allowed values: Floating point numbers (not limit checked).
+<p>Allowed values: Floating point numbers (not limit checked).</p>
 
-**Default:** 1.0, set in axidraw_conf.py or your specified [`config`](#config) file.
+<p><strong>Default:</strong> 1.0, set in axidraw_conf.py or your specified <a href="#config"><code>config</code></a> file.</p>
 
-**Compatibility note**: This option was previously named `walk_dist`,
-and renamed to `dist` as of software version 3.8. The old name `walk_dist` is
+<p><strong>Compatibility note</strong>: This option was previously named <code>walk_dist</code>,
+and renamed to <code>dist</code> as of software version 3.8. The old name <code>walk_dist</code> is
 deprecated but still functional for CLI use, shell
-scripts, and configuration files that do use it (and do not set `dist`).
-The `walk_dist` syntax will be removed in a future version.
+scripts, and configuration files that do use it (and do not set <code>dist</code>).
+The <code>walk_dist</code> syntax will be removed in a future version.</p>
+<h2 id='layer'>layer</h2>
+<blockquote>
+<div class="codetitle">layer</div>
 
-
-## layer
-&gt; &lt;div class="codetitle"&gt;layer&lt;/div&gt;
-&gt;
-&gt; Example 1: 
-&gt; Plot only layers with layer name beginning with "3":
-
+<p>Example 1: 
+Plot only layers with layer name beginning with &quot;3&quot;:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --mode layers --layer 3
 </code></pre></div>
-<p>axicli file.svg --mode layers --layer 3
-```</p>
-
 <blockquote>
 <p>Example 2: 
 The same, with short codes:</p>
@@ -3011,6 +3183,57 @@ simple &quot;flag&quot; type argument, and takes no value argument</p>
 <p>To enable this option by default, edit axidraw_conf.py or your
 specified <a href="#config"><code>config</code></a> file and change the value
 of <code>random_start</code> from <code>False</code> to <code>True</code>.</p>
+<h2 id='hiding'>hiding</h2>
+<blockquote>
+<div class="codetitle">random_start</div>
+
+<p>Example 1: 
+Plot a file, using hidden-line removal:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg --hiding
+</code></pre></div>
+<blockquote>
+<p>Example 2: 
+The same, using short codes:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>axicli file.svg -H
+</code></pre></div>
+<p><em>Enable hidden-line removal</em></p>
+
+<p><strong>Syntax: [<code>-H</code>, <code>--hiding</code>]</strong></p>
+
+<p>By default, this option is disabled, and the AxiDraw will draw all paths
+(or objects that can be directly represented as paths) in the SVG document. All
+fill and stroke (outline) properties of individual objects are ignored. Phrased differently,
+All paths are normally plotted as though there is a stroke along the path and no fill.</p>
+
+<p>When the <code>hiding</code> option is enabled, the AxiDraw software will instead plot paths (or not)
+based (1) on their fill and stroke properties and (2) whether or not
+they are occluded behind other objects. An object that does not have a stroke property (e.g.,
+no outline in Inkscape) will not plot, nor will one hidden behind a solid fill.
+Typically, when working with documents that include filled regions, this means that the
+AxiDraw output will visually resemble the original SVG artwork more closely. In cases of 
+ambiguity, consider running Plot Preview (<a href="#preview"><code>preview</code></a>) with rendering enabled in
+order to understand how the document is processed.</p>
+
+<p>There are two important drawbacks to bear in mind. First, the <code>hiding</code> option requires
+additional processing time before plotting, especially in instances with large numbers of
+objects to process. Second, hidden-line removal <strong>does not</strong>
+preserve the orientation of individual SVG strokes.
+We generally recommend using the <a href="#reordering"><code>reordering</code></a> option, with &quot;full&quot; reordering,
+to orient the output paths for efficient plotting.</p>
+
+<p>In cases where the processing time becomes large, or when processing repeatedly might be needed
+(as in, when a document might be paused and resumed during the plotting process),
+it may be convenient to instead process the
+document <em>once</em>, separately, using the <a href="#digest"><code>digest</code></a> option.</p>
+
+<p>This feature may be enabled by using the <code>--hiding</code> option (<code>-H</code>). It is a
+simple &quot;flag&quot; type argument, and takes no value argument</p>
+
+<p>To enable this option by default, edit axidraw_conf.py or your
+specified <a href="#config"><code>config</code></a> file and change the value
+of <code>hiding</code> from <code>False</code> to <code>True</code>.</p>
 <h2 id='model'>model</h2>
 <blockquote>
 <div class="codetitle">model</div>
@@ -3482,6 +3705,16 @@ avoid duplicate warning messages during the plot. Thus, if you need to request
 <p>Please note that the changelog.txt file included with the download is more comprehensive
 and includes details about older releases that are no longer listed below.</p>
 
+<p><strong>v 3.9 (2023-05)</strong></p>
+
+<p>New option, <a href="#hiding"><code>hiding</code></a>, enables new hidden-line removal feature.</p>
+
+<p>Added new <a href="#res_read"><code>res_read</code></a>, <a href="#res_adj_in-res_adj_mm"><code>res_adj_in</code></a> and
+<a href="#res_adj_in-res_adj_mm"><code>res_adj_mm</code></a> manual commands, which allow one to read
+and/or adjust the the position at which a paused plot will be resumed.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_393.zip">here</a>.</p>
+
 <p><strong>v 3.8 (2023-01)</strong></p>
 
 <p>Added new <a href="#penlift"><code>penlift</code></a> option, to enable brushless servo option.</p>
@@ -3622,24 +3855,8 @@ and <strong>not</strong> in <a href="#reorder"><code>reorder</code></a> mode, wh
 <p>Drop support for Python 3.5. Python 3.6 or newer is now required.</p>
 
 <p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_274r1.zip">here</a>.</p>
-
-<p><strong>v 2.7.0 (2020-11-11)</strong></p>
-
-<p>Add support for macOS 11 (Big Sur) and Mac computers using Apple Silicon</p>
-
-<p>Drop support for Python 2. Python 3.5 or newer is now required. If you need
-to use Python 2, the previous release version (2.6.3) is archived below.</p>
-
-<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_270r13.zip">here</a></p>
-
-<p><strong>v 2.6.3 (2020-08-19)</strong></p>
-
-<p>This is the last point release of the software supporting Python 2, and is
-archived for download <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip">here</a>.
-You can also install it via:
-<code>pip install https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_263_r2.zip</code></p>
 <h1 id='copyright'>Copyright</h1>
-<p>Copyright 2022 Windell H. Oskay, Evil Mad Scientist Laboratories</p>
+<p>Copyright 2023 Windell H. Oskay, Evil Mad Scientist Laboratories</p>
 
       </div>
       <div class="dark-box">
