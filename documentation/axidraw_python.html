@@ -771,7 +771,7 @@ through our github
 <code>python -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip</code></p>
 
 <p>This procedure installs both the AxiDraw Python module and the <a href="https://axidraw.com/doc/cli_api/">AxiDraw CLI</a>.
-The link is permanent and will be kept up to date. The current release version is 3.9.3.</p>
+The link is permanent and will be kept up to date. The current release version is 3.9.4.</p>
 
 <p>If you use this method, you may <em>also</em> want to 
 <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">download the zip file</a>
@@ -779,7 +779,7 @@ conventionally, since the download includes example python scripts, an example c
 
 <p><strong>Standard install</strong></p>
 
-<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.9.3.</p>
+<p>Download the API <a href="https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip">from this permanent link</a>. The current release version is 3.9.4.</p>
 
 <p>Please see Installation.txt included with the download for full installation instructions.</p>
 
@@ -4687,10 +4687,9 @@ The same, but using the &quot;connected&quot; variable to check for a connection
 
 <p>The nature of an <strong>Interactive</strong> context session is that you directly 
 specify not only every individual movement, but also when the session
-begins and ends. The <code>connect()</code> function a USB serial
-connection to the AxiDraw. It also applies any option values that you have<br>
-set after calling <a href="#interactive"><code>interactive()</code></a>. 
-The port must be closed with the
+begins and ends. The <code>connect()</code> function a USB serial connection to the AxiDraw.
+It also applies any option values that you have set after calling
+<a href="#interactive"><code>interactive()</code></a>. The port must be closed with the
 <a href="#disconnect"><code>disconnect()</code></a> function at the end of your session. </p>
 
 <p>Most functions in the interactive API, including all motion commands, will raise an
@@ -5606,6 +5605,16 @@ These functions can only be used within the <b>Interactive</b> context.
 <p>Please note that the changelog.txt file included with the download is more comprehensive
 and includes details about older releases that are no longer listed below.</p>
 
+<p><strong>v 3.9.4 (2023-09)</strong></p>
+
+<p>Pen-lift servo motor initialization routines rewritten for more consistent behavior.
+As part of this, the <a href="#update"><code>update()</code></a> function now itself applies pen height changes.
+For example, if the pen-up height <a href="#pen_pos_up"><code>pen_pos_up</code></a> changes, calling <code>update()</code> 
+with the pen up will immediately move to the new pen-up height, rather than at the
+next <a href="#penup"><code>penup()</code></a> command.</p>
+
+<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_394.zip">here</a>.</p>
+
 <p><strong>v 3.9 (2023-05)</strong></p>
 
 <p>New option in <strong>Plot</strong> context, <a href="#hiding"><code>hiding</code></a>, enables new hidden-line removal feature.</p>
@@ -5623,7 +5632,7 @@ variable <code>res_dist</code> to provide the numeric distance from <a href="#re
 <a href="#report_time"><code>report_time</code></a> option are now always populated, even if <code>report_time</code>
 is not enabled.</p>
 
-<p>Archived release <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_393.zip">here</a>.</p>
+<p>Archived release (3.9.3) <a href="https://cdn.evilmadscientist.com/dl/ad/public/ad_api/AxiDraw_API_393.zip">here</a>.</p>
 
 <p><strong>v 3.8 (2023-01)</strong></p>
 

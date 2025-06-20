@@ -2,7 +2,7 @@
 
 name = "axicli"
 
-version = "3.9.3"
+version = "3.9.4"
 
 description = "AxiDraw CLI and Python API"
 
@@ -42,7 +42,6 @@ classifiers = [
 [project.optional-dependencies]
 dev =  ["axidrawinternal>=3.0.0", "coverage", "mock", "pyfakefs"] # see Installation instructions
 test = ["coverage", "mock", "pyfakefs"]
-hershey = ["hersheyadvanced"] # see Installation instructions
 
 
 [build-system]
