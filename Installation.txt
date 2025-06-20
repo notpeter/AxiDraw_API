@@ -1,13 +1,13 @@
 AxiDraw CLI and Python API — Installation
 
-Supported on python 3.7 and newer
+Supported on python 3.8 and newer
 Mac, Windows, and Linux.
 
 
 —————————————————————————————————————————
 INSTALLATION
 
-1.) Install python (minimum version 3.7)
+1.) Install python (minimum version 3.8)
 
 Macs and linux boxes usually have python pre-installed.
 
